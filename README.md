@@ -1,5 +1,5 @@
 # Healthfull
-_<healthfullapp.com>_
+_[healthfullapp.com](https://healthfullapp.com)_
 
 The official source code repository for the healthfull application.
 
@@ -17,7 +17,7 @@ _<team@healthfullapp.com>_
 * Brian Shirley <brian@healthfullapp.com>
 
 ### License
-```sh
+```
 **************************************************************
 * Copyright (C) 2017 - All Rights Reserved                   *
 *                                                            *
