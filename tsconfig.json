@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "module": "commonjs",
+        "target": "es6",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": true,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "skipLibCheck": true,
+        "jsx": "react"
+        // "strict": true
+    },
+    "include": [
+        "./app/**/*"
+    ],
+    "exclude": [
+        "node_modules" // don't run on any code in the node_modules directory
+  ]
+}

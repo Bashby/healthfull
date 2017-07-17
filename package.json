@@ -1,0 +1,32 @@
+{
+	"name": "healthfull",
+	"version": "0.1.0",
+	"description": "The official Healthfull application project",
+	"main": "./app/app.tsx",
+	"types": "./globals.d.ts",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "webpack-dev-server --content-base build/ --hot --host 0.0.0.0",
+		"build": "webpack --config ./webpack.dev.config.js --progress --profile --colors",
+		"build_clean": "BUILD_CLEAN=true webpack --config ./webpack.dev.config.js --progress --profile --colors",
+		"build_prod": "webpack --config ./webpack.prod.config.js --progress --profile --colors",
+		"build_prod_clean": "BUILD_CLEAN=true webpack --config ./webpack.prod.config.js --progress --profile --colors"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@bitbucket.org:ashbyb/healthfull.git"
+	},
+	"keywords": [
+		"healthfull",
+		"healthfullapp",
+		"meal planning",
+		"nutrition",
+		"react",
+		"redux"
+	],
+	"author": "See AUTHORS file.",
+	"license": "UNLICENSED",
+	"homepage": "https://healthfullapp.com",
+	"dependencies": {},
+	"devDependencies": {}
+}
