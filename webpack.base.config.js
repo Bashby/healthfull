@@ -20,7 +20,7 @@ var babelOptions = {
 			"env", 
 			{
 				"targets": {
-					"browsers": ["last 2 versions"]
+					"browsers": ["last 2 versions", "safari >= 7"]
 				}
 			}
 		]

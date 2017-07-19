@@ -34,7 +34,7 @@ module.exports = Merge(CommonConfig, {
 			inject: false,
 			template: HtmlWebpackTemplatePlugin,
 			inlineManifestWebpackName: 'webpackManifest',
-			title: 'Healthfull App',
+			title: 'Healthfull',
 			appMountId: "application",
 			mobile: true,
 			meta: [

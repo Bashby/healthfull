@@ -6,7 +6,7 @@
 	"types": "./globals.d.ts",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "webpack-dev-server --content-base build/ --hot --host 0.0.0.0 --config ./webpack.dev.config.js --progress --profile --colors",
+		"dev": "webpack-dev-server --hot --content-base build/ --host 0.0.0.0 --public 192.168.1.187:8080 --config ./webpack.dev.config.js --progress --colors",
 		"build": "webpack --config ./webpack.dev.config.js --progress --profile --colors",
 		"build_clean": "BUILD_CLEAN=true webpack --config ./webpack.dev.config.js --progress --profile --colors",
 		"build_prod": "webpack --config ./webpack.prod.config.js --progress --profile --colors",
@@ -27,10 +27,9 @@
 	"author": "See AUTHORS file.",
 	"license": "UNLICENSED",
 	"homepage": "https://healthfullapp.com",
-	"dependencies": {
-		"@types/history": "^4.6.0"
-	},
+	"dependencies": {},
 	"devDependencies": {
+		"@types/history": "^4.6.0",
 		"@types/node": "^8.0.14",
 		"@types/react": "^15.0.38",
 		"@types/react-dom": "^15.5.1",
@@ -40,6 +39,9 @@
 		"@types/redux-devtools": "^3.0.38",
 		"@types/redux-devtools-dock-monitor": "^1.1.31",
 		"@types/redux-devtools-log-monitor": "^1.0.31",
+		"babel-core": "^6.25.0",
+		"babel-loader": "^7.1.1",
+		"babel-preset-env": "^1.6.0",
 		"clean-webpack-plugin": "^0.1.16",
 		"extract-text-webpack-plugin": "^3.0.0",
 		"favicons-webpack-plugin": "0.0.7",
