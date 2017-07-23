@@ -1,23 +1,29 @@
 {
-    "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
-        "module": "commonjs",
-        "target": "es6",
-        "moduleResolution": "node",
-        "noImplicitAny": true,
-        "noUnusedLocals": false,
-        "noUnusedParameters": true,
-        "removeComments": false,
-        "preserveConstEnums": true,
-        "sourceMap": true,
-        "skipLibCheck": true,
-        "jsx": "react"
-        // "strict": true
-    },
-    "include": [
-        "./app/**/*"
-    ],
-    "exclude": [
-        "node_modules" // don't run on any code in the node_modules directory
-  ]
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"module": "commonjs",
+		"target": "es6",
+		"lib": [ "es2017", "dom" ],
+		"moduleResolution": "node",
+		"noImplicitAny": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"preserveConstEnums": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"strictNullChecks": false,
+		"pretty": true,
+		"removeComments": true,
+		"sourceMap": true,
+		"skipLibCheck": true,
+		"noStrictGenericChecks": true,
+		"jsx": "react"
+	},
+	"include": [
+		"app/**/*"
+	],
+	"exclude": [
+		"node_modules", // don't run on any code in the node_modules directory
+		"build"
+	]
 }

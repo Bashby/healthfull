@@ -1,3 +1,5 @@
+const polyfill = require("babel-polyfill");
+
 const webpack = require("webpack");
 const path = require('path');
 // Override hashing of chunks to use md5
@@ -38,7 +40,7 @@ const IMAGE_PATH = path.resolve(BASE_PATH, 'images');
 module.exports = {
 	context: BASE_PATH,
 	entry: {
-		// polyfills: path.resolve(SCRIPT_PATH, "polyfills.ts"),
+		polyfills: "babel-polyfill", // path.resolve(SCRIPT_PATH, "polyfills.ts"),
 		// vendor: ["lodash", path.resolve(SCRIPT_PATH, "vendor.ts")],
 		app: path.resolve(BASE_PATH, "app.tsx")
 	},

@@ -1,3 +1,5 @@
+const polyfill = require("babel-polyfill");
+
 const webpack = require("webpack");
 const Merge = require('webpack-merge');
 const CommonConfig = require('./webpack.base.config.js');
@@ -5,14 +7,17 @@ const CommonConfig = require('./webpack.base.config.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // Define a base html template
 const HtmlWebpackTemplatePlugin = require('html-webpack-template');
+// Allows for a webpack dashboard experience while developing
+var DashboardPlugin = require('webpack-dashboard/plugin');
 
 module.exports = Merge(CommonConfig, {
-	devtool: "source-map",
+	devtool: "eval-source-map",
 	output: {
 		filename: "[name].js",
 		chunkFilename: "[name].js",
 	},
 	plugins: [
+		new DashboardPlugin(),
 		// Set environment variables
 		new webpack.DefinePlugin({
 			'process.env': {

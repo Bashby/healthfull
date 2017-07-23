@@ -4,11 +4,11 @@ import { render } from 'react-dom';
 
 // Local Imports
 import { configureStore, history } from './store/RootStore';
-import { RootContainer } from './containers/RootContainer';
-import { initialState } from './reducers/RootReducer';
+import { AppContainer } from './containers/App';
+import { INITIAL_STATE } from './reducers/Root';
 
-const store = configureStore(initialState);
+const store = configureStore(INITIAL_STATE);
 
 // Render application
 const renderTarget = document.getElementById('application');
-render(<RootContainer store={store} history={history} />, renderTarget);
+render(<AppContainer store={store} history={history} />, renderTarget);
