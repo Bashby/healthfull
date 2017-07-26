@@ -7,7 +7,7 @@
 		"moduleResolution": "node",
 		"noImplicitAny": true,
 		"noUnusedLocals": true,
-		"noUnusedParameters": true,
+		"noUnusedParameters": false,
 		"preserveConstEnums": true,
 		"noImplicitReturns": true,
 		"noImplicitThis": true,

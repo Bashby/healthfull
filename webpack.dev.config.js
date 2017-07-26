@@ -59,5 +59,8 @@ module.exports = Merge(CommonConfig, {
 
 		// Hash chunks
 		new webpack.NamedModulesPlugin()
-	]
+	],
+	devServer: {
+		historyApiFallback: true
+	}
 })

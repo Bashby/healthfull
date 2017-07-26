@@ -1,19 +1,40 @@
 // Lib Imports
 import * as React from 'react';
-// import { Dispatch } from 'redux';
+import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { ActionCreator } from 'typescript-fsa';
+import { push } from 'react-router-redux'
 
 // Local Imports
 import { Title } from '../components/Title';
 import { TodoList } from "../components/TodoList";
 import { IState } from '../reducers/Root';
 import { TodoType } from "../reducers/Todo";
+import { TodoActionCreators } from "../actions/Todo";
 
 
-interface Props {
+interface AllProps {
+	// Component Props
 	topLevelProp: string;
+
+	// Redux State Props
 	title: string;
-	todos: TodoType[]
+	todos: TodoType[];
+
+	// Dispatch Props
+	addTodo: ActionCreator<{
+		title?: string;
+		description?: string;
+	}>;
+	updateTodo: ActionCreator<{
+		id: string;
+		title?: string;
+		description?: string;
+	}>;
+	removeTodo: ActionCreator<{
+		id: string;
+	}>;
+	changePage: any;
 }
 
 interface State {
@@ -22,19 +43,31 @@ interface State {
 
 interface MyStateProps {
 	title: string;
-	todos: TodoType[]
+	todos: TodoType[];
 }
 
 interface MyDispatchProps {
-	// Select: (name: string) => void;
+	addTodo: ActionCreator<{
+		title?: string;
+		description?: string;
+	}>;
+	updateTodo: ActionCreator<{
+		id: string;
+		title?: string;
+		description?: string;
+	}>;
+	removeTodo: ActionCreator<{
+		id: string;
+	}>;
+	changePage: any;
 }
 
 interface MyOwnProps {
 	topLevelProp: string;
 }
 
-class RootComponent extends React.Component<Props, State> {
-	constructor(props: Props) {
+class RootComponent extends React.Component<AllProps, State> {
+	constructor(props: AllProps) {
 		super(props);
 		this.state = {};
 	}
@@ -42,6 +75,9 @@ class RootComponent extends React.Component<Props, State> {
 	render() {
 		return (
 			<div>
+				<input type="button" onClick={() => this.props.changePage()}></input>
+				<input type="text" onChange={(value) => this.props.removeTodo({id: value.currentTarget.value})}></input>
+				<input type="text" onChange={(value) => this.props.addTodo({title: value.currentTarget.value, description: "yo"})}></input>
 				<span>{this.props.topLevelProp}</span>
 				<Title title={this.props.title} />
 				<TodoList todos={this.props.todos}/>
@@ -50,7 +86,6 @@ class RootComponent extends React.Component<Props, State> {
 	}
 }
 
-
 function mapStateToProps(state: IState): MyStateProps {
 	return {
 		title: state.rootState.titleMessage,
@@ -58,18 +93,9 @@ function mapStateToProps(state: IState): MyStateProps {
 	}
 }
 
-// function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps  {
-// 	return {
-// 		// actions: bindActionCreators(attendanceRecordActions, dispatch)
-// 	}
-// }
-
-function mapDispatchToProps(): MyDispatchProps  {
-	return {
-		// actions: bindActionCreators(attendanceRecordActions, dispatch)
-	}
+function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
+	return {...bindActionCreators(TodoActionCreators, dispatch), changePage: () => {dispatch(push('/foo'))}}
 }
-
 
 export const RootContainer = connect<MyStateProps, MyDispatchProps, MyOwnProps>(
 	mapStateToProps,

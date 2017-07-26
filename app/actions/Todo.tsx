@@ -27,6 +27,20 @@ export const AddTodo = actionCreatorTodo<AddTodoPayload>('ADD_TODO');
 export const UpdateTodo = actionCreatorTodo<UpdateTodoPayload>('UPDATE_TODO');
 export const RemoveTodo = actionCreatorTodo<RemoveTodoPayload>('REMOVE_TODO');
 
+// // Create Action Interfaces
+// interface IAddTodo {
+// 	ActionCreator<{
+//     title: string;
+//     description: string;
+// }>
+
+// Bundle and export action creators
+export const TodoActionCreators = {
+	addTodo: AddTodo,
+	updateTodo: UpdateTodo,
+	removeTodo: RemoveTodo,
+};
+
 // // Action Types
 // const AddTodoActionType: String = "AddTodo";
 // const UpdateTodoActionType: String = "UpdateTodo";
@@ -54,9 +68,3 @@ export const RemoveTodo = actionCreatorTodo<RemoveTodoPayload>('REMOVE_TODO');
 // export type TodoActions = AddTodoAction
 // 	| UpdateTodoAction
 // 	| RemoveTodoAction;
-
-// export const actionCreatorsTodo = {
-// 	addTodo: createAddTodoAction,
-// 	updateTodo: createUpdateTodoAction,
-// 	removeTodo: createRemoveTodoAction,
-// };

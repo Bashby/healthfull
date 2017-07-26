@@ -37,6 +37,7 @@ export class AppContainer extends React.Component<Props, State> {
 					<ConnectedRouter history={this.props.history}>
 						<div>
 							<Route exact path="/" component={RootContainer}/>
+							<Route path="/foo" component={RootContainer}/>
 						</div>
 					</ConnectedRouter>
 					{isDev && <DevToolsContainer />}
