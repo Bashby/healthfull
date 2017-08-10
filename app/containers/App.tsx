@@ -2,9 +2,9 @@
 import * as React from 'react';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
-import { Route } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
 import { History } from 'history';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 // Local Imports
 import { RootContainer } from './Root';
@@ -32,17 +32,16 @@ export class AppContainer extends React.Component<Props, State> {
 
 		// Render
 		return (
-			<Provider store={this.props.store}>
-				<div>
-					<ConnectedRouter history={this.props.history}>
-						<div>
-							<Route exact path="/" component={RootContainer}/>
-							<Route path="/foo" component={RootContainer}/>
-						</div>
-					</ConnectedRouter>
-					{isDev && <DevToolsContainer />}
-				</div>
-			</Provider>
+			<MuiThemeProvider>
+				<Provider store={this.props.store}>
+					<div>
+						<ConnectedRouter history={this.props.history}>
+							<RootContainer/>
+						</ConnectedRouter>
+						{isDev && <DevToolsContainer />}
+					</div>
+				</Provider>
+			</MuiThemeProvider>
 		);
 	}
 }

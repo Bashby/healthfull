@@ -51,8 +51,8 @@ module.exports = Merge(CommonConfig, {
 				"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css",
 			],
 			scripts: [
-				"https://unpkg.com/react@15/dist/react.min.js",
-				"https://unpkg.com/react-dom@15/dist/react-dom.min.js",
+				"https://unpkg.com/react@^15.6.1/dist/react.min.js",
+				"https://unpkg.com/react-dom@^15.6.1/dist/react-dom.min.js",
 				"https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.30.8/react-bootstrap.min.js",
 			],
 		}),
