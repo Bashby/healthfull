@@ -135,9 +135,8 @@ module.exports = {
 		extensions: ['*', '.ts', '.tsx', '.js', '.json', '.css', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'eot', 'ttf', 'woff', 'woff2']
 	},
 	externals: {
-		"react": "React",
-		"react-dom": "ReactDOM",
-		"react-bootstrap": "ReactBootstrap",
+		// "react": "React",
+		// "react-dom": "ReactDOM",
 	},
 	plugins: [
 		// Clean up existing

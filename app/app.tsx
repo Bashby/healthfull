@@ -8,11 +8,12 @@ import { configureStore, history } from './store/RootStore';
 import { AppContainer } from './containers/App';
 import { INITIAL_STATE } from './reducers/Root';
 
-const store = configureStore(INITIAL_STATE);
-
-// Resolve library dependencies
+// Inject
 injectTapEventPlugin();
+
+const store = configureStore(INITIAL_STATE);
 
 // Render application
 const renderTarget = document.getElementById('application');
 render(<AppContainer store={store} history={history} />, renderTarget);
+

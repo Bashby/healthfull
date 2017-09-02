@@ -5,16 +5,14 @@ import * as React from 'react';
 
 
 interface Props {
-	title: string;
-	description: string;
 };
 
 interface State {
 
 };
 
-// Todo Component
-export class Todo extends React.Component<Props, State> {
+// LoginForm Form Component
+export class LoginForm extends React.Component<Props, State> {
 	constructor(props: Props) {
 		super(props);
 		this.state = {};
@@ -22,10 +20,9 @@ export class Todo extends React.Component<Props, State> {
 	
 	render() {
 		return (
-			<li>
-				<span>{this.props.title}</span>
-				<p>{this.props.description}</p>
-			</li>
+			<div>
+				<h1></h1>
+			</div>
 		);
 	}
 }

@@ -3,21 +3,18 @@ import * as React from 'react';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreator } from 'typescript-fsa';
+
 import { Link } from 'react-router-dom';
 import { push } from 'react-router-redux'
-import { Route } from "react-router";
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import SvgIconPlacesSpa from 'material-ui/svg-icons/places/spa';
-import RaisedButton from 'material-ui/RaisedButton';
+import { Route, Switch } from "react-router";
 
 // Local Imports
-import { Title } from '../components/Title';
-import { TodoList } from "../components/TodoList";
 import { IState } from '../reducers/Root';
 import { TodoType } from "../reducers/Todo";
 import { TodoActionCreators } from "../actions/Todo";
 import { RecipeContainer } from './Recipe';
+import { TopNavigationBar } from "../components/TopNavigationBar";
+import { BottomNavigationBar } from "../components/BottomNavigationBar";
 
 // Interfaces
 interface AllProps {
@@ -45,7 +42,6 @@ interface AllProps {
 }
 
 interface State {
-
 }
 
 interface MyStateProps {
@@ -76,31 +72,18 @@ interface MyOwnProps {
 class RootComponent extends React.Component<AllProps, State> {
 	constructor(props: AllProps) {
 		super(props);
-		this.state = {};
+		this.state = {
+		};
 	}
 	
 	render() {
 		return (
 			<div>
-				<RaisedButton label="Choose an Image" onClick={() => alert("hi")} />
-				<AppBar
-					title="Healthfull"
-					onTitleTouchTap={() => this.props.changePage("/chicken")}
-					iconElementLeft={
-						<IconButton onClick={() => this.props.changePage("/eggs")} tooltip="Home">
-							<SvgIconPlacesSpa />
-						</IconButton>
-					}
-				/>
-				<Link to={'/recipes'}>Go to recipes</Link>
-				<Link to={'/'}>Go to root</Link>
-				{/* <input type="button" onClick={() => this.props.changePage()}></input>
-				<input type="text" onChange={(value) => this.props.removeTodo({id: value.currentTarget.value})}></input>
-				<input type="text" onChange={(value) => this.props.addTodo({title: value.currentTarget.value, description: "yo"})}></input>
-				<span>{this.props.topLevelProp}</span>
-				<Title title={this.props.title} />
-				<TodoList todos={this.props.todos}/> */}
-				<Route path="/recipes" component={RecipeContainer}/>
+				<TopNavigationBar changePage={this.props.changePage} />
+				<Switch>
+					<Route path="/recipes" component={RecipeContainer} />
+				</Switch>
+				<BottomNavigationBar changePage={this.props.changePage} />
 			</div>
 		);
 	}
