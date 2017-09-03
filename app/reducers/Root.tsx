@@ -9,10 +9,12 @@ import { UpdateTitleMessage } from "../actions/Root";
 
 interface IRootState {
 	titleMessage: string;
+	authenticated: boolean;
 }
 
 const ROOT_INITIAL_STATE: IRootState = {
-	titleMessage: "Hello World, from Root!"
+	titleMessage: "Hello World, from Root!",
+	authenticated: false
 }
 
 export const reducerRoot = reducerWithInitialState(ROOT_INITIAL_STATE)

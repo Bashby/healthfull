@@ -2,12 +2,11 @@
 import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-
-import RaisedButton from 'material-ui/RaisedButton';
-import SvgIconPlacesSpa from 'material-ui/svg-icons/places/spa';
+import { Link } from "react-router-dom";
 
 // Local Imports
 import { IState } from '../reducers/Root';
+
 
 // Interfaces
 interface AllProps {
@@ -25,7 +24,8 @@ interface MyDispatchProps {
 interface MyOwnProps {
 }
 
-class RecipeComponent extends React.Component<AllProps, State> {
+// Landing Component
+class LandingComponent extends React.Component<AllProps, State> {
 	constructor(props: AllProps) {
 		super(props);
 		this.state = {};
@@ -33,13 +33,10 @@ class RecipeComponent extends React.Component<AllProps, State> {
 	
 	render() {
 		return (
-			<RaisedButton
-				href="https://github.com/callemall/material-ui"
-				target="_blank"
-				label="Github Link"
-				secondary={true}
-				icon={<SvgIconPlacesSpa/>}
-			/>
+			<div>
+				<span>Landing page</span>
+				<Link to={"/recipes"}>Recipes</Link>
+			</div>
 		);
 	}
 }
@@ -54,7 +51,7 @@ function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
 	}
 }
 
-export const RecipeContainer = connect<MyStateProps, MyDispatchProps, MyOwnProps>(
+export const LandingContainer = connect<MyStateProps, MyDispatchProps, MyOwnProps>(
 	mapStateToProps,
 	mapDispatchToProps
-)(RecipeComponent);
+)(LandingComponent);

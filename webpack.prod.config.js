@@ -63,7 +63,7 @@ module.exports = Merge(CommonConfig, {
 
 		// Generate fav-icons for all targeted platforms
 		new FaviconsWebpackPlugin({
-			logo: path.resolve(IMAGE_PATH, 'favicon.png'),
+			logo: path.resolve(IMAGE_PATH, 'logo.png'),
 			prefix: 'favicons-[hash]/',
 			title: 'app-favicon',
 			persistentCache: true,

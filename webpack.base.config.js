@@ -51,15 +51,24 @@ module.exports = {
 		rules: [
 			{
 				test: /\.css$/,
-				include: [
-					BASE_PATH,
-					path.resolve(__dirname, "node_modules/normalize.css/")
+				use: [
+					{ loader: 'style-loader' },
+					{ loader: 'css-loader', options: { modules: true } }
 				],
-				use: ExtractTextPlugin.extract({
-					fallback: "style-loader",
-					use: "css-loader"
-				})
+				include: /flexboxgrid/
 			},
+			// {
+			// 	test: /\.css$/,
+			// 	include: [
+			// 		BASE_PATH,
+			// 		path.resolve(__dirname, "node_modules/normalize.css/"),
+			// 	],
+			// 	exclude: /flexboxgrid/,
+			// 	use: ExtractTextPlugin.extract({
+			// 		fallback: "style-loader",
+			// 		use: "css-loader"
+			// 	})
+			// },
 			{
 				test: /\.json$/,
 				exclude: /node_modules/,
@@ -118,9 +127,16 @@ module.exports = {
 					{
 						loader: 'image-webpack-loader',
 						query: {
-							mozjpeg: { progressive: true },
-							gifsicle: { interlaced: false },
-							optipng: { optimizationLevel: 7 },
+							mozjpeg: {
+								progressive: true,
+								quality: 65
+							},
+							gifsicle: {
+								interlaced: false
+							},
+							optipng: {
+								optimizationLevel: 7
+							},
 							pngquant: {
 								quality: '65-90',
 								speed: 4

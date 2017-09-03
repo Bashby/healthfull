@@ -5,6 +5,7 @@ import AppBar from 'material-ui/AppBar';
 import Avatar from 'material-ui/Avatar';
 import IconMenu from "material-ui/IconMenu";
 import IconButton from 'material-ui/IconButton';
+import FlatButton from 'material-ui/FlatButton'
 import MenuItem from 'material-ui/MenuItem';
 import { Divider } from "material-ui";
 import SvgIconPlacesSpa from 'material-ui/svg-icons/places/spa';
@@ -16,6 +17,7 @@ import SvgIconActionPowerSettingsNew from 'material-ui/svg-icons/action/power-se
 
 // Local Imports
 import { Footer } from "./Footer";
+const LogoPng = require('../images/logo.png');
 
 
 interface Props {
@@ -31,6 +33,8 @@ interface State {
 	}
 };
 
+// test
+
 // TopNavigationBar Component
 export class TopNavigationBar extends React.Component<Props, State> {
 	constructor(props: Props) {
@@ -45,15 +49,40 @@ export class TopNavigationBar extends React.Component<Props, State> {
 		};
 	}
 	
+	/* <IconButton onClick={() => this.props.changePage("/")}>
+		<SvgIconPlacesSpa />
+	</IconButton> */
+
+	// <FlatButton onClick={() => this.props.changePage("/")}>
+
+	// </FlatButton>
+
+// 	<Avatar
+// 	icon={<SvgIconActionAccountCircle />}
+// />
+// <IconMenu
+// 	iconButtonElement={
+// 		<IconButton><SvgIconNavigationExpandMore /></IconButton>
+// 	}
+// 	targetOrigin={{horizontal: 'right', vertical: 'top'}}
+// 	anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+// >
+// 	<MenuItem primaryText="Refresh" leftIcon={<SvgIconNavigationRefresh />}/>
+// 	<MenuItem primaryText="Help" leftIcon={<SvgIconActionHelp />}/>
+// 	<Divider />
+// 	<MenuItem primaryText="Sign out" leftIcon={<SvgIconActionPowerSettingsNew />}/>
+// </IconMenu>
+
 	render() {
 		return (
 			<AppBar
 				title={<span style={this.state.styles.title}>{this.state.title}</span>}
 				onTitleTouchTap={() => this.props.changePage("/")}
+				onLeftIconButtonTouchTap={() => this.props.changePage("/")}
 				iconElementLeft={
-					<IconButton onClick={() => this.props.changePage("/")}>
-						<SvgIconPlacesSpa />
-					</IconButton>
+					<div style={this.state.styles.title}>
+						<Avatar src={LogoPng} size={48}/>
+					</div>
 				}
 				iconElementRight={
 					<div>

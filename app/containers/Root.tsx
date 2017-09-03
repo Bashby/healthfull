@@ -6,15 +6,21 @@ import { ActionCreator } from 'typescript-fsa';
 
 import { Link } from 'react-router-dom';
 import { push } from 'react-router-redux'
-import { Route, Switch } from "react-router";
+import { Route, Switch, Redirect } from "react-router";
+
+import { Grid, Row, Col } from "react-flexbox-grid";
 
 // Local Imports
 import { IState } from '../reducers/Root';
 import { TodoType } from "../reducers/Todo";
 import { TodoActionCreators } from "../actions/Todo";
 import { RecipeContainer } from './Recipe';
+import { LandingContainer } from "./Landing";
 import { TopNavigationBar } from "../components/TopNavigationBar";
 import { BottomNavigationBar } from "../components/BottomNavigationBar";
+import { ProtectedRoute } from "../components/ProtectedRoute";
+import { LoginContainer } from "./Login";
+
 
 // Interfaces
 interface AllProps {
@@ -24,6 +30,7 @@ interface AllProps {
 	// Redux State Props
 	title: string;
 	todos: TodoType[];
+	authenticated: boolean;
 
 	// Dispatch Props
 	addTodo: ActionCreator<{
@@ -47,6 +54,7 @@ interface State {
 interface MyStateProps {
 	title: string;
 	todos: TodoType[];
+	authenticated: boolean;
 }
 
 interface MyDispatchProps {
@@ -75,15 +83,23 @@ class RootComponent extends React.Component<AllProps, State> {
 		this.state = {
 		};
 	}
-	
+
 	render() {
 		return (
 			<div>
 				<TopNavigationBar changePage={this.props.changePage} />
-				<Switch>
-					<Route path="/recipes" component={RecipeContainer} />
-				</Switch>
-				<BottomNavigationBar changePage={this.props.changePage} />
+				<Grid fluid>
+					<Row center="xs" middle="xs">
+						<Col xs >
+							<Switch>
+								<ProtectedRoute path="/recipes" component={RecipeContainer} authenticated={this.props.authenticated} />
+								<Route path="/login" component={LoginContainer} />
+								<Route component={LandingContainer} />
+							</Switch>
+						</Col>
+					</Row>
+				</Grid>
+				{this.props.authenticated && <BottomNavigationBar changePage={this.props.changePage} />}
 			</div>
 		);
 	}
@@ -92,7 +108,8 @@ class RootComponent extends React.Component<AllProps, State> {
 function mapStateToProps(state: IState): MyStateProps {
 	return {
 		title: state.rootState.titleMessage,
-		todos: Object.values(state.todoState.todosById)
+		todos: Object.values(state.todoState.todosById),
+		authenticated: state.rootState.authenticated
 	}
 }
 
