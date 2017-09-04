@@ -13,14 +13,23 @@ import { Grid, Row, Col } from "react-flexbox-grid";
 // Local Imports
 import { IState } from '../reducers/Root';
 import { TodoType } from "../reducers/Todo";
+
 import { TodoActionCreators } from "../actions/Todo";
+import { RootActionCreators } from "../actions/Root";
+
 import { RecipeContainer } from './Recipe';
 import { LandingContainer } from "./Landing";
+import { LoginContainer } from "./Login";
+import { SignupContainer } from "./Signup";
+import { AccountContainer } from "./Account";
+import { MealplanContainer } from "./Mealplan";
+
 import { TopNavigationBar } from "../components/TopNavigationBar";
 import { BottomNavigationBar } from "../components/BottomNavigationBar";
 import { ProtectedRoute } from "../components/ProtectedRoute";
-import { LoginContainer } from "./Login";
-import { SignupContainer } from "./Signup";
+import { GroceryListContainer } from "./GroceryList";
+import { AlertsContainer } from "./Alerts";
+
 
 
 // Interfaces
@@ -47,7 +56,8 @@ interface MyDispatchProps {
 	removeTodo: ActionCreator<{
 		id: string;
 	}>;
-	changePage: (path: string) => void;
+	changePage: (path: string, state?: any) => void;
+	updateAuthenticated: ActionCreator<boolean>;
 }
 
 interface MyOwnProps {
@@ -63,12 +73,17 @@ class RootComponent extends React.Component<AllProps, State> {
 	render() {
 		return (
 			<div className="full-height">
-				<TopNavigationBar changePage={this.props.changePage} authenticated={this.props.authenticated} />
+				<TopNavigationBar changePage={this.props.changePage} authenticated={this.props.authenticated} updateAuthenticated={this.props.updateAuthenticated} />
 				<Grid fluid>
 					<Row center="xs">
 						<Col xs >
 							<Switch>
-								<ProtectedRoute path="/recipes" component={RecipeContainer} authenticated={this.props.authenticated} />
+								<ProtectedRoute path="/account/people" component={AccountContainer} authenticated={this.props.authenticated} innerProps={{showPeople: true}} />
+								<ProtectedRoute path="/account" component={AccountContainer} authenticated={this.props.authenticated} />
+								<ProtectedRoute path="/mealplan/recipes" component={RecipeContainer} authenticated={this.props.authenticated} />
+								<ProtectedRoute path="/mealplan/grocerylist" component={GroceryListContainer} authenticated={this.props.authenticated} />
+								<ProtectedRoute path="/mealplan/alerts" component={AlertsContainer} authenticated={this.props.authenticated} />
+								<ProtectedRoute path="/mealplan" component={MealplanContainer} authenticated={this.props.authenticated} />
 								<Route path="/login" component={LoginContainer} />
 								<Route path="/signup" component={SignupContainer} />
 								<Route component={LandingContainer} />
@@ -93,7 +108,8 @@ function mapStateToProps(state: IState): MyStateProps {
 function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
 	return {
 		...bindActionCreators(TodoActionCreators, dispatch),
-		changePage: (path: string) => {dispatch(push(path))}
+		updateAuthenticated: bindActionCreators(RootActionCreators.updateAuthenticated, dispatch),
+		changePage: (path: string, state?: any) => {dispatch(push(path, state))}
 	}
 }
 

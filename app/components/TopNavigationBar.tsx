@@ -1,6 +1,7 @@
 // Lib Imports
 import * as React from 'react';
 import * as History from 'history';
+import { ActionCreator } from "typescript-fsa/lib";
 
 import AppBar from 'material-ui/AppBar';
 import Avatar from 'material-ui/Avatar';
@@ -12,7 +13,7 @@ import { Divider } from "material-ui";
 import SvgIconPlacesSpa from 'material-ui/svg-icons/places/spa';
 import SvgIconActionAccountCircle from 'material-ui/svg-icons/action/account-circle';
 import SvgIconNavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
-import SvgIconNavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import SvgIconActionFace from 'material-ui/svg-icons/action/face';
 import SvgIconActionHelp from 'material-ui/svg-icons/action/help';
 import SvgIconActionPowerSettingsNew from 'material-ui/svg-icons/action/power-settings-new';
 import { deepOrange500, deepOrange300, deepOrange400, white } from "material-ui/styles/colors";
@@ -21,7 +22,8 @@ import { deepOrange500, deepOrange300, deepOrange400, white } from "material-ui/
 const LogoPng = require('../images/logo.png');
 
 interface Props {
-	changePage: (path: string) => void;
+	changePage: (path: string, state?: any) => void;
+	updateAuthenticated: ActionCreator<boolean>;
 	authenticated: boolean;
 };
 
@@ -50,7 +52,7 @@ const UnauthenticatedMenu = (props: {style: {margin: number}, changePage: (path:
 	/>
 );
 
-const AuthenticatedMenu = () => (
+const AuthenticatedMenu = (props: {changePage: (path: string, state?: any) => void, updateAuthenticated: ActionCreator<boolean>;}) => (
 	<div>
 		<Avatar
 			icon={<SvgIconActionAccountCircle />}
@@ -62,10 +64,18 @@ const AuthenticatedMenu = () => (
 			targetOrigin={{horizontal: 'right', vertical: 'top'}}
 			anchorOrigin={{horizontal: 'right', vertical: 'top'}}
 		>
-			<MenuItem primaryText="Refresh" leftIcon={<SvgIconNavigationRefresh />}/>
+			<MenuItem
+				primaryText="Account"
+				leftIcon={<SvgIconActionFace />}
+				onClick={() => props.changePage("/account")}
+			/>
 			<MenuItem primaryText="Help" leftIcon={<SvgIconActionHelp />}/>
 			<Divider />
-			<MenuItem primaryText="Sign out" leftIcon={<SvgIconActionPowerSettingsNew />}/>
+			<MenuItem
+				primaryText="Sign out"
+				leftIcon={<SvgIconActionPowerSettingsNew />}
+				onClick={() => (props.changePage("/", { signedOut: true }), props.updateAuthenticated(false))}
+			/>
 		</IconMenu>
 	</div>
 );
@@ -100,7 +110,7 @@ export class TopNavigationBar extends React.Component<Props, State> {
 				}
 				iconElementRight={
 					this.props.authenticated
-						? <AuthenticatedMenu />
+						? <AuthenticatedMenu changePage={this.props.changePage} updateAuthenticated={this.props.updateAuthenticated} />
 						: <UnauthenticatedMenu
 							style={this.state.styles.getStartedButton}
 							changePage={this.props.changePage}

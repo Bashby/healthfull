@@ -1,5 +1,7 @@
 // Lib Imports
 import * as React from 'react';
+import { ActionCreator } from "typescript-fsa/lib";
+import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { Grid, Row, Col } from "react-flexbox-grid";
 
@@ -8,7 +10,6 @@ import SvgIconCommunicationVpnKey from 'material-ui/svg-icons/communication/vpn-
 import SvgIconPlacesSpa from 'material-ui/svg-icons/places/spa';
 import SvgIconAlertError from 'material-ui/svg-icons/alert/error';
 import { red500, red100, white, red400, grey200, grey700 } from "material-ui/styles/colors";
-import { ActionCreator } from "typescript-fsa/lib";
 
 
 // Local Imports
@@ -65,6 +66,13 @@ export class LoginForm extends React.Component<Props, State> {
 	targetStringClean = this.props.target && this.props.target.substr(1);
 	
 	render() {
+		// Redirect, as applicable
+		if (this.props.authenticated && this.props.target) {
+			return (
+				<Redirect to={this.props.target}/>
+			)
+		}
+
 		return (
 			<Grid fluid>
 				{!this.props.authenticated && this.props.target && <Row center="xs">
@@ -92,14 +100,13 @@ export class LoginForm extends React.Component<Props, State> {
 						<Col xs>
 							<TextField
 								hintText="e.g. johndoe@example.com"
-								floatingLabelText="Username"
+								floatingLabelText="Username or Email Address"
 							/>
 						</Col>
 					</Row>
 					<Row center="xs">
 						<Col xs>
 							<TextField
-								hintText="Keep it secret! Keep it safe!"
 								floatingLabelText="Password"
 								type="password"
 							/>

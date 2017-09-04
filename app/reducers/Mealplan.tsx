@@ -3,12 +3,11 @@ import { reducerWithInitialState } from "typescript-fsa-reducers";
 import { v4 as uuidv4 } from 'uuid';
 
 // Local Imports
-import { Person } from "./Profile"
 import { } from "../actions/Mealplan"
 
 // Mealplan state interfaces
 export interface IMealplanState {
-	activePlan?: string // ID for the active meal plan.
+	activePlan?: string // Mealplan ID for the active meal plan.
 	mealplans: Mealplan[]
 };
 
@@ -18,13 +17,19 @@ type Mealplan = {
 	startDate: Date
 	endDate: Date
 	lengthInDays: number
-	participants: string[] // Array of IDs for participants stored on the profile
+	participants: string[] // Array of Person IDs, refers to people stored on the Profile
 	groceryList: GroceryList
 	alerts: Alert[]
 };
 
 type GroceryList = {
+	items: PurchaseableItem[]
+};
 
+type PurchaseableItem = {
+	name: string,
+	amount: number,
+	amountUnit: string // TODO: maybe an enum once I know all the units that could be here.
 };
 
 type Alert = {

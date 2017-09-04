@@ -5,6 +5,8 @@ import { reducerWithInitialState } from "typescript-fsa-reducers";
 
 // Local Imports
 import { TODO_INITIAL_STATE, ITodoState, reducerTodo } from "./Todo";
+import { PROFILE_INITIAL_STATE, IProfileState, reducerProfile } from "./Profile";
+import { MEALPLAN_INITIAL_STATE, IMealplanState, reducerMealplan } from "./Mealplan";
 import { UpdateTitleMessage, UpdateAuthenticated } from "../actions/Root";
 
 // Root state interface
@@ -37,18 +39,24 @@ export const reducerRoot = reducerWithInitialState(ROOT_INITIAL_STATE)
 // Entire Application State Interface
 export interface IState {
 	rootState: IRootState
+	profileState: IProfileState
+	mealplanState: IMealplanState
 	todoState: ITodoState
 };
 
 // Entire Application initial state
 export const INITIAL_STATE: IState = {
 	rootState: ROOT_INITIAL_STATE,
+	profileState: PROFILE_INITIAL_STATE,
+	mealplanState: MEALPLAN_INITIAL_STATE,
 	todoState: TODO_INITIAL_STATE
 }
 
 // Entire Application reducer
 export const rootReducer: Reducer<IState> = combineReducers<IState>({
 	rootState: reducerRoot,
+	profileState: reducerProfile,
+	mealplanState: reducerMealplan,
 	todoState: reducerTodo,
 	router: routerReducer
 });

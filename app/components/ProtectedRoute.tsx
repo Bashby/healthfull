@@ -9,6 +9,7 @@ interface Props {
 	component: React.ComponentClass<any>;
 	authenticated: boolean;
 	path: string;
+	innerProps?: any;
 };
 
 interface State {
@@ -30,7 +31,7 @@ export class ProtectedRoute extends React.Component<Props, State> {
 				render={
 					() => (
 						this.props.authenticated ? (
-							<Component />
+							<Component {...this.props.innerProps} />
 						) : (
 							<Redirect to={{
 								pathname: '/login',

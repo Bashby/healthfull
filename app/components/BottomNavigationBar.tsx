@@ -46,17 +46,17 @@ export class BottomNavigationBar extends React.Component<Props, State> {
 						<BottomNavigationItem
 							label="Grocery List"
 							icon={<SvgIconMapsLocalGroceryStore />}
-							onClick={() => { this.props.changePage("/grocerylist"); this.select(1) }}
+							onClick={() => { this.props.changePage("/mealplan/grocerylist"); this.select(1) }}
 						/>
 						<BottomNavigationItem
 							label="Alerts"
 							icon={<SvgIconSocialNotifications />}
-							onClick={() => { this.props.changePage("/alerts"); this.select(2) }}
+							onClick={() => { this.props.changePage("/mealplan/alerts"); this.select(2) }}
 						/>
 						<BottomNavigationItem
 							label="People"
 							icon={<SvgIconSocialPeople />}
-							onClick={() => { this.props.changePage("/people"); this.select(3) }}
+							onClick={() => { this.props.changePage("/account/people"); this.select(3) }}
 						/> 
 					</BottomNavigation>
 				</Paper>
