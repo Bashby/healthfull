@@ -57,18 +57,37 @@ module.exports = {
 				],
 				include: /flexboxgrid/
 			},
-			// {
-			// 	test: /\.css$/,
-			// 	include: [
-			// 		BASE_PATH,
-			// 		path.resolve(__dirname, "node_modules/normalize.css/"),
-			// 	],
-			// 	exclude: /flexboxgrid/,
-			// 	use: ExtractTextPlugin.extract({
-			// 		fallback: "style-loader",
-			// 		use: "css-loader"
-			// 	})
-			// },
+			{
+				test: /\.css$/,
+				include: [
+					BASE_PATH,
+					path.resolve(__dirname, "node_modules/normalize.css/"),
+				],
+				exclude: /flexboxgrid/,
+				use: ExtractTextPlugin.extract({
+					fallback: "style-loader",
+					use: "css-loader"
+				})
+			},
+			{
+				test: /\.scss$/,
+				exclude: /node_modules/,
+				use: ExtractTextPlugin.extract({
+					use: [{
+						loader: "css-loader",
+						options: {
+							sourceMap: true
+						}
+					}, {
+						loader: "sass-loader",
+						options: {
+							sourceMap: true
+						}
+					}],
+					// use style-loader in development
+					fallback: "style-loader"
+				})
+			},
 			{
 				test: /\.json$/,
 				exclude: /node_modules/,
@@ -148,7 +167,7 @@ module.exports = {
 		]
 	},
 	resolve: {
-		extensions: ['*', '.ts', '.tsx', '.js', '.json', '.css', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'eot', 'ttf', 'woff', 'woff2']
+		extensions: ['*', '.ts', '.tsx', '.js', '.json', '.css', '.scss', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.eot', '.ttf', '.woff', '.woff2']
 	},
 	externals: {
 		// "react": "React",

@@ -5,8 +5,9 @@ import { reducerWithInitialState } from "typescript-fsa-reducers";
 
 // Local Imports
 import { TODO_INITIAL_STATE, ITodoState, reducerTodo } from "./Todo";
-import { UpdateTitleMessage } from "../actions/Root";
+import { UpdateTitleMessage, UpdateAuthenticated } from "../actions/Root";
 
+// Root state interface
 interface IRootState {
 	titleMessage: string;
 	authenticated: boolean;
@@ -17,11 +18,18 @@ const ROOT_INITIAL_STATE: IRootState = {
 	authenticated: false
 }
 
+// Root state reducer
 export const reducerRoot = reducerWithInitialState(ROOT_INITIAL_STATE)
 	.case(UpdateTitleMessage, (state, payload) => {
 		return {
 			...state,
 			titleMessage: payload
+		};
+	})
+	.case(UpdateAuthenticated, (state, payload) => {
+		return {
+			...state,
+			authenticated: payload
 		};
 	})
 	.build();
@@ -32,12 +40,13 @@ export interface IState {
 	todoState: ITodoState
 };
 
-// Entire Application Initial State
+// Entire Application initial state
 export const INITIAL_STATE: IState = {
 	rootState: ROOT_INITIAL_STATE,
 	todoState: TODO_INITIAL_STATE
 }
 
+// Entire Application reducer
 export const rootReducer: Reducer<IState> = combineReducers<IState>({
 	rootState: reducerRoot,
 	todoState: reducerTodo,

@@ -20,36 +20,13 @@ import { TopNavigationBar } from "../components/TopNavigationBar";
 import { BottomNavigationBar } from "../components/BottomNavigationBar";
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import { LoginContainer } from "./Login";
+import { SignupContainer } from "./Signup";
 
 
 // Interfaces
-interface AllProps {
-	// Component Props
-	topLevelProp: string;
+interface AllProps extends MyStateProps, MyDispatchProps, MyOwnProps {}
 
-	// Redux State Props
-	title: string;
-	todos: TodoType[];
-	authenticated: boolean;
-
-	// Dispatch Props
-	addTodo: ActionCreator<{
-		title?: string;
-		description?: string;
-	}>;
-	updateTodo: ActionCreator<{
-		id: string;
-		title?: string;
-		description?: string;
-	}>;
-	removeTodo: ActionCreator<{
-		id: string;
-	}>;
-	changePage: (path: string) => void;
-}
-
-interface State {
-}
+interface State {}
 
 interface MyStateProps {
 	title: string;
@@ -74,7 +51,6 @@ interface MyDispatchProps {
 }
 
 interface MyOwnProps {
-	topLevelProp?: string;
 }
 
 class RootComponent extends React.Component<AllProps, State> {
@@ -86,14 +62,15 @@ class RootComponent extends React.Component<AllProps, State> {
 
 	render() {
 		return (
-			<div>
-				<TopNavigationBar changePage={this.props.changePage} />
+			<div className="full-height">
+				<TopNavigationBar changePage={this.props.changePage} authenticated={this.props.authenticated} />
 				<Grid fluid>
-					<Row center="xs" middle="xs">
+					<Row center="xs">
 						<Col xs >
 							<Switch>
 								<ProtectedRoute path="/recipes" component={RecipeContainer} authenticated={this.props.authenticated} />
 								<Route path="/login" component={LoginContainer} />
+								<Route path="/signup" component={SignupContainer} />
 								<Route component={LandingContainer} />
 							</Switch>
 						</Col>

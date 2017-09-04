@@ -9,8 +9,7 @@ import { IState } from '../reducers/Root';
 
 
 // Interfaces
-interface AllProps {
-}
+interface AllProps extends MyStateProps, MyDispatchProps, MyOwnProps {}
 
 interface State {
 }
@@ -34,7 +33,7 @@ class LandingComponent extends React.Component<AllProps, State> {
 	render() {
 		return (
 			<div>
-				<span>Landing page</span>
+				<span>This is the Landing page. Healthy eating, yo.</span>
 				<Link to={"/recipes"}>Recipes</Link>
 			</div>
 		);

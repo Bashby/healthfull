@@ -1,15 +1,12 @@
 // Lib Imports
 import * as React from 'react';
-import { Link } from "react-router-dom";
-import { Grid, Row, Col } from "react-flexbox-grid";
-
 import { TextField, Paper, RaisedButton, FlatButton, Chip, Avatar, AppBar } from "material-ui";
+import { Grid, Row, Col } from "react-flexbox-grid";
 import SvgIconCommunicationVpnKey from 'material-ui/svg-icons/communication/vpn-key';
 import SvgIconPlacesSpa from 'material-ui/svg-icons/places/spa';
 import SvgIconAlertError from 'material-ui/svg-icons/alert/error';
-import { red500, red100, white, red400, grey200, grey700 } from "material-ui/styles/colors";
-import { ActionCreator } from "typescript-fsa/lib";
-
+import { red500, red100, white, red400, grey700, grey600 } from "material-ui/styles/colors";
+import { Link } from "react-router-dom";
 
 // Local Imports
 
@@ -17,7 +14,6 @@ import { ActionCreator } from "typescript-fsa/lib";
 interface Props {
 	authenticated: boolean,
 	changePage: (path: string) => void;
-	updateAuthenticated: ActionCreator<boolean>;
 	target?: string,
 };
 
@@ -32,15 +28,18 @@ interface State {
 		chip: {
 			margin: number,
 			display: string
+
 		},
-		flavorText: {
+		warningtext: {
 			margin: number,
+			color: string,
+			fontStyle: "italic" // hack: not sure what to do with this
 		}
 	}
 };
 
-// LoginForm Form Component
-export class LoginForm extends React.Component<Props, State> {
+// SignupForm Form Component
+export class SignupForm extends React.Component<Props, State> {
 	constructor(props: Props) {
 		super(props);
 		this.state = {
@@ -55,8 +54,10 @@ export class LoginForm extends React.Component<Props, State> {
 					margin: 12,
 					display: "inline-flex" // workaround: let's the darn chip be centered!
 				},
-				flavorText: {
+				warningtext: {
 					margin: 12,
+					color: grey600,
+					fontStyle: "italic"
 				}
 			}
 		};
@@ -75,7 +76,7 @@ export class LoginForm extends React.Component<Props, State> {
 							labelColor={white}
 						>
 							<Avatar color={red100} icon={<SvgIconAlertError />} backgroundColor={red400}/>
-							<span>You must log in before viewing {this.targetStringClean}</span>
+							<span>You must create an account before viewing {this.targetStringClean}</span>
 						</Chip>
 					</Col>
 				</Row>}
@@ -83,7 +84,7 @@ export class LoginForm extends React.Component<Props, State> {
 					<Row center="xs">
 						<Col xs>
 							<AppBar
-								title="Log In"
+								title="Sign Up"
 								showMenuIconButton={false}
 							/>
 						</Col>
@@ -92,14 +93,20 @@ export class LoginForm extends React.Component<Props, State> {
 						<Col xs>
 							<TextField
 								hintText="e.g. johndoe@example.com"
-								floatingLabelText="Username"
+								floatingLabelText="Email Address"
 							/>
 						</Col>
 					</Row>
 					<Row center="xs">
 						<Col xs>
 							<TextField
-								hintText="Keep it secret! Keep it safe!"
+								floatingLabelText="Confirm Email Address"
+							/>
+						</Col>
+					</Row>
+					<Row center="xs">
+						<Col xs>
+							<TextField
 								floatingLabelText="Password"
 								type="password"
 							/>
@@ -108,25 +115,30 @@ export class LoginForm extends React.Component<Props, State> {
 					<Row center="xs">
 						<Col xs>
 							<RaisedButton
-								label="Login"
+								label="Create your account"
 								secondary={true}
 								style={this.state.styles.button}
 								icon={<SvgIconCommunicationVpnKey />}
-								onClick={() => this.props.updateAuthenticated(true)}
 							/>
-							<FlatButton label="Forgot password?" />
+						</Col>
+					</Row>
+					<Row center="xs">
+						<Col xs>
+							<div style={this.state.styles.warningtext}>
+								<span>By creating an account, you are agreeing to the <Link to='/termsofservice'>Terms of Service</Link> and the <Link to='/privacypolicy'>Privacy Policy</Link>.</span>
+							</div>
 						</Col>
 					</Row>
 				</Paper>
 				<Paper zDepth={1} style={this.state.styles.paper}>
 					<Row center="xs">
 						<Col xs>
-							<span style={this.state.styles.flavorText}>New to Healthfull?</span>
+							<span>Already have an account?</span>
 							<RaisedButton
-								label="Create an account"
+								label="Log in"
 								style={this.state.styles.button}
 								icon={<SvgIconPlacesSpa />}
-								onClick={() => this.props.changePage("/signup")}
+								onClick={() => this.props.changePage("/login")}
 							/>
 						</Col>
 					</Row>

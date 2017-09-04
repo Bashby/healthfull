@@ -1,11 +1,12 @@
 // Lib Imports
 import * as React from 'react';
+import * as History from 'history';
 
 import AppBar from 'material-ui/AppBar';
 import Avatar from 'material-ui/Avatar';
 import IconMenu from "material-ui/IconMenu";
 import IconButton from 'material-ui/IconButton';
-import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/FlatButton'
 import MenuItem from 'material-ui/MenuItem';
 import { Divider } from "material-ui";
 import SvgIconPlacesSpa from 'material-ui/svg-icons/places/spa';
@@ -14,26 +15,60 @@ import SvgIconNavigationExpandMore from 'material-ui/svg-icons/navigation/expand
 import SvgIconNavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import SvgIconActionHelp from 'material-ui/svg-icons/action/help';
 import SvgIconActionPowerSettingsNew from 'material-ui/svg-icons/action/power-settings-new';
+import { deepOrange500, deepOrange300, deepOrange400, white } from "material-ui/styles/colors";
 
 // Local Imports
-import { Footer } from "./Footer";
 const LogoPng = require('../images/logo.png');
-
 
 interface Props {
 	changePage: (path: string) => void;
+	authenticated: boolean;
 };
 
 interface State {
-	title: String
+	title: string
 	styles: {
 		title: {
-			cursor: String
+			cursor: string
+		},
+		getStartedButton: {
+			margin: number,
 		}
 	}
 };
 
-// test
+const UnauthenticatedMenu = (props: {style: {margin: number}, changePage: (path: string) => void;}) => (
+	<RaisedButton
+		label="Get Started"
+		style={props.style}
+		backgroundColor={deepOrange500}
+		hoverColor={deepOrange400}
+		labelStyle={{color: white}}
+		secondary={true}
+		icon={<SvgIconPlacesSpa color={white} />}
+		onClick={() => props.changePage("/signup")}
+	/>
+);
+
+const AuthenticatedMenu = () => (
+	<div>
+		<Avatar
+			icon={<SvgIconActionAccountCircle />}
+		/>
+		<IconMenu
+			iconButtonElement={
+				<IconButton><SvgIconNavigationExpandMore /></IconButton>
+			}
+			targetOrigin={{horizontal: 'right', vertical: 'top'}}
+			anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+		>
+			<MenuItem primaryText="Refresh" leftIcon={<SvgIconNavigationRefresh />}/>
+			<MenuItem primaryText="Help" leftIcon={<SvgIconActionHelp />}/>
+			<Divider />
+			<MenuItem primaryText="Sign out" leftIcon={<SvgIconActionPowerSettingsNew />}/>
+		</IconMenu>
+	</div>
+);
 
 // TopNavigationBar Component
 export class TopNavigationBar extends React.Component<Props, State> {
@@ -45,34 +80,13 @@ export class TopNavigationBar extends React.Component<Props, State> {
 				title: {
 					cursor: 'pointer',
 				},
+				getStartedButton: {
+					margin: 5,
+				}
 			}
 		};
 	}
 	
-	/* <IconButton onClick={() => this.props.changePage("/")}>
-		<SvgIconPlacesSpa />
-	</IconButton> */
-
-	// <FlatButton onClick={() => this.props.changePage("/")}>
-
-	// </FlatButton>
-
-// 	<Avatar
-// 	icon={<SvgIconActionAccountCircle />}
-// />
-// <IconMenu
-// 	iconButtonElement={
-// 		<IconButton><SvgIconNavigationExpandMore /></IconButton>
-// 	}
-// 	targetOrigin={{horizontal: 'right', vertical: 'top'}}
-// 	anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-// >
-// 	<MenuItem primaryText="Refresh" leftIcon={<SvgIconNavigationRefresh />}/>
-// 	<MenuItem primaryText="Help" leftIcon={<SvgIconActionHelp />}/>
-// 	<Divider />
-// 	<MenuItem primaryText="Sign out" leftIcon={<SvgIconActionPowerSettingsNew />}/>
-// </IconMenu>
-
 	render() {
 		return (
 			<AppBar
@@ -85,23 +99,12 @@ export class TopNavigationBar extends React.Component<Props, State> {
 					</div>
 				}
 				iconElementRight={
-					<div>
-						<Avatar
-							icon={<SvgIconActionAccountCircle />}
+					this.props.authenticated
+						? <AuthenticatedMenu />
+						: <UnauthenticatedMenu
+							style={this.state.styles.getStartedButton}
+							changePage={this.props.changePage}
 						/>
-						<IconMenu
-							iconButtonElement={
-								<IconButton><SvgIconNavigationExpandMore /></IconButton>
-							}
-							targetOrigin={{horizontal: 'right', vertical: 'top'}}
-							anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-						>
-							<MenuItem primaryText="Refresh" leftIcon={<SvgIconNavigationRefresh />}/>
-							<MenuItem primaryText="Help" leftIcon={<SvgIconActionHelp />}/>
-							<Divider />
-							<MenuItem primaryText="Sign out" leftIcon={<SvgIconActionPowerSettingsNew />}/>
-						</IconMenu>
-					</div>
 				}
 			/>
 		);

@@ -1,17 +1,14 @@
 // Lib Imports
 import * as React from 'react';
 import * as History from 'history';
-import { Dispatch, bindActionCreators } from 'redux';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { push } from "react-router-redux";
 import { Link } from "react-router-dom";
 
 // Local Imports
-import { RootActionCreators } from "../actions/Root";
 import { IState } from '../reducers/Root';
-import { LoginForm } from "../components/LoginForm";
-import { ActionCreator } from "typescript-fsa/lib";
-
+import { SignupForm } from "../components/SignupForm";
 
 // Interfaces
 interface AllProps extends MyStateProps, MyDispatchProps, MyOwnProps {}
@@ -25,15 +22,14 @@ interface MyStateProps {
 
 interface MyDispatchProps {
 	changePage: (path: string) => void;
-	updateAuthenticated: ActionCreator<boolean>;
 }
 
 interface MyOwnProps {
 	location: History.Location
 }
 
-// Login Component
-class LoginComponent extends React.Component<AllProps, State> {
+// Signup Component
+class SignupComponent extends React.Component<AllProps, State> {
 	constructor(props: AllProps) {
 		super(props);
 		this.state = {};
@@ -44,12 +40,7 @@ class LoginComponent extends React.Component<AllProps, State> {
 
 	render() {
 		return (
-			<LoginForm
-				authenticated={this.props.authenticated}
-				target={this.target}
-				changePage={this.props.changePage}
-				updateAuthenticated={this.props.updateAuthenticated}
-			/>
+			<SignupForm authenticated={this.props.authenticated} target={this.target} changePage={this.props.changePage} />
 		);
 	}
 }
@@ -63,13 +54,12 @@ function mapStateToProps(state: IState): MyStateProps {
 
 function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
 	return {
-		changePage: (path: string) => {dispatch(push(path))},
-		updateAuthenticated: bindActionCreators(RootActionCreators.updateAuthenticated, dispatch),
+		changePage: (path: string) => {dispatch(push(path))}
 	}
 }
 
 // Connect
-export const LoginContainer = connect<MyStateProps, MyDispatchProps, MyOwnProps>(
+export const SignupContainer = connect<MyStateProps, MyDispatchProps, MyOwnProps>(
 	mapStateToProps,
 	mapDispatchToProps
-)(LoginComponent);
+)(SignupComponent);

@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 // Local Imports
 import { AddTodo, UpdateTodo, RemoveTodo } from "../actions/Todo"
 
-// Application State Interface
+// Todo State Interface
 export interface ITodoState {
 	todos: string[];
 	todosById: {

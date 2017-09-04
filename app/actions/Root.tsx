@@ -17,9 +17,13 @@ const actionCreatorRoot = actionCreatorFactory("Root");
 
 // Create Actions
 export const UpdateTitleMessage = actionCreatorRoot<string>('UPDATE_TITLE_MESSAGE');
+export const UpdateAuthenticated = actionCreatorRoot<boolean>('UPDATE_AUTHENTICATED');
 
-// // Local Imports
-
+// Bundle and export action creators
+export const RootActionCreators = {
+	updateTitleMessage: UpdateTitleMessage,
+	updateAuthenticated: UpdateAuthenticated,
+};
 
 // // Action Structure
 // // export type IActions = {

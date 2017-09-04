@@ -41,19 +41,13 @@ module.exports = Merge(CommonConfig, {
 				{
 					name: 'description',
 					content: 'Plan your meals, build a shopping list, and watch your calories. Healthfull, control your health and well-being.'
-				},
-				{
-					name: "viewport",
-					content: "width=device-width, initial-scale=1"
 				}
 			],
 			minify: {
 				'collapseWhitespace': true, // Set to true for PROD
 				'preserveLineBreaks': true,
 			},
-			links: [
-				"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css",
-			],
+			links: [],
 			scripts: [
 				"https://unpkg.com/react@15/dist/react.min.js",
 				"https://unpkg.com/react-dom@15/dist/react-dom.min.js",

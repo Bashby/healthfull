@@ -40,7 +40,7 @@ export class Footer extends React.Component<Props, State> {
 	render() {
 		return (
 			<div>
-				<div style={phantom} />
+				{/* <div style={phantom} /> */}
 				<div style={style}>
 					{this.props.children}
 				</div>
