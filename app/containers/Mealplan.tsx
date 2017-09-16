@@ -15,6 +15,7 @@ import { MealplanSummary } from "../components/Mealplan/Summary";
 import { MealplanCreate } from "../components/Mealplan/Create";
 import { ActionCreator } from "typescript-fsa/lib";
 import { MealplanActionCreators, UpdateMealplanPayload } from "../actions/Mealplan";
+import { Person } from "../reducers/Profile";
 
 
 // Interfaces
@@ -31,6 +32,9 @@ interface MyStateProps {
 	mealplans: {
 		[id: string] : Mealplan
 	}
+	people: {
+		[id: string] : Person
+	};
 }
 
 interface MyDispatchProps {
@@ -75,6 +79,7 @@ class MealplanComponent extends React.Component<AllProps, State> {
 				: <MealplanCreate
 					addMealplan={this.props.addMealplan}
 					updateActiveMealplan={this.props.updateActiveMealplan}
+					people={this.props.people}
 				/>
 		);
 	}
@@ -84,7 +89,8 @@ function mapStateToProps(state: IState): MyStateProps {
 	return {
 		bottomNavigationIndex: state.rootState.bottomNavigationIndex,
 		activePlan: state.mealplanState.activePlan,
-		mealplans: state.mealplanState.mealplans
+		mealplans: state.mealplanState.mealplans,
+		people: state.profileState.people
 	}
 }
 

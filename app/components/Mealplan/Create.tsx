@@ -1,20 +1,32 @@
 // Lib Imports
 import * as React from 'react';
 import { Grid, Row, Col } from "react-flexbox-grid";
-import { TextField, AppBar } from "material-ui";
+import { TextField, AppBar, Paper, Checkbox, Toolbar, ToolbarGroup, ToolbarTitle, RaisedButton } from "material-ui";
 import { ActionCreator } from "typescript-fsa/lib";
+import SvgIconCommunicationImportContacts from 'material-ui/svg-icons/communication/import-contacts';
+import SvgIconSocialPersonAdd from 'material-ui/svg-icons/social/person-add';
 
 // Local Imports
-import { Mealplan } from "../../reducers/Mealplan";
+import { Mealplan, MealType } from "../../reducers/Mealplan";
+import { Person } from "../../reducers/Profile";
+import { PersonCard } from "./PersonCard";
+import { MealCard } from "./MealCard";
+import { Link } from "react-router-dom";
 
 interface Props {
 	addMealplan: ActionCreator<Mealplan>;
 	updateActiveMealplan: ActionCreator<string>;
+	people: {
+		[id: string] : Person
+	};
 };
 
 interface State {
 	length: number,
 	styles: {
+		button: {
+			margin: number
+		}
 	}
 };
 
@@ -25,15 +37,41 @@ export class MealplanCreate extends React.Component<Props, State> {
 		this.state = {
 			length: 7,
 			styles: {
+				button: {
+					margin: 12
+				}
 			}
 		};
 	}
 
 	render() {
+		let peopleCards: React.ReactNode[] = [];
+		Object.entries(this.props.people).forEach(([id, person]) => (
+			peopleCards.push(
+				<Paper zDepth={1} style={{ margin: 12 }} key={id}>
+					<Col xs>
+						<PersonCard person={person} personId={id} />
+					</Col>
+				</Paper>
+			)
+		))
+
+		let meals: MealType[] = [MealType.Breakfast, MealType.Lunch, MealType.Dinner, MealType.Snack];
+		let mealCards: React.ReactNode[] = [];
+		meals.forEach((meal) => (
+			mealCards.push(
+				<Paper zDepth={1} style={{ margin: 12 }} key={meal.toString()}>
+					<Col xs>
+						<MealCard meal={{ type: meal }} />
+					</Col>
+				</Paper>
+			)
+		))
+
 		return (
 			<Grid fluid>
-				<Row>
-					<Col>
+				<Row center="xs">
+					<Col xs>
 						<AppBar
 							title="Let's create a new meal plan"
 							showMenuIconButton={false}
@@ -46,9 +84,57 @@ export class MealplanCreate extends React.Component<Props, State> {
 							hintText="e.g. 7 for a week long plan"
 							floatingLabelText="How many days are you planning?"
 							defaultValue={this.state.length}
-							onChange={(_, value) => this.setState({length: parseInt(value)})}
+							onChange={(_, value) => this.setState({ length: parseInt(value) })}
 						/>
 					</Col>
+				</Row>
+				<Row center="xs">
+					<Col xs>
+						<Toolbar>
+							<ToolbarGroup firstChild={false}>
+								<ToolbarTitle text="Select Participants" />
+							</ToolbarGroup>
+						</Toolbar>
+					</Col>
+				</Row>
+				<Row center="xs">
+					{peopleCards}
+				</Row>
+				<Row center="xs">
+					<Link
+						to={"/account/people/add"}
+						style={this.state.styles.button}
+					>
+						<RaisedButton
+							label="Create a new Person"
+							secondary={true}
+							icon={<SvgIconSocialPersonAdd />}
+						/>
+					</Link>
+				</Row>
+				<Row center="xs">
+					<Col xs>
+						<Toolbar>
+							<ToolbarGroup firstChild={false}>
+								<ToolbarTitle text="Select Meals" />
+							</ToolbarGroup>
+						</Toolbar>
+					</Col>
+				</Row>
+				<Row center="xs">
+					{mealCards}
+				</Row>
+				<Row center="xs">
+					<Link
+						to={"/mealplan/recipes"}
+						style={this.state.styles.button}
+					>
+						<RaisedButton
+							label="Select Recipes for Mealplan"
+							secondary={true}
+							icon={<SvgIconCommunicationImportContacts />}
+						/>
+					</Link>
 				</Row>
 			</Grid>
 		);

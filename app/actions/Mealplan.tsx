@@ -19,16 +19,6 @@ export type UpdateMealplanPayload = {
 	alerts?: Alert[]
 }
 
-// type AddMealplan = {
-// 	name: string
-// 	startDate: Date
-// 	endDate: Date
-// 	lengthInDays: number
-// 	participants: string[]
-// 	groceryList?: GroceryList
-// 	alerts: Alert[]
-// }
-
 // Create Actions
 const UpdateActiveMealplan = actionCreatorMealplan<string>('UPDATE_ACTIVE_MEALPLAN');
 const UpdateMealplan = actionCreatorMealplan<UpdateMealplanPayload>('UPDATE_MEALPLAN');

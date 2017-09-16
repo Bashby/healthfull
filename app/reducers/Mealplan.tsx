@@ -19,9 +19,25 @@ export type Mealplan = {
 	endDate: Date
 	lengthInDays: number
 	participants: string[] // Array of Person IDs, refers to people stored on the Profile
+	meals: Meal[]
 	groceryList?: GroceryList
 	alerts: Alert[]
 };
+
+export type Meal = {
+	type: MealType
+	recipe?: string // Recipe ID
+	prohibited?: boolean
+}
+
+export enum MealType {
+	Breakfast = "Breakfast",
+	Lunch = "Lunch",
+	Dinner = "Dinner",
+	Snack = "Snack",
+	// PreWorkout,
+	// PostWorkout
+}
 
 export type GroceryList = {
 	items: PurchaseableItem[]

@@ -18,7 +18,7 @@ interface IRootState {
 
 const ROOT_INITIAL_STATE: IRootState = {
 	titleMessage: "Hello World, from Root!",
-	authenticated: false,
+	authenticated: true,
 	bottomNavigationIndex: null
 }
 

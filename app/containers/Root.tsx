@@ -30,6 +30,7 @@ import { ParticipantsContainer } from "./Mealplan/Participants";
 import { TopNavigationBar } from "../components/TopNavigationBar";
 import { BottomNavigationBar } from "../components/BottomNavigationBar";
 import { ProtectedRoute } from "../components/ProtectedRoute";
+import { AddPersonContainer } from "./Account/AddPerson";
 
 
 
@@ -78,10 +79,8 @@ class RootComponent extends React.Component<AllProps, State> {
 		return (
 			<div className="full-height">
 				<TopNavigationBar changePage={this.props.changePage} authenticated={this.props.authenticated} updateAuthenticated={this.props.updateAuthenticated} />
-				<Grid fluid>
-					<Row>
-						<Col>
 							<Switch>
+								<ProtectedRoute path="/account/people/add" component={AddPersonContainer} authenticated={this.props.authenticated} />
 								<ProtectedRoute path="/account/people/:id" component={AccountContainer} authenticated={this.props.authenticated} innerProps={{showPeople: true}} />
 								<ProtectedRoute path="/account/people" component={AccountContainer} authenticated={this.props.authenticated} innerProps={{showPeople: true}} />
 								<ProtectedRoute path="/account" component={AccountContainer} authenticated={this.props.authenticated} />
@@ -95,9 +94,6 @@ class RootComponent extends React.Component<AllProps, State> {
 								<Route path="/signup" component={SignupContainer} />
 								<Route component={LandingContainer} />
 							</Switch>
-						</Col>
-					</Row>
-				</Grid>
 				{this.props.authenticated && <BottomNavigationBar changePage={this.props.changePage} setBottomNavigation={this.props.setBottomNavigation} index={this.props.bottomNavigationIndex} />}
 			</div>
 		);
