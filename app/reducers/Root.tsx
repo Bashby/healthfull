@@ -7,31 +7,39 @@ import { reducerWithInitialState } from "typescript-fsa-reducers";
 import { TODO_INITIAL_STATE, ITodoState, reducerTodo } from "./Todo";
 import { PROFILE_INITIAL_STATE, IProfileState, reducerProfile } from "./Profile";
 import { MEALPLAN_INITIAL_STATE, IMealplanState, reducerMealplan } from "./Mealplan";
-import { UpdateTitleMessage, UpdateAuthenticated } from "../actions/Root";
+import { RootActionCreators } from "../actions/Root";
 
 // Root state interface
 interface IRootState {
 	titleMessage: string;
 	authenticated: boolean;
+	bottomNavigationIndex: number;
 }
 
 const ROOT_INITIAL_STATE: IRootState = {
 	titleMessage: "Hello World, from Root!",
-	authenticated: false
+	authenticated: false,
+	bottomNavigationIndex: null
 }
 
 // Root state reducer
 export const reducerRoot = reducerWithInitialState(ROOT_INITIAL_STATE)
-	.case(UpdateTitleMessage, (state, payload) => {
+	.case(RootActionCreators.updateTitleMessage, (state, payload) => {
 		return {
 			...state,
 			titleMessage: payload
 		};
 	})
-	.case(UpdateAuthenticated, (state, payload) => {
+	.case(RootActionCreators.updateAuthenticated, (state, payload) => {
 		return {
 			...state,
 			authenticated: payload
+		};
+	})
+	.case(RootActionCreators.updateBottomNavigationIndex, (state, payload) => {
+		return {
+			...state,
+			bottomNavigationIndex: payload
 		};
 	})
 	.build();

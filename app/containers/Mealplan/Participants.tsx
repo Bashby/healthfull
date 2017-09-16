@@ -1,19 +1,23 @@
 // Lib Imports
 import * as React from 'react';
+import * as History from 'history';
+
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
-import RaisedButton from 'material-ui/RaisedButton';
-import SvgIconPlacesSpa from 'material-ui/svg-icons/places/spa';
+import { Link } from "react-router-dom";
+import { Grid, Col, Row } from "react-flexbox-grid";
 
 // Local Imports
-import { IState } from '../reducers/Root';
-import { RootActionCreators } from "../actions/Root";
+import { IState } from '../../reducers/Root';
+import { RootActionCreators } from "../../actions/Root";
+
 
 // Interfaces
 interface AllProps extends MyStateProps, MyDispatchProps, MyOwnProps {}
 
 interface State {
+	styles: {
+	}
 }
 
 interface MyStateProps {
@@ -25,14 +29,19 @@ interface MyDispatchProps {
 }
 
 interface MyOwnProps {
+	location: History.Location
 }
 
 const BOTTOM_NAVIGATION_INDEX: number = 0;
 
-class RecipeComponent extends React.Component<AllProps, State> {
+// Participants Component
+class ParticipantsComponent extends React.Component<AllProps, State> {
 	constructor(props: AllProps) {
 		super(props);
-		this.state = {};
+		this.state = {
+			styles: {
+			}
+		};
 	}
 
 	componentWillMount() {
@@ -44,13 +53,13 @@ class RecipeComponent extends React.Component<AllProps, State> {
 	
 	render() {
 		return (
-			<RaisedButton
-				href="https://github.com/callemall/material-ui"
-				target="_blank"
-				label="Github Link"
-				secondary={true}
-				icon={<SvgIconPlacesSpa/>}
-			/>
+			<Grid fluid>
+				<Row center="xs">
+					<Col xs>
+						<span>This is the Mealplan Participants page.</span>
+					</Col>
+				</Row>
+			</Grid>
 		);
 	}
 }
@@ -67,7 +76,7 @@ function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
 	}
 }
 
-export const RecipeContainer = connect<MyStateProps, MyDispatchProps, MyOwnProps>(
+export const ParticipantsContainer = connect<MyStateProps, MyDispatchProps, MyOwnProps>(
 	mapStateToProps,
 	mapDispatchToProps
-)(RecipeComponent);
+)(ParticipantsComponent);

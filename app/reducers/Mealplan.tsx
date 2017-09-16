@@ -3,26 +3,27 @@ import { reducerWithInitialState } from "typescript-fsa-reducers";
 import { v4 as uuidv4 } from 'uuid';
 
 // Local Imports
-import { } from "../actions/Mealplan"
+import { MealplanActionCreators } from "../actions/Mealplan"
 
 // Mealplan state interfaces
 export interface IMealplanState {
 	activePlan?: string // Mealplan ID for the active meal plan.
-	mealplans: Mealplan[]
+	mealplans: {
+		[id: string] : Mealplan
+	}
 };
 
-type Mealplan = {
-	id: string
+export type Mealplan = {
 	name: string
 	startDate: Date
 	endDate: Date
 	lengthInDays: number
 	participants: string[] // Array of Person IDs, refers to people stored on the Profile
-	groceryList: GroceryList
+	groceryList?: GroceryList
 	alerts: Alert[]
 };
 
-type GroceryList = {
+export type GroceryList = {
 	items: PurchaseableItem[]
 };
 
@@ -32,14 +33,49 @@ type PurchaseableItem = {
 	amountUnit: string // TODO: maybe an enum once I know all the units that could be here.
 };
 
-type Alert = {
+export type Alert = {
 	id: string
 	message: string
 };
 
 export const MEALPLAN_INITIAL_STATE: IMealplanState = {
-	mealplans: []
+	mealplans: {}
 };
 
 export const reducerMealplan = reducerWithInitialState(MEALPLAN_INITIAL_STATE)
+	.case(MealplanActionCreators.addMealplan, (state, payload) => {
+		// Generate UUID
+		let newId = uuidv4();
+		
+		// Add
+		return {
+			...state,
+			mealplans: {
+				...state.mealplans,
+				[newId]: payload
+			}
+		};
+	})
+	.case(MealplanActionCreators.updateMealplan, (state, payload) => ({
+		...state,
+		mealplans: {
+			...state.mealplans,
+			[payload.id]: Object.assign(state.mealplans[payload.id], payload)
+		}
+	}))
+	.case(MealplanActionCreators.removeMealplan, (state, payload) => {
+		// Remove
+		let newMealplans = state.mealplans;
+		delete newMealplans[payload];
+		
+		return {
+			...state,
+			mealplans: newMealplans,
+			activePlan: payload == state.activePlan ? null : state.activePlan
+		}
+	})
+	.case(MealplanActionCreators.updateActiveMealplan, (state, payload) => ({
+		...state,
+		activePlan: payload
+	}))
 	.build();

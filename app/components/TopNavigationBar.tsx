@@ -2,6 +2,7 @@
 import * as React from 'react';
 import * as History from 'history';
 import { ActionCreator } from "typescript-fsa/lib";
+import { Link } from "react-router-dom";
 
 import AppBar from 'material-ui/AppBar';
 import Avatar from 'material-ui/Avatar';
@@ -40,16 +41,17 @@ interface State {
 };
 
 const UnauthenticatedMenu = (props: {style: {margin: number}, changePage: (path: string) => void;}) => (
-	<RaisedButton
-		label="Get Started"
-		style={props.style}
-		backgroundColor={deepOrange500}
-		hoverColor={deepOrange400}
-		labelStyle={{color: white}}
-		secondary={true}
-		icon={<SvgIconPlacesSpa color={white} />}
-		onClick={() => props.changePage("/signup")}
-	/>
+	<Link to={"/signup"}>
+		<RaisedButton
+			label="Get Started"
+			style={props.style}
+			backgroundColor={deepOrange500}
+			hoverColor={deepOrange300}
+			labelStyle={{color: white}}
+			secondary={true}
+			icon={<SvgIconPlacesSpa color={white} />}
+		/>
+	</Link>
 );
 
 const AuthenticatedMenu = (props: {changePage: (path: string, state?: any) => void, updateAuthenticated: ActionCreator<boolean>;}) => (
@@ -69,7 +71,11 @@ const AuthenticatedMenu = (props: {changePage: (path: string, state?: any) => vo
 				leftIcon={<SvgIconActionFace />}
 				onClick={() => props.changePage("/account")}
 			/>
-			<MenuItem primaryText="Help" leftIcon={<SvgIconActionHelp />}/>
+			<MenuItem
+				primaryText="Help"
+				leftIcon={<SvgIconActionHelp />}
+				onClick={() => props.changePage("/help")}
+			/>
 			<Divider />
 			<MenuItem
 				primaryText="Sign out"
@@ -88,7 +94,7 @@ export class TopNavigationBar extends React.Component<Props, State> {
 			title: "Healthfull",
 			styles: {
 				title: {
-					cursor: 'pointer',
+					cursor: 'default',
 				},
 				getStartedButton: {
 					margin: 5,
@@ -100,13 +106,15 @@ export class TopNavigationBar extends React.Component<Props, State> {
 	render() {
 		return (
 			<AppBar
-				title={<span style={this.state.styles.title}>{this.state.title}</span>}
-				onTitleTouchTap={() => this.props.changePage("/")}
-				onLeftIconButtonTouchTap={() => this.props.changePage("/")}
+				title={
+					<span style={this.state.styles.title}>{this.state.title}</span>
+				}
 				iconElementLeft={
-					<div style={this.state.styles.title}>
-						<Avatar src={LogoPng} size={48}/>
-					</div>
+					<Link to={"/"}>
+						<div>
+							<Avatar src={LogoPng} size={48}/>
+						</div>
+					</Link>
 				}
 				iconElementRight={
 					this.props.authenticated

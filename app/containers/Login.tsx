@@ -11,6 +11,7 @@ import { RootActionCreators } from "../actions/Root";
 import { IState } from '../reducers/Root';
 import { LoginForm } from "../components/LoginForm";
 import { ActionCreator } from "typescript-fsa/lib";
+import { ProfileActionCreators } from "../actions/Profile";
 
 
 // Interfaces
@@ -20,12 +21,14 @@ interface State {
 }
 
 interface MyStateProps {
-	authenticated: boolean
+	authenticated: boolean;
+	username: string;
 }
 
 interface MyDispatchProps {
 	changePage: (path: string) => void;
 	updateAuthenticated: ActionCreator<boolean>;
+	updateUsername: ActionCreator<string>;
 }
 
 interface MyOwnProps {
@@ -49,6 +52,8 @@ class LoginComponent extends React.Component<AllProps, State> {
 				target={this.target}
 				changePage={this.props.changePage}
 				updateAuthenticated={this.props.updateAuthenticated}
+				username={this.props.username}
+				updateUsername={this.props.updateUsername}
 			/>
 		);
 	}
@@ -57,7 +62,8 @@ class LoginComponent extends React.Component<AllProps, State> {
 // Redux connectors
 function mapStateToProps(state: IState): MyStateProps {
 	return {
-		authenticated: state.rootState.authenticated
+		authenticated: state.rootState.authenticated,
+		username: state.profileState.username
 	}
 }
 
@@ -65,6 +71,7 @@ function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
 	return {
 		changePage: (path: string) => {dispatch(push(path))},
 		updateAuthenticated: bindActionCreators(RootActionCreators.updateAuthenticated, dispatch),
+		updateUsername: bindActionCreators(ProfileActionCreators.updateUsername, dispatch),
 	}
 }
 

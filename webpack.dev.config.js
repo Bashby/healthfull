@@ -15,6 +15,7 @@ module.exports = Merge(CommonConfig, {
 	output: {
 		filename: "[name].js",
 		chunkFilename: "[name].js",
+		publicPath: '/',
 	},
 	plugins: [
 		new DashboardPlugin(),

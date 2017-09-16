@@ -16,13 +16,15 @@ import actionCreatorFactory from 'typescript-fsa';
 const actionCreatorRoot = actionCreatorFactory("Root");
 
 // Create Actions
-export const UpdateTitleMessage = actionCreatorRoot<string>('UPDATE_TITLE_MESSAGE');
-export const UpdateAuthenticated = actionCreatorRoot<boolean>('UPDATE_AUTHENTICATED');
+const UpdateTitleMessage = actionCreatorRoot<string>('UPDATE_TITLE_MESSAGE');
+const UpdateAuthenticated = actionCreatorRoot<boolean>('UPDATE_AUTHENTICATED');
+const UpdateBottomNavigationIndex = actionCreatorRoot<number>('UPDATE_BOTTOM_NAVIGATION_INDEX');
 
 // Bundle and export action creators
 export const RootActionCreators = {
 	updateTitleMessage: UpdateTitleMessage,
 	updateAuthenticated: UpdateAuthenticated,
+	updateBottomNavigationIndex: UpdateBottomNavigationIndex
 };
 
 // // Action Structure

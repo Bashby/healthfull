@@ -23,12 +23,14 @@ import { LoginContainer } from "./Login";
 import { SignupContainer } from "./Signup";
 import { AccountContainer } from "./Account";
 import { MealplanContainer } from "./Mealplan";
+import { GroceryListContainer } from "./GroceryList";
+import { AlertsContainer } from "./Alerts";
+import { ParticipantsContainer } from "./Mealplan/Participants";
 
 import { TopNavigationBar } from "../components/TopNavigationBar";
 import { BottomNavigationBar } from "../components/BottomNavigationBar";
 import { ProtectedRoute } from "../components/ProtectedRoute";
-import { GroceryListContainer } from "./GroceryList";
-import { AlertsContainer } from "./Alerts";
+
 
 
 
@@ -41,6 +43,7 @@ interface MyStateProps {
 	title: string;
 	todos: TodoType[];
 	authenticated: boolean;
+	bottomNavigationIndex: number;
 }
 
 interface MyDispatchProps {
@@ -57,6 +60,7 @@ interface MyDispatchProps {
 		id: string;
 	}>;
 	changePage: (path: string, state?: any) => void;
+	setBottomNavigation: (index: number) => void;
 	updateAuthenticated: ActionCreator<boolean>;
 }
 
@@ -75,12 +79,15 @@ class RootComponent extends React.Component<AllProps, State> {
 			<div className="full-height">
 				<TopNavigationBar changePage={this.props.changePage} authenticated={this.props.authenticated} updateAuthenticated={this.props.updateAuthenticated} />
 				<Grid fluid>
-					<Row center="xs">
-						<Col xs >
+					<Row>
+						<Col>
 							<Switch>
+								<ProtectedRoute path="/account/people/:id" component={AccountContainer} authenticated={this.props.authenticated} innerProps={{showPeople: true}} />
 								<ProtectedRoute path="/account/people" component={AccountContainer} authenticated={this.props.authenticated} innerProps={{showPeople: true}} />
 								<ProtectedRoute path="/account" component={AccountContainer} authenticated={this.props.authenticated} />
+								<ProtectedRoute path="/mealplan/recipes/:id" component={RecipeContainer} authenticated={this.props.authenticated} />
 								<ProtectedRoute path="/mealplan/recipes" component={RecipeContainer} authenticated={this.props.authenticated} />
+								<ProtectedRoute path="/mealplan/participants" component={ParticipantsContainer} authenticated={this.props.authenticated} />
 								<ProtectedRoute path="/mealplan/grocerylist" component={GroceryListContainer} authenticated={this.props.authenticated} />
 								<ProtectedRoute path="/mealplan/alerts" component={AlertsContainer} authenticated={this.props.authenticated} />
 								<ProtectedRoute path="/mealplan" component={MealplanContainer} authenticated={this.props.authenticated} />
@@ -91,7 +98,7 @@ class RootComponent extends React.Component<AllProps, State> {
 						</Col>
 					</Row>
 				</Grid>
-				{this.props.authenticated && <BottomNavigationBar changePage={this.props.changePage} />}
+				{this.props.authenticated && <BottomNavigationBar changePage={this.props.changePage} setBottomNavigation={this.props.setBottomNavigation} index={this.props.bottomNavigationIndex} />}
 			</div>
 		);
 	}
@@ -101,7 +108,8 @@ function mapStateToProps(state: IState): MyStateProps {
 	return {
 		title: state.rootState.titleMessage,
 		todos: Object.values(state.todoState.todosById),
-		authenticated: state.rootState.authenticated
+		authenticated: state.rootState.authenticated,
+		bottomNavigationIndex: state.rootState.bottomNavigationIndex
 	}
 }
 
@@ -109,7 +117,8 @@ function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
 	return {
 		...bindActionCreators(TodoActionCreators, dispatch),
 		updateAuthenticated: bindActionCreators(RootActionCreators.updateAuthenticated, dispatch),
-		changePage: (path: string, state?: any) => {dispatch(push(path, state))}
+		changePage: (path: string, state?: any) => {dispatch(push(path, state))},
+		setBottomNavigation: bindActionCreators(RootActionCreators.updateBottomNavigationIndex, dispatch)
 	}
 }
 

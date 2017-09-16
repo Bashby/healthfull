@@ -2,13 +2,19 @@
 import * as React from 'react';
 import * as History from 'history';
 
-import { Dispatch } from 'redux';
+import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import { Grid, Col, Row } from "react-flexbox-grid";
 
 // Local Imports
 import { IState } from '../reducers/Root';
+import { Mealplan } from "../reducers/Mealplan";
+import { RootActionCreators } from "../actions/Root";
+import { MealplanSummary } from "../components/Mealplan/Summary";
+import { MealplanCreate } from "../components/Mealplan/Create";
+import { ActionCreator } from "typescript-fsa/lib";
+import { MealplanActionCreators, UpdateMealplanPayload } from "../actions/Mealplan";
 
 
 // Interfaces
@@ -20,14 +26,26 @@ interface State {
 }
 
 interface MyStateProps {
+	bottomNavigationIndex: number;
+	activePlan: string;
+	mealplans: {
+		[id: string] : Mealplan
+	}
 }
 
 interface MyDispatchProps {
+	setBottomNavigation: (index: number) => void;
+	addMealplan: ActionCreator<Mealplan>;
+	updateMealplan: ActionCreator<UpdateMealplanPayload>;
+	removeMealplan: ActionCreator<string>;
+	updateActiveMealplan: ActionCreator<string>;
 }
 
 interface MyOwnProps {
 	location: History.Location
 }
+
+const BOTTOM_NAVIGATION_INDEX: number = 0;
 
 // Mealplan Component
 class MealplanComponent extends React.Component<AllProps, State> {
@@ -38,27 +56,42 @@ class MealplanComponent extends React.Component<AllProps, State> {
 			}
 		};
 	}
+
+	componentWillMount() {
+		// Ensures bottom navigation matches all pages managed by container
+		if (this.props.bottomNavigationIndex != BOTTOM_NAVIGATION_INDEX) {
+			this.props.setBottomNavigation(BOTTOM_NAVIGATION_INDEX)
+		}
+	}
+
+	hasActivePlan = this.props.activePlan && this.props.mealplans[this.props.activePlan]
 	
 	render() {
 		return (
-			<Grid fluid>
-				<Row center="xs">
-					<Col xs>
-						<span>This is the Mealplan page.</span>
-					</Col>
-				</Row>
-			</Grid>
+			this.hasActivePlan
+				? <MealplanSummary
+					mealplan={this.props.mealplans[this.props.activePlan]}
+				/>
+				: <MealplanCreate
+					addMealplan={this.props.addMealplan}
+					updateActiveMealplan={this.props.updateActiveMealplan}
+				/>
 		);
 	}
 }
 
 function mapStateToProps(state: IState): MyStateProps {
 	return {
+		bottomNavigationIndex: state.rootState.bottomNavigationIndex,
+		activePlan: state.mealplanState.activePlan,
+		mealplans: state.mealplanState.mealplans
 	}
 }
 
 function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
 	return {
+		setBottomNavigation: bindActionCreators(RootActionCreators.updateBottomNavigationIndex, dispatch),
+		...bindActionCreators(MealplanActionCreators, dispatch)
 	}
 }
 

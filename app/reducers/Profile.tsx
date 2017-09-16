@@ -3,7 +3,7 @@ import { reducerWithInitialState } from "typescript-fsa-reducers";
 import { v4 as uuidv4 } from 'uuid';
 
 // Local Imports
-import { } from "../actions/Profile"
+import { ProfileActionCreators } from "../actions/Profile"
 
 // Profile state interfaces
 export interface IProfileState {
@@ -50,4 +50,8 @@ export const PROFILE_INITIAL_STATE: IProfileState = {
 }
 
 export const reducerProfile = reducerWithInitialState(PROFILE_INITIAL_STATE)
+	.case(ProfileActionCreators.updateUsername, (state, payload) => ({
+		...state,
+		username: payload
+	}))
 	.build();

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import { Grid, Col, Row } from "react-flexbox-grid";
 
-import { Chip, Avatar } from "material-ui";
+import { Chip, Avatar, Paper } from "material-ui";
 import { yellow400, white, yellow100, yellow600, yellow800, yellow500, black, yellow900 } from "material-ui/styles/colors";
 import SvgIconAlertErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 
@@ -54,9 +54,16 @@ class LandingComponent extends React.Component<AllProps, State> {
 	}
 	
 	render() {
+		let chipMessage = undefined;
+		if (this.props.location.state && this.props.location.state.signedOut) {
+			chipMessage = "You have successfully been logged out."
+		} else if (this.props.location.pathname != "/") {
+			chipMessage = "Unknown Path: " + this.props.location.pathname
+		}
+
 		return (
 			<Grid fluid>
-				{this.state.showNotificationChip && this.props.location.state && this.props.location.state.signedOut && <Row center="xs">
+				{this.state.showNotificationChip && chipMessage && <Row center="xs">
 					<Col xs>
 						<Chip
 							backgroundColor={yellow500}
@@ -64,14 +71,15 @@ class LandingComponent extends React.Component<AllProps, State> {
 							onRequestDelete={() => this.setState({showNotificationChip: false})}
 						>
 							<Avatar color={yellow900} icon={<SvgIconAlertErrorOutline />} backgroundColor={yellow500}/>
-							<span>You have successfully been logged out.</span>
+							<span>{chipMessage}</span>
 						</Chip>
 					</Col>
 				</Row>}
 				<Row center="xs">
 					<Col xs>
+					<Paper zDepth={1} style={{margin: 12, padding: 12}}>
 						<span>This is the Landing page. Healthy eating, yo.</span>
-						<Link to={"/recipes"}>Recipes</Link>
+					</Paper>
 					</Col>
 				</Row>
 			</Grid>

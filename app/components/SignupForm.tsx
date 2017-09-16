@@ -1,12 +1,14 @@
 // Lib Imports
 import * as React from 'react';
-import { TextField, Paper, RaisedButton, FlatButton, Chip, Avatar, AppBar } from "material-ui";
+import { Link } from "react-router-dom";
+import { ActionCreator } from "typescript-fsa/lib";
 import { Grid, Row, Col } from "react-flexbox-grid";
+
+import { TextField, Paper, RaisedButton, FlatButton, Chip, Avatar, AppBar } from "material-ui";
 import SvgIconCommunicationVpnKey from 'material-ui/svg-icons/communication/vpn-key';
 import SvgIconPlacesSpa from 'material-ui/svg-icons/places/spa';
 import SvgIconAlertError from 'material-ui/svg-icons/alert/error';
 import { red500, red100, white, red400, grey700, grey600 } from "material-ui/styles/colors";
-import { Link } from "react-router-dom";
 
 // Local Imports
 
@@ -14,10 +16,15 @@ import { Link } from "react-router-dom";
 interface Props {
 	authenticated: boolean,
 	changePage: (path: string) => void;
+	updateAuthenticated: ActionCreator<boolean>
+	username: string
+	updateUsername: ActionCreator<string>
 	target?: string,
 };
 
 interface State {
+	username?: string,
+	password?: string,
 	styles: {
 		button: {
 			margin: number,
@@ -94,6 +101,8 @@ export class SignupForm extends React.Component<Props, State> {
 							<TextField
 								hintText="e.g. johndoe@example.com"
 								floatingLabelText="Email Address"
+								defaultValue={this.props.username}
+								onChange={(_, value) => this.setState({username: value})}
 							/>
 						</Col>
 					</Row>
@@ -109,17 +118,21 @@ export class SignupForm extends React.Component<Props, State> {
 							<TextField
 								floatingLabelText="Password"
 								type="password"
+								onChange={(_, value) => this.setState({password: value})} // TODO: This might be a security issue?
 							/>
 						</Col>
 					</Row>
 					<Row center="xs">
 						<Col xs>
-							<RaisedButton
-								label="Create your account"
-								secondary={true}
-								style={this.state.styles.button}
-								icon={<SvgIconCommunicationVpnKey />}
-							/>
+							<Link to={this.props.target ? this.props.target : "/mealplan"}>
+								<RaisedButton
+									label="Create your account"
+									secondary={true}
+									style={this.state.styles.button}
+									icon={<SvgIconCommunicationVpnKey />}
+									onClick={() => { this.props.updateAuthenticated(true), this.props.updateUsername(this.state.username)}}
+								/>
+							</Link>
 						</Col>
 					</Row>
 					<Row center="xs">
@@ -134,12 +147,13 @@ export class SignupForm extends React.Component<Props, State> {
 					<Row center="xs">
 						<Col xs>
 							<span>Already have an account?</span>
-							<RaisedButton
-								label="Log in"
-								style={this.state.styles.button}
-								icon={<SvgIconPlacesSpa />}
-								onClick={() => this.props.changePage("/login")}
-							/>
+							<Link to={"/login"}>
+								<RaisedButton
+									label="Log in"
+									style={this.state.styles.button}
+									icon={<SvgIconPlacesSpa />}
+								/>
+							</Link>
 						</Col>
 					</Row>
 				</Paper>

@@ -2,13 +2,14 @@
 import * as React from 'react';
 import * as History from 'history';
 
-import { Dispatch } from 'redux';
+import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import { Grid, Col, Row } from "react-flexbox-grid";
 
 // Local Imports
 import { IState } from '../reducers/Root';
+import { RootActionCreators } from "../actions/Root";
 
 
 // Interfaces
@@ -20,14 +21,18 @@ interface State {
 }
 
 interface MyStateProps {
+	bottomNavigationIndex: number;
 }
 
 interface MyDispatchProps {
+	setBottomNavigation: (index: number) => void;
 }
 
 interface MyOwnProps {
 	location: History.Location
 }
+
+const BOTTOM_NAVIGATION_INDEX: number = 2;
 
 // Alerts Component
 class AlertsComponent extends React.Component<AllProps, State> {
@@ -37,6 +42,13 @@ class AlertsComponent extends React.Component<AllProps, State> {
 			styles: {
 			}
 		};
+	}
+
+	componentWillMount() {
+		// Ensures bottom navigation matches all pages managed by container
+		if (this.props.bottomNavigationIndex != BOTTOM_NAVIGATION_INDEX) {
+			this.props.setBottomNavigation(BOTTOM_NAVIGATION_INDEX)
+		}
 	}
 	
 	render() {
@@ -54,11 +66,13 @@ class AlertsComponent extends React.Component<AllProps, State> {
 
 function mapStateToProps(state: IState): MyStateProps {
 	return {
+		bottomNavigationIndex: state.rootState.bottomNavigationIndex
 	}
 }
 
 function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
 	return {
+		setBottomNavigation: bindActionCreators(RootActionCreators.updateBottomNavigationIndex, dispatch)
 	}
 }
 

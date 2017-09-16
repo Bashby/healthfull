@@ -3,7 +3,7 @@ import { reducerWithInitialState } from "typescript-fsa-reducers";
 import { v4 as uuidv4 } from 'uuid';
 
 // Local Imports
-import { AddTodo, UpdateTodo, RemoveTodo } from "../actions/Todo"
+import { TodoActionCreators } from "../actions/Todo"
 
 // Todo State Interface
 export interface ITodoState {
@@ -29,7 +29,7 @@ export const TODO_INITIAL_STATE: ITodoState = {
 }
 
 export const reducerTodo = reducerWithInitialState(TODO_INITIAL_STATE)
-	.case(AddTodo, (state, payload) => {
+	.case(TodoActionCreators.addTodo, (state, payload) => {
 		// Generate UUID for new todo
 		let newId = uuidv4();
 
@@ -46,14 +46,14 @@ export const reducerTodo = reducerWithInitialState(TODO_INITIAL_STATE)
 			todos: newtodos
 		};
 	})
-	.case(UpdateTodo, (state, payload) => ({
+	.case(TodoActionCreators.updateTodo, (state, payload) => ({
 		...state,
 		todosById: {
 			...state.todosById,
 			[payload.id]: Object.assign(state.todosById[payload.id], payload)
 		}
 	}))
-	.case(RemoveTodo, (state, payload) => {
+	.case(TodoActionCreators.removeTodo, (state, payload) => {
 		// Remove
 		let newTodosById = state.todosById;
 		let newTodos = state.todos;

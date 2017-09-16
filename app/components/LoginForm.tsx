@@ -16,26 +16,30 @@ import { red500, red100, white, red400, grey200, grey700 } from "material-ui/sty
 
 
 interface Props {
-	authenticated: boolean,
-	changePage: (path: string) => void;
-	updateAuthenticated: ActionCreator<boolean>;
-	target?: string,
+	authenticated: boolean
+	changePage: (path: string) => void
+	updateAuthenticated: ActionCreator<boolean>
+	username: string
+	updateUsername: ActionCreator<string>
+	target?: string
 };
 
 interface State {
+	username?: string
+	password?: string
 	styles: {
 		button: {
-			margin: number,
+			margin: number
 		},
 		paper: {
-			marginTop: number,
+			marginTop: number
 		},
 		chip: {
-			margin: number,
+			margin: number
 			display: string
 		},
 		flavorText: {
-			margin: number,
+			margin: number
 		}
 	}
 };
@@ -101,6 +105,8 @@ export class LoginForm extends React.Component<Props, State> {
 							<TextField
 								hintText="e.g. johndoe@example.com"
 								floatingLabelText="Username or Email Address"
+								defaultValue={this.props.username}
+								onChange={(_, value) => this.setState({username: value})}
 							/>
 						</Col>
 					</Row>
@@ -109,19 +115,26 @@ export class LoginForm extends React.Component<Props, State> {
 							<TextField
 								floatingLabelText="Password"
 								type="password"
+								onChange={(_, value) => this.setState({password: value})} // TODO: This might be a security issue?
 							/>
 						</Col>
 					</Row>
 					<Row center="xs">
 						<Col xs>
-							<RaisedButton
-								label="Login"
-								secondary={true}
-								style={this.state.styles.button}
-								icon={<SvgIconCommunicationVpnKey />}
-								onClick={() => this.props.updateAuthenticated(true)}
-							/>
-							<FlatButton label="Forgot password?" />
+							<Link to={this.props.target ? this.props.target : "/mealplan"}>
+								<RaisedButton
+									label="Login"
+									secondary={true}
+									style={this.state.styles.button}
+									icon={<SvgIconCommunicationVpnKey />}
+									onClick={() => { this.props.updateAuthenticated(true), this.props.updateUsername(this.state.username)}}
+								/>
+							</Link>
+							<Link to={"/forgotpassword"}>
+								<FlatButton
+									label="Forgot password?"
+								/>
+							</Link>
 						</Col>
 					</Row>
 				</Paper>
@@ -129,12 +142,13 @@ export class LoginForm extends React.Component<Props, State> {
 					<Row center="xs">
 						<Col xs>
 							<span style={this.state.styles.flavorText}>New to Healthfull?</span>
-							<RaisedButton
-								label="Create an account"
-								style={this.state.styles.button}
-								icon={<SvgIconPlacesSpa />}
-								onClick={() => this.props.changePage("/signup")}
-							/>
+							<Link to={"/signup"}>
+								<RaisedButton
+									label="Create an account"
+									style={this.state.styles.button}
+									icon={<SvgIconPlacesSpa />}
+								/>
+							</Link>
 						</Col>
 					</Row>
 				</Paper>
