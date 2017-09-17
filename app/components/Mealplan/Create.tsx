@@ -5,6 +5,7 @@ import { TextField, AppBar, Paper, Checkbox, Toolbar, ToolbarGroup, ToolbarTitle
 import { ActionCreator } from "typescript-fsa/lib";
 import SvgIconCommunicationImportContacts from 'material-ui/svg-icons/communication/import-contacts';
 import SvgIconSocialPersonAdd from 'material-ui/svg-icons/social/person-add';
+import { v4 as uuidv4 } from 'uuid';
 
 // Local Imports
 import { Mealplan, MealType } from "../../reducers/Mealplan";
@@ -12,10 +13,12 @@ import { Person } from "../../reducers/Profile";
 import { PersonCard } from "./PersonCard";
 import { MealCard } from "./MealCard";
 import { Link } from "react-router-dom";
+import { UpdateMealplanPayload } from "../../actions/Mealplan";
 
 interface Props {
-	addMealplan: ActionCreator<Mealplan>;
+	mealplanId: string
 	updateActiveMealplan: ActionCreator<string>;
+	updateMealplan: ActionCreator<UpdateMealplanPayload>;
 	people: {
 		[id: string] : Person
 	};
@@ -43,6 +46,8 @@ export class MealplanCreate extends React.Component<Props, State> {
 			}
 		};
 	}
+
+	// UpdateMealplanPeople = (personId) => { this.props.updateMealplan({id:this.props.mealplanId, })}
 
 	render() {
 		let peopleCards: React.ReactNode[] = [];
@@ -84,7 +89,7 @@ export class MealplanCreate extends React.Component<Props, State> {
 							hintText="e.g. 7 for a week long plan"
 							floatingLabelText="How many days are you planning?"
 							defaultValue={this.state.length}
-							onChange={(_, value) => this.setState({ length: parseInt(value) })}
+							onChange={(_, value) => this.props.updateMealplan({id: this.props.mealplanId, mealplan: {lengthInDays: parseInt(value)}})}
 						/>
 					</Col>
 				</Row>

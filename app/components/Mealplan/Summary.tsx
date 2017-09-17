@@ -29,7 +29,7 @@ export class MealplanSummary extends React.Component<Props, State> {
 			<Grid fluid>
 				<Row center="xs">
 					<Col xs>
-						Here is something we created!
+						This is the meal plan summary page. This is only shown if you have an active meal plan.
 					</Col>
 				</Row>
 			</Grid>

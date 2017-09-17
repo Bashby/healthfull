@@ -19,15 +19,18 @@ export type Mealplan = {
 	endDate: Date
 	lengthInDays: number
 	participants: string[] // Array of Person IDs, refers to people stored on the Profile
-	meals: Meal[]
+	meals: {
+		[id: string] : Meal
+	}
 	groceryList?: GroceryList
-	alerts: Alert[]
+	alerts: {
+		[id: string] : Alert
+	}
 };
 
 export type Meal = {
 	type: MealType
 	recipe?: string // Recipe ID
-	prohibited?: boolean
 }
 
 export enum MealType {
@@ -35,8 +38,8 @@ export enum MealType {
 	Lunch = "Lunch",
 	Dinner = "Dinner",
 	Snack = "Snack",
-	// PreWorkout,
-	// PostWorkout
+	// PreWorkout = "Pre-Workout",
+	// PostWorkout = "Post-Workout"
 }
 
 export type GroceryList = {
@@ -60,19 +63,17 @@ export const MEALPLAN_INITIAL_STATE: IMealplanState = {
 
 export const reducerMealplan = reducerWithInitialState(MEALPLAN_INITIAL_STATE)
 	.case(MealplanActionCreators.addMealplan, (state, payload) => {
-		// Generate UUID
-		let newId = uuidv4();
-		
-		// Add
+		// Add Mealplan
 		return {
 			...state,
 			mealplans: {
 				...state.mealplans,
-				[newId]: payload
+				[payload.id]: payload.mealplan
 			}
 		};
 	})
 	.case(MealplanActionCreators.updateMealplan, (state, payload) => ({
+		// Update Mealplan
 		...state,
 		mealplans: {
 			...state.mealplans,
@@ -80,15 +81,114 @@ export const reducerMealplan = reducerWithInitialState(MEALPLAN_INITIAL_STATE)
 		}
 	}))
 	.case(MealplanActionCreators.removeMealplan, (state, payload) => {
-		// Remove
+		// Remove Mealplan
 		let newMealplans = state.mealplans;
 		delete newMealplans[payload];
+
+		// Blank active plan, if being removed
+		let newActiveMealPlan = payload == state.activePlan ? null : state.activePlan
 		
 		return {
 			...state,
 			mealplans: newMealplans,
-			activePlan: payload == state.activePlan ? null : state.activePlan
+			activePlan: newActiveMealPlan
 		}
+	})
+	.case(MealplanActionCreators.addMealplanParticipant, (state, payload) => {
+		// Add Participant
+		let newParticipants = state.mealplans[payload.mealplanId].participants.slice()
+		newParticipants.push(payload.participant)
+
+		return {
+			...state,
+			mealplans: {
+				...state.mealplans,
+				[payload.mealplanId]: {
+					...state.mealplans[payload.mealplanId],
+					participants: newParticipants
+				}
+			}
+		};
+	})
+	.case(MealplanActionCreators.removeMealplanParticipant, (state, payload) => {
+		// Remove Participant
+		let newParticipants = state.mealplans[payload.mealplanId].participants.slice()
+		newParticipants = newParticipants.filter(id => id != payload.id)
+		
+		return {
+			...state,
+			mealplans: {
+				...state.mealplans,
+				[payload.mealplanId]: {
+					...state.mealplans[payload.mealplanId],
+					participants: newParticipants
+				}
+			}
+		};
+	})
+	.case(MealplanActionCreators.addMealplanMeal, (state, payload) => {
+		// Add Meal
+		return {
+			...state,
+			mealplans: {
+				...state.mealplans,
+				[payload.mealplanId]: {
+					...state.mealplans[payload.mealplanId],
+					meals: {
+						...state.mealplans[payload.mealplanId].meals,
+						[payload.id]: payload.meal
+					}
+				}
+			}
+		};
+	})
+	.case(MealplanActionCreators.removeMealplanMeal, (state, payload) => {
+		// Remove Meal
+		let newMeals = state.mealplans[payload.mealplanId].meals;
+		delete newMeals[payload.id];
+	
+		return {
+			...state,
+			mealplans: {
+				...state.mealplans,
+				[payload.mealplanId]: {
+					...state.mealplans[payload.mealplanId],
+					meals: newMeals
+				}
+			}
+		};
+	})
+	.case(MealplanActionCreators.addMealplanAlert, (state, payload) => {
+		// Add Alert
+		return {
+			...state,
+			mealplans: {
+				...state.mealplans,
+				[payload.mealplanId]: {
+					...state.mealplans[payload.mealplanId],
+					alerts: {
+						...state.mealplans[payload.mealplanId].alerts,
+						[payload.id]: payload.alert
+					}
+				}
+			}
+		};
+	})
+	.case(MealplanActionCreators.removeMealplanAlert, (state, payload) => {
+		// Remove Alert
+		let newAlerts = state.mealplans[payload.mealplanId].alerts;
+		delete newAlerts[payload.id];
+	
+		return {
+			...state,
+			mealplans: {
+				...state.mealplans,
+				[payload.mealplanId]: {
+					...state.mealplans[payload.mealplanId],
+					alerts: newAlerts
+				}
+			}
+		};
 	})
 	.case(MealplanActionCreators.updateActiveMealplan, (state, payload) => ({
 		...state,
