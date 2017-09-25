@@ -2,6 +2,7 @@
 import * as React from 'react';
 import * as History from 'history';
 import { Dispatch, bindActionCreators } from 'redux';
+import { ThunkAction } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { push } from "react-router-redux";
 import { Link } from "react-router-dom";
@@ -12,6 +13,8 @@ import { IState } from '../reducers/Root';
 import { LoginForm } from "../components/LoginForm";
 import { ActionCreator } from "typescript-fsa/lib";
 import { ProfileActionCreators } from "../actions/Profile";
+import { AuthenticationBasicParameter, AuthenticationActionCreators } from '../actions/Authentication';
+
 
 
 // Interfaces
@@ -29,6 +32,8 @@ interface MyDispatchProps {
 	changePage: (path: string) => void;
 	updateAuthenticated: ActionCreator<boolean>;
 	updateUsername: ActionCreator<string>;
+
+	authenticate: (params: AuthenticationBasicParameter) => ThunkAction<Promise<{ success: boolean; }>, IState, any>;
 }
 
 interface MyOwnProps {
@@ -51,9 +56,9 @@ class LoginComponent extends React.Component<AllProps, State> {
 				authenticated={this.props.authenticated}
 				target={this.target}
 				changePage={this.props.changePage}
-				updateAuthenticated={this.props.updateAuthenticated}
+				authenticate={this.props.authenticate}
 				username={this.props.username}
-				updateUsername={this.props.updateUsername}
+				//updateUsername={this.props.updateUsername}
 			/>
 		);
 	}
@@ -72,6 +77,7 @@ function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
 		changePage: (path: string) => {dispatch(push(path))},
 		updateAuthenticated: bindActionCreators(RootActionCreators.updateAuthenticated, dispatch),
 		updateUsername: bindActionCreators(ProfileActionCreators.updateUsername, dispatch),
+		authenticate: bindActionCreators(AuthenticationActionCreators.authenticate, dispatch),
 	}
 }
 

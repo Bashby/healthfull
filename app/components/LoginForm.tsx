@@ -1,6 +1,7 @@
 // Lib Imports
 import * as React from 'react';
 import { ActionCreator } from "typescript-fsa/lib";
+import { ThunkAction } from 'redux-thunk';
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { Grid, Row, Col } from "react-flexbox-grid";
@@ -10,6 +11,8 @@ import SvgIconCommunicationVpnKey from 'material-ui/svg-icons/communication/vpn-
 import SvgIconPlacesSpa from 'material-ui/svg-icons/places/spa';
 import SvgIconAlertError from 'material-ui/svg-icons/alert/error';
 import { red500, red100, white, red400, grey200, grey700 } from "material-ui/styles/colors";
+import { AuthenticationBasicParameter } from '../actions/Authentication';
+import { IState } from '../reducers/Root';
 
 
 // Local Imports
@@ -18,10 +21,11 @@ import { red500, red100, white, red400, grey200, grey700 } from "material-ui/sty
 interface Props {
 	authenticated: boolean
 	changePage: (path: string) => void
-	updateAuthenticated: ActionCreator<boolean>
+	//updateAuthenticated: ActionCreator<boolean>
 	username: string
-	updateUsername: ActionCreator<string>
+	//updateUsername: ActionCreator<string>
 	target?: string
+	authenticate: (params: AuthenticationBasicParameter) => ThunkAction<Promise<{ success: boolean; }>, IState, any>;
 };
 
 interface State {
@@ -121,15 +125,15 @@ export class LoginForm extends React.Component<Props, State> {
 					</Row>
 					<Row center="xs">
 						<Col xs>
-							<Link to={this.props.target ? this.props.target : "/mealplan"}>
+							{/* <Link to={this.props.target ? this.props.target : "/mealplan"}> */}
 								<RaisedButton
 									label="Login"
 									secondary={true}
 									style={this.state.styles.button}
 									icon={<SvgIconCommunicationVpnKey />}
-									onClick={() => { this.props.updateAuthenticated(true), this.props.updateUsername(this.state.username)}}
+									onClick={() => { this.props.authenticate({username: this.state.username, password: this.state.password})}}
 								/>
-							</Link>
+							{/* </Link> */}
 							<Link to={"/forgotpassword"}>
 								<FlatButton
 									label="Forgot password?"

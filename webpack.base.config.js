@@ -173,6 +173,12 @@ module.exports = {
 		// "react": "React",
 		// "react-dom": "ReactDOM",
 	},
+	node: {
+		console: true,
+		fs: 'empty',
+		net: 'empty',
+		tls: 'empty'
+	},
 	plugins: [
 		// Clean up existing
 		clean ? new CleanWebpackPlugin(['dist', 'build']) : function () {},

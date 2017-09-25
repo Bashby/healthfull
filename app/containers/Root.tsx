@@ -1,6 +1,7 @@
 // Lib Imports
 import * as React from 'react';
 import { Dispatch, bindActionCreators } from 'redux';
+import { ThunkAction } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { ActionCreator } from 'typescript-fsa';
 
@@ -31,8 +32,7 @@ import { TopNavigationBar } from "../components/TopNavigationBar";
 import { BottomNavigationBar } from "../components/BottomNavigationBar";
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import { AddPersonContainer } from "./Account/AddPerson";
-
-
+import { AuthenticationActionCreators, AuthenticationBasicParameter } from '../actions/Authentication';
 
 
 // Interfaces

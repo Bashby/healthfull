@@ -28,7 +28,8 @@
   "license": "UNLICENSED",
   "homepage": "https://healthfullapp.com",
   "dependencies": {
-    "babel-polyfill": "^6.23.0"
+    "babel-polyfill": "^6.23.0",
+    "typescript-fsa-redux-thunk": "github:xdave/typescript-fsa-redux-thunk"
   },
   "devDependencies": {
     "@types/history": "^4.6.0",
@@ -72,6 +73,7 @@
     "redux-devtools": "^3.4.0",
     "redux-devtools-dock-monitor": "^1.1.2",
     "redux-devtools-log-monitor": "^1.3.0",
+    "redux-thunk": "^2.2.0",
     "sass-loader": "^6.0.6",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
