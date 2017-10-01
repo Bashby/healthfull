@@ -1,3 +1,5 @@
+const polyfill = require("babel-polyfill");
+
 const webpack = require("webpack");
 const path = require('path');
 // Override hashing of chunks to use md5
@@ -38,7 +40,7 @@ const IMAGE_PATH = path.resolve(BASE_PATH, 'images');
 module.exports = {
 	context: BASE_PATH,
 	entry: {
-		// polyfills: path.resolve(SCRIPT_PATH, "polyfills.ts"),
+		polyfills: "babel-polyfill", // path.resolve(SCRIPT_PATH, "polyfills.ts"),
 		// vendor: ["lodash", path.resolve(SCRIPT_PATH, "vendor.ts")],
 		app: path.resolve(BASE_PATH, "app.tsx")
 	},
@@ -49,13 +51,41 @@ module.exports = {
 		rules: [
 			{
 				test: /\.css$/,
+				use: [
+					{ loader: 'style-loader' },
+					{ loader: 'css-loader', options: { modules: true } }
+				],
+				include: /flexboxgrid/
+			},
+			{
+				test: /\.css$/,
 				include: [
 					BASE_PATH,
-					path.resolve(__dirname, "node_modules/normalize.css/")
+					path.resolve(__dirname, "node_modules/normalize.css/"),
 				],
+				exclude: /flexboxgrid/,
 				use: ExtractTextPlugin.extract({
 					fallback: "style-loader",
 					use: "css-loader"
+				})
+			},
+			{
+				test: /\.scss$/,
+				exclude: /node_modules/,
+				use: ExtractTextPlugin.extract({
+					use: [{
+						loader: "css-loader",
+						options: {
+							sourceMap: true
+						}
+					}, {
+						loader: "sass-loader",
+						options: {
+							sourceMap: true
+						}
+					}],
+					// use style-loader in development
+					fallback: "style-loader"
 				})
 			},
 			{
@@ -116,9 +146,16 @@ module.exports = {
 					{
 						loader: 'image-webpack-loader',
 						query: {
-							mozjpeg: { progressive: true },
-							gifsicle: { interlaced: false },
-							optipng: { optimizationLevel: 7 },
+							mozjpeg: {
+								progressive: true,
+								quality: 65
+							},
+							gifsicle: {
+								interlaced: false
+							},
+							optipng: {
+								optimizationLevel: 7
+							},
 							pngquant: {
 								quality: '65-90',
 								speed: 4
@@ -130,12 +167,17 @@ module.exports = {
 		]
 	},
 	resolve: {
-		extensions: ['*', '.ts', '.tsx', '.js', '.json', '.css', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'eot', 'ttf', 'woff', 'woff2']
+		extensions: ['*', '.ts', '.tsx', '.js', '.json', '.css', '.scss', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.eot', '.ttf', '.woff', '.woff2']
 	},
 	externals: {
-		"react": "React",
-		"react-dom": "ReactDOM",
-		"react-bootstrap": "ReactBootstrap",
+		// "react": "React",
+		// "react-dom": "ReactDOM",
+	},
+	node: {
+		console: true,
+		fs: 'empty',
+		net: 'empty',
+		tls: 'empty'
 	},
 	plugins: [
 		// Clean up existing
