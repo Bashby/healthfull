@@ -1,7 +1,7 @@
 # Healthfull
 _[healthfullapp.com](https://healthfullapp.com)_
 
-The official source code repository for the healthfull application.
+The official source code repository for the healthfull application front-end.
 
 ### Getting Started
 
