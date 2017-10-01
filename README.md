@@ -5,7 +5,17 @@ The official source code repository for the healthfull application.
 
 ### Getting Started
 
-TBW :)
+This project uses node / npm for dependency management. So to get started, install the dependencies.
+
+    npm install
+	
+Then, start the webpack development server
+
+	npm run dev
+	
+Then, navigate to
+
+    http://localhost:8080/
 
 ### Team
 _<team@healthfullapp.com>_
@@ -15,6 +25,7 @@ _<team@healthfullapp.com>_
 * Kristen Stevens <kristen@healthfullapp.com>
 * Andrew Stevens <andrew@healthfullapp.com>
 * Brian Shirley <brian@healthfullapp.com>
+* Max Glover <max@healthfullapp.com>
 
 ### License
 ```
