@@ -7,6 +7,10 @@ import { Link } from "react-router-dom";
 // Local Imports
 import { IState } from '../reducers/Root';
 import { RootActionCreators } from "../actions/Root";
+import { Summary } from '../components/Account/Summary';
+import { People } from '../components/Account/People';
+import { Person } from '../reducers/Profile';
+import { EditPerson } from '../components/Account/EditPerson';
 
 
 // Interfaces
@@ -16,7 +20,11 @@ interface State {
 }
 
 interface MyStateProps {
+	people: {
+		[id: string] : Person
+	};
 	bottomNavigationIndex: number;
+	
 }
 
 interface MyDispatchProps {
@@ -47,10 +55,9 @@ class AccountComponent extends React.Component<AllProps, State> {
 	render() {
 		return (
 			<div>
-				<span>This is the Account page.</span>
-				{this.props.showPeople && <span>Showing people!</span>}
-				<Link to={"/account/people/55"}>Checkout person 55!</Link>
-				{this.props.id && <span>Looking at id {this.props.id}</span>}
+				<Summary />
+				{this.props.showPeople && <People people={this.props.people}/>}
+				{this.props.id && <EditPerson person={this.props.people[this.props.id]} />}
 			</div>
 		);
 	}
@@ -58,7 +65,8 @@ class AccountComponent extends React.Component<AllProps, State> {
 
 function mapStateToProps(state: IState): MyStateProps {
 	return {
-		bottomNavigationIndex: state.rootState.bottomNavigationIndex
+		bottomNavigationIndex: state.rootState.bottomNavigationIndex,
+		people: state.profileState.people
 	}
 }
 

@@ -7,13 +7,14 @@ import { ActionCreator } from "typescript-fsa/lib";
 import SvgIconEditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 
 // Local Imports
-import { Person } from "../../reducers/Profile";
+import { Person } from "../reducers/Profile";
 import { Link } from "react-router-dom";
 import { grey600 } from "material-ui/styles/colors";
 
 interface Props {
 	person: Person
 	personId: string
+	selectable: boolean
 };
 
 interface State {
@@ -70,11 +71,14 @@ export class PersonCard extends React.Component<Props, State> {
 			<Grid fluid>
 				<Row center="xs" middle="xs">
 					<Col xs={8}>
-						<Checkbox
-							label={this.props.person.name}
-							disabled={this.props.person.dailyCalorieTarget ? false : true}
-							style={this.state.styles.checkbox}
-						/>
+						{this.props.selectable
+							? <Checkbox
+								label={this.props.person.name}
+								disabled={this.props.person.dailyCalorieTarget ? false : true}
+								style={this.state.styles.checkbox}
+							/>
+							: this.props.person.name
+						}
 					</Col>
 					<Col xs={4}>
 						<Link to={"/account/people/" + this.props.personId}>
