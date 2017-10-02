@@ -1,7 +1,7 @@
 // Lib Imports
 import * as React from 'react';
 import { Grid, Row, Col } from "react-flexbox-grid";
-import { TextField, AppBar, Paper, Checkbox, IconButton, FlatButton } from "material-ui";
+import { TextField, AppBar, Paper, Checkbox, IconButton, FlatButton, Avatar } from "material-ui";
 import { ActionCreator } from "typescript-fsa/lib";
 
 import SvgIconEditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
@@ -71,14 +71,21 @@ export class PersonCard extends React.Component<Props, State> {
 			<Grid fluid>
 				<Row center="xs" middle="xs">
 					<Col xs={8}>
-						{this.props.selectable
-							? <Checkbox
-								label={this.props.person.name}
-								disabled={this.props.person.dailyCalorieTarget ? false : true}
-								style={this.state.styles.checkbox}
-							/>
-							: this.props.person.name
-						}
+						<Row center="xs" middle="xs">
+							<Col xs={4}>
+								<Avatar>{this.props.person.name.charAt(0)}</Avatar>
+							</Col>
+							<Col xs={8}>
+								{this.props.selectable
+									? <Checkbox
+										label={this.props.person.name}
+										disabled={this.props.person.dailyCalorieTarget ? false : true}
+										style={this.state.styles.checkbox}
+									/>
+									: this.props.person.name
+								}
+							</Col>
+						</Row>
 					</Col>
 					<Col xs={4}>
 						<Link to={"/account/people/" + this.props.personId}>

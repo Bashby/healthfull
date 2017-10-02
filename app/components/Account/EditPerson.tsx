@@ -1,7 +1,7 @@
 // Lib Imports
 import * as React from 'react';
 import { Grid, Row, Col } from "react-flexbox-grid";
-import { Paper, Toolbar, ToolbarGroup, ToolbarTitle, Dialog, FlatButton } from 'material-ui';
+import { Paper, Toolbar, ToolbarGroup, ToolbarTitle, Dialog, FlatButton, TextField } from 'material-ui';
 
 // Local Imports
 import { PersonCard } from '../PersonCard';
@@ -10,9 +10,12 @@ import { Link } from 'react-router-dom';
 
 interface Props {
 	person: Person;
+	updatePerson: (params: {name: string, dailyCalorieTarget: number}) => void;
 };
 
 interface State {
+	newName?: string,
+	newDailyCalorieTarget?: number,
 	open: boolean,
 	styles: {
 	}
@@ -35,7 +38,12 @@ export class EditPerson extends React.Component<Props, State> {
 
 	handleClose = (saveChanges: boolean) => {
 		this.setState({ open: false });
-		console.log("Yo?");
+		if (saveChanges) {
+			this.props.updatePerson({
+				name: this.state.newName,
+				dailyCalorieTarget: this.state.newDailyCalorieTarget
+			})
+		}
 	};
 
 	render() {
@@ -66,7 +74,28 @@ export class EditPerson extends React.Component<Props, State> {
 				open={this.state.open}
 				onRequestClose={this.handleClose}
 			>
-				This is where we edit things!
+				<Grid fluid>
+					<Row center="xs">
+						<Col xs>
+							<TextField
+								hintText="e.g. John Doe"
+								floatingLabelText="Name"
+								defaultValue={this.props.person.name}
+								onChange={(_, value) => this.setState({newName: value})}
+							/>
+						</Col>
+					</Row>
+					<Row center="xs">
+						<Col xs>
+							<TextField
+								hintText="e.g. 2000"
+								floatingLabelText="Daily Calorie Target"
+								defaultValue={this.props.person.dailyCalorieTarget}
+								onChange={(_, value) => this.setState({newDailyCalorieTarget: parseInt(value)})}
+							/>
+						</Col>
+					</Row>
+				</Grid>
 			</Dialog>
 		);
 	}

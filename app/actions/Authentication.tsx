@@ -40,7 +40,7 @@ const authenticateBasicWorker = bindThunkAction(AuthenticateBasic,
 		// Make request to backend
 		await Backend.api.authSimpleGet()
 			.then((payload) => authSuccess = payload.body.success)
-			.error((e) => console.error("Authentication Request Failed with: "+ e));
+			.error((e) => console.error("Authentication Request Failed with: " + e));
 
 		// Successfull Authentication
 		if (authSuccess) {

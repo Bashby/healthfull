@@ -7,6 +7,7 @@ import { ProfileActionCreators } from "../actions/Profile"
 
 // Profile state interfaces
 export interface IProfileState {
+	id: string,
 	username: string,
 	emailAddress: string,
 	people: {
@@ -47,6 +48,7 @@ export type Person = {
 };
 
 export const PROFILE_INITIAL_STATE: IProfileState = {
+	id: "1", // TODO: This needs to be set by authentication!
 	username: undefined,
 	emailAddress: undefined,
 	people: {
@@ -61,6 +63,7 @@ export const PROFILE_INITIAL_STATE: IProfileState = {
 }
 
 export const reducerProfile = reducerWithInitialState(PROFILE_INITIAL_STATE)
+	// Add Person
 	.case(ProfileActionCreators.addPerson, (state, payload) => {
 		// Generate UUID
 		let newId = uuidv4();
@@ -74,16 +77,22 @@ export const reducerProfile = reducerWithInitialState(PROFILE_INITIAL_STATE)
 			}
 		};
 	})
-	.case(ProfileActionCreators.updatePerson, (state, payload) => ({
-		//Update
-		...state,
-		people: {
-			...state.people,
-			[payload.id]: Object.assign(state.people[payload.id], payload)
+	// Update Person
+	.case(ProfileActionCreators.updatePerson, (state, payload) => {
+		let updates = Object.assign({}, payload);
+		delete updates.id;
+		let existing: Person = state.people[payload.id];
+		
+		return {
+			...state,
+			people: {
+				...state.people,
+				[payload.id]: Object.assign({}, existing, updates as Person)
+			}
 		}
-	}))
+	})
+	// Delete Person
 	.case(ProfileActionCreators.removePerson, (state, payload) => {
-		// Remove
 		let newPeople = state.people; // TODO: Is this a proper clone?
 		delete newPeople[payload];
 		
@@ -92,8 +101,14 @@ export const reducerProfile = reducerWithInitialState(PROFILE_INITIAL_STATE)
 			people: newPeople,
 		}
 	})
+	// Update Username
 	.case(ProfileActionCreators.updateUsername, (state, payload) => ({
 		...state,
 		username: payload
+	}))
+	// Update Email Address
+	.case(ProfileActionCreators.updateEmailAddress, (state, payload) => ({
+		...state,
+		emailAddress: payload
 	}))
 	.build();

@@ -7,6 +7,8 @@ import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui';
 // Local Imports
 
 interface Props {
+	username: string,
+	emailAddress: string
 };
 
 interface State {
@@ -37,11 +39,11 @@ export class Summary extends React.Component<Props, State> {
 					</Col>
 				</Row>
 				<Row center="xs">
-					<Col>
-						{/* <span>Username: {this.props.username}</span> */}
+					<Col xs>
+						<span>Username: {this.props.username}</span>
 					</Col>
-					<Col>
-						{/* <span>Email Address: {this.props.emailAddress}</span> */}
+					<Col xs>
+						<span>Email Address: {this.props.emailAddress}</span>
 					</Col>
 				</Row>
 			</Grid>
