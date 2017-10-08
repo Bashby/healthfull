@@ -66,48 +66,37 @@ export class PersonCard extends React.Component<Props, State> {
 	render() {
 		let flavorText: string = this.props.person.dailyCalorieTarget
 			? "Calorie Target: " + this.props.person.dailyCalorieTarget
-			: "You have not finished editing " + this.props.person.name + "."
+			: "You have not finished editing " + this.props.person.name
 		
 		return (
 			<Grid fluid>
 				<Row center="xs" middle="xs">
-					<Col xs>
-						{/* <Row center="xs" middle="xs"> */}
-							{/* <Col xs> */}
-								<Avatar>{this.props.person.name.charAt(0)}</Avatar>
-							</Col>
-							<Col xs={4}>
-								{this.props.selectable
-									? <Checkbox
-										label={this.props.person.name}
-										disabled={this.props.person.dailyCalorieTarget ? false : true}
-										style={this.state.styles.checkbox}
-									/>
-									: <div><span>{this.props.person.name}</span></div>
-								}
-							{/* </Col> */}
-						{/* </Row> */}
+					<Col xs={3}>
+						<Avatar>{this.props.person.name.charAt(0)}</Avatar>
 					</Col>
-					<Col xs>
-						{/* <Row center="xs" middle="xs"> */}
-							{/* <Col xs> */}
-								<IconButton tooltip={flavorText} style={this.state.styles.tooltipIcon} disableTouchRipple={true}>
-									{this.props.person.dailyCalorieTarget ? <SvgIconActionInfoOutline /> : <SvgIconActionReportProblem />}
-								</IconButton>
-							</Col>
-							<Col xs>
-								<Link to={"/account/people/" + this.props.personId} >
-									<FlatButton icon={<SvgIconEditorModeEdit />} style={this.state.styles.button} />
-								</Link>
-							{/* </Col> */}
-						{/* </Row> */}
+					<Col xs={3}>
+						{this.props.selectable
+							? <Checkbox
+								label={this.props.person.name}
+								disabled={this.props.person.dailyCalorieTarget ? false : true}
+								style={this.state.styles.checkbox}
+							/>
+							: <div><span>{this.props.person.name}</span></div>
+						}
+					</Col>
+					<Col xs={3}>
+						<IconButton tooltip={flavorText} style={this.state.styles.tooltipIcon} disableTouchRipple={true}>
+							{this.props.person.dailyCalorieTarget ? <SvgIconActionInfoOutline /> : <SvgIconActionReportProblem />}
+						</IconButton>
+					</Col>
+					<Col xs={3}>
+						<Link to={"/account/people/" + this.props.personId}>
+							<IconButton tooltip={"Edit " + this.props.person.name}>
+								<SvgIconEditorModeEdit />
+							</IconButton>
+						</Link>
 					</Col>
 				</Row>
-				{/* <Row center="xs">
-					<Col xs={12}>
-						<div style={this.state.styles.flavorText}><span>{flavorText}</span></div>
-					</Col>
-				</Row> */}
 			</Grid>
 		);
 	}
