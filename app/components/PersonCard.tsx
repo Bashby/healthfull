@@ -1,15 +1,17 @@
 // Lib Imports
 import * as React from 'react';
 import { Grid, Row, Col } from "react-flexbox-grid";
-import { TextField, AppBar, Paper, Checkbox, IconButton, FlatButton, Avatar } from "material-ui";
+import { Link } from "react-router-dom";
 import { ActionCreator } from "typescript-fsa/lib";
 
+import { TextField, AppBar, Paper, Checkbox, IconButton, FlatButton, Avatar } from "material-ui";
+import { grey600 } from "material-ui/styles/colors";
 import SvgIconEditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import SvgIconActionInfoOutline from 'material-ui/svg-icons/action/info-outline';
+import SvgIconActionReportProblem from 'material-ui/svg-icons/action/report-problem';
 
 // Local Imports
 import { Person } from "../reducers/Profile";
-import { Link } from "react-router-dom";
-import { grey600 } from "material-ui/styles/colors";
 
 interface Props {
 	person: Person
@@ -27,12 +29,10 @@ interface State {
 			margin: number,
 		}
 		button: {
-			margin: number,
+			marginLeft: number,
 		}
-		flavorText: {
-			margin: number,
-			color: string,
-			fontStyle: "italic" // HACK: :(
+		tooltipIcon: {
+			cursor: string
 		}
 	}
 };
@@ -51,12 +51,13 @@ export class PersonCard extends React.Component<Props, State> {
 					margin: 12,
 				},
 				button: {
-					margin: 12,
+					marginLeft: 0,
 				},
-				flavorText: {
-					margin: 12,
-					color: grey600,
-					fontStyle: "italic"
+				tooltipIcon: {
+					// margin: 0,
+					cursor: "help",
+					// color: grey600,
+					// fontStyle: "italic"
 				}
 			}
 		};
@@ -70,34 +71,43 @@ export class PersonCard extends React.Component<Props, State> {
 		return (
 			<Grid fluid>
 				<Row center="xs" middle="xs">
-					<Col xs={8}>
-						<Row center="xs" middle="xs">
-							<Col xs={4}>
+					<Col xs>
+						{/* <Row center="xs" middle="xs"> */}
+							{/* <Col xs> */}
 								<Avatar>{this.props.person.name.charAt(0)}</Avatar>
 							</Col>
-							<Col xs={8}>
+							<Col xs={4}>
 								{this.props.selectable
 									? <Checkbox
 										label={this.props.person.name}
 										disabled={this.props.person.dailyCalorieTarget ? false : true}
 										style={this.state.styles.checkbox}
 									/>
-									: this.props.person.name
+									: <div><span>{this.props.person.name}</span></div>
 								}
-							</Col>
-						</Row>
+							{/* </Col> */}
+						{/* </Row> */}
 					</Col>
-					<Col xs={4}>
-						<Link to={"/account/people/" + this.props.personId}>
-							<FlatButton icon={<SvgIconEditorModeEdit />} style={this.state.styles.button} />
-						</Link>
+					<Col xs>
+						{/* <Row center="xs" middle="xs"> */}
+							{/* <Col xs> */}
+								<IconButton tooltip={flavorText} style={this.state.styles.tooltipIcon} disableTouchRipple={true}>
+									{this.props.person.dailyCalorieTarget ? <SvgIconActionInfoOutline /> : <SvgIconActionReportProblem />}
+								</IconButton>
+							</Col>
+							<Col xs>
+								<Link to={"/account/people/" + this.props.personId} >
+									<FlatButton icon={<SvgIconEditorModeEdit />} style={this.state.styles.button} />
+								</Link>
+							{/* </Col> */}
+						{/* </Row> */}
 					</Col>
 				</Row>
-				<Row center="xs">
+				{/* <Row center="xs">
 					<Col xs={12}>
 						<div style={this.state.styles.flavorText}><span>{flavorText}</span></div>
 					</Col>
-				</Row>
+				</Row> */}
 			</Grid>
 		);
 	}

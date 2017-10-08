@@ -32,11 +32,11 @@ export class People extends React.Component<Props, State> {
 		let peopleCards: React.ReactNode[] = [];
 		Object.entries(this.props.people).forEach(([id, person]) => (
 			peopleCards.push(
-				<Paper zDepth={1} style={{ margin: 12, padding: 5 }} key={id}>
-					<Col xs>
+				<Col key={id}>
+					<Paper zDepth={1} style={{ margin: 12, padding: 5 }}>
 						<PersonCard person={person} personId={id} selectable={false} />
-					</Col>
-				</Paper>
+					</Paper>
+				</Col>
 			)
 		))
 		
