@@ -7,6 +7,12 @@ import { Link } from "react-router-dom";
 // Local Imports
 import { IState } from '../reducers/Root';
 import { RootActionCreators } from "../actions/Root";
+import { Summary } from '../components/Account/Summary';
+import { People } from '../components/Account/People';
+import { Person } from '../reducers/Profile';
+import { EditPerson } from '../components/Account/EditPerson';
+import { ProfileActionCreators, HydrateProfileParameter, HydrateProfileResult, UpdatePersonPayload } from '../actions/Profile';
+import { ThunkAction } from 'redux-thunk';
 
 
 // Interfaces
@@ -16,11 +22,20 @@ interface State {
 }
 
 interface MyStateProps {
+	people: {
+		[id: string] : Person
+	};
 	bottomNavigationIndex: number;
+	username: string,
+	emailAddress: string,
+	profileId: string,
+	
 }
 
 interface MyDispatchProps {
 	setBottomNavigation: (index: number) => void;
+	hydrateProfile: (params: HydrateProfileParameter) => ThunkAction<Promise<HydrateProfileResult>, IState, any>;
+	updatePersonAsync: (params: UpdatePersonPayload) => ThunkAction<Promise<boolean>, IState, any>;
 }
 
 interface MyOwnProps {
@@ -43,14 +58,19 @@ class AccountComponent extends React.Component<AllProps, State> {
 			this.props.setBottomNavigation(BOTTOM_NAVIGATION_INDEX)
 		}
 	}
+
+	componentDidMount() {
+		// Query backend for account information
+		// TODO: Use caching(?) or a one-time-gate so this is not firing for no reason
+		this.props.hydrateProfile({id: this.props.profileId});
+	}
 	
 	render() {
 		return (
 			<div>
-				<span>This is the Account page.</span>
-				{this.props.showPeople && <span>Showing people!</span>}
-				<Link to={"/account/people/55"}>Checkout person 55!</Link>
-				{this.props.id && <span>Looking at id {this.props.id}</span>}
+				<Summary username={this.props.username} emailAddress={this.props.emailAddress}/>
+				{this.props.showPeople && <People people={this.props.people}/>}
+				{this.props.id && <EditPerson person={this.props.people[this.props.id]} updatePerson={(params) => this.props.updatePersonAsync({id: this.props.id, ...params,})} />}
 			</div>
 		);
 	}
@@ -58,13 +78,19 @@ class AccountComponent extends React.Component<AllProps, State> {
 
 function mapStateToProps(state: IState): MyStateProps {
 	return {
-		bottomNavigationIndex: state.rootState.bottomNavigationIndex
+		bottomNavigationIndex: state.rootState.bottomNavigationIndex,
+		people: state.profileState.people,
+		username: state.profileState.username,
+		emailAddress: state.profileState.emailAddress,
+		profileId: state.profileState.id
 	}
 }
 
 function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
 	return {
-		setBottomNavigation: bindActionCreators(RootActionCreators.updateBottomNavigationIndex, dispatch)
+		setBottomNavigation: bindActionCreators(RootActionCreators.updateBottomNavigationIndex, dispatch),
+		hydrateProfile: bindActionCreators(ProfileActionCreators.hydrateProfile, dispatch),
+		updatePersonAsync: bindActionCreators(ProfileActionCreators.updatePersonAsync, dispatch),
 	}
 }
 

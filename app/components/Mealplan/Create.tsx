@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 // Local Imports
 import { Mealplan, MealType } from "../../reducers/Mealplan";
 import { Person } from "../../reducers/Profile";
-import { PersonCard } from "./PersonCard";
+import { PersonCard } from "../PersonCard";
 import { MealCard } from "./MealCard";
 import { Link } from "react-router-dom";
 import { UpdateMealplanPayload } from "../../actions/Mealplan";
@@ -55,7 +55,7 @@ export class MealplanCreate extends React.Component<Props, State> {
 			peopleCards.push(
 				<Paper zDepth={1} style={{ margin: 12 }} key={id}>
 					<Col xs>
-						<PersonCard person={person} personId={id} />
+						<PersonCard person={person} personId={id} selectable={true} />
 					</Col>
 				</Paper>
 			)

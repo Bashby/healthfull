@@ -8,17 +8,20 @@ import { TODO_INITIAL_STATE, ITodoState, reducerTodo } from "./Todo";
 import { PROFILE_INITIAL_STATE, IProfileState, reducerProfile } from "./Profile";
 import { MEALPLAN_INITIAL_STATE, IMealplanState, reducerMealplan } from "./Mealplan";
 import { RootActionCreators } from "../actions/Root";
+import { APP_VERSION } from '../app';
 
 // Root state interface
 interface IRootState {
 	titleMessage: string;
 	authenticated: boolean;
+	version: string,
 	bottomNavigationIndex: number;
 }
 
 const ROOT_INITIAL_STATE: IRootState = {
 	titleMessage: "Hello World, from Root!",
 	authenticated: false,
+	version: APP_VERSION,
 	bottomNavigationIndex: null
 }
 

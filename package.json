@@ -1,16 +1,21 @@
 {
   "name": "healthfull",
   "version": "0.1.0",
-  "description": "The official Healthfull application project",
+  "description": "The official Healthfull application front-end project",
   "main": "./app/app.tsx",
   "types": "./globals.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dashboard -m -- webpack-dev-server --hot --content-base build/ --host 0.0.0.0 --public 192.168.1.187:8080 --config ./webpack.dev.config.js --progress --colors",
-    "build": "webpack-dashboard -m -- webpack --config ./webpack.dev.config.js --progress --profile --colors",
-    "build_clean": "BUILD_CLEAN=true webpack-dashboard -m -- webpack --config ./webpack.dev.config.js --progress --profile --colors",
-    "build_prod": "webpack-dashboard -m -- webpack --config ./webpack.prod.config.js --progress --profile --colors",
-    "build_prod_clean": "BUILD_CLEAN=true webpack-dashboard -m -- webpack --config ./webpack.prod.config.js --progress --profile --colors"
+    "dev": "webpack-dev-server --hot --content-base build/ --host 0.0.0.0 --public 192.168.1.187:8080 --config ./webpack.dev.config.js --progress --colors",
+    "dev:pretty": "webpack-dashboard -m -- webpack-dev-server --hot --content-base build/ --host 0.0.0.0 --public 192.168.1.187:8080 --config ./webpack.dev.config.js --progress --colors",
+    "build": "webpack --config ./webpack.dev.config.js --progress --profile --colors",
+    "build:pretty": "webpack-dashboard -m -- webpack --config ./webpack.dev.config.js --progress --profile --colors",
+    "build_clean": "BUILD_CLEAN=true webpack --config ./webpack.dev.config.js --progress --profile --colors",
+    "build_clean:pretty": "BUILD_CLEAN=true webpack-dashboard -m -- webpack --config ./webpack.dev.config.js --progress --profile --colors",
+    "build_prod": "webpack --config ./webpack.prod.config.js --progress --profile --colors",
+    "build_prod:pretty": "webpack-dashboard -m -- webpack --config ./webpack.prod.config.js --progress --profile --colors",
+    "build_prod_clean": "BUILD_CLEAN=true webpack --config ./webpack.prod.config.js --progress --profile --colors",
+    "build_prod_clean:pretty": "BUILD_CLEAN=true webpack-dashboard -m -- webpack --config ./webpack.prod.config.js --progress --profile --colors"
   },
   "repository": {
     "type": "git",
@@ -28,8 +33,7 @@
   "license": "UNLICENSED",
   "homepage": "https://healthfullapp.com",
   "dependencies": {
-    "babel-polyfill": "^6.23.0",
-    "typescript-fsa-redux-thunk": "github:xdave/typescript-fsa-redux-thunk"
+    "babel-polyfill": "^6.23.0"
   },
   "devDependencies": {
     "@types/history": "^4.6.0",
@@ -81,12 +85,13 @@
     "typescript": "^2.4.1",
     "typescript-fsa": "^2.4.0",
     "typescript-fsa-reducers": "^0.4.4",
+    "typescript-fsa-redux-thunk": "github:xdave/typescript-fsa-redux-thunk",
     "url-loader": "^0.5.9",
     "uuid": "^3.1.0",
     "webpack": "^3.3.0",
     "webpack-chunk-hash": "^0.4.0",
     "webpack-dashboard": "^0.4.0",
-    "webpack-dev-server": "^2.5.1",
+    "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   }
 }
