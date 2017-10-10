@@ -53,11 +53,11 @@ export class MealplanCreate extends React.Component<Props, State> {
 		let peopleCards: React.ReactNode[] = [];
 		Object.entries(this.props.people).forEach(([id, person]) => (
 			peopleCards.push(
-				<Paper zDepth={1} style={{ margin: 12 }} key={id}>
-					<Col xs>
+				<Col key={id}>
+					<Paper zDepth={1} style={{ margin: 12, padding: 5 }}>
 						<PersonCard person={person} personId={id} selectable={true} />
-					</Col>
-				</Paper>
+					</Paper>
+				</Col>
 			)
 		))
 
@@ -65,11 +65,11 @@ export class MealplanCreate extends React.Component<Props, State> {
 		let mealCards: React.ReactNode[] = [];
 		meals.forEach((meal) => (
 			mealCards.push(
-				<Paper zDepth={1} style={{ margin: 12 }} key={meal.toString()}>
-					<Col xs>
+				<Col key={meal.toString()}>
+					<Paper zDepth={1} style={{ margin: 12 }}>
 						<MealCard meal={{ type: meal }} />
-					</Col>
-				</Paper>
+					</Paper>
+				</Col>
 			)
 		))
 

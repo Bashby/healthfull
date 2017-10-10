@@ -4,11 +4,13 @@ import { Grid, Row, Col } from "react-flexbox-grid";
 import { Link } from "react-router-dom";
 import { ActionCreator } from "typescript-fsa/lib";
 
-import { TextField, AppBar, Paper, Checkbox, IconButton, FlatButton, Avatar } from "material-ui";
+import { TextField, AppBar, Paper, Checkbox, IconButton, FlatButton, Avatar, IconMenu, MenuItem } from "material-ui";
 import { grey600 } from "material-ui/styles/colors";
 import SvgIconEditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import SvgIconActionInfoOutline from 'material-ui/svg-icons/action/info-outline';
 import SvgIconActionReportProblem from 'material-ui/svg-icons/action/report-problem';
+import SvgIconActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
+import SvgIconNavigationMoreVert from 'material-ui/svg-icons/navigation/more-vert';
 
 // Local Imports
 import { Person } from "../reducers/Profile";
@@ -34,6 +36,10 @@ interface State {
 		tooltipIcon: {
 			cursor: string
 		}
+		flavorText: {
+			color: string,
+			fontStyle: "italic" // Hack
+		}
 	}
 };
 
@@ -54,10 +60,11 @@ export class PersonCard extends React.Component<Props, State> {
 					marginLeft: 0,
 				},
 				tooltipIcon: {
-					// margin: 0,
 					cursor: "help",
-					// color: grey600,
-					// fontStyle: "italic"
+				},
+				flavorText: {
+					color: grey600,
+					fontStyle: "italic"
 				}
 			}
 		};
@@ -65,39 +72,60 @@ export class PersonCard extends React.Component<Props, State> {
 
 	render() {
 		let flavorText: string = this.props.person.dailyCalorieTarget
-			? "Calorie Target: " + this.props.person.dailyCalorieTarget
+			? this.props.person.dailyCalorieTarget + " cal."
 			: "You have not finished editing " + this.props.person.name
 		
 		return (
-			<Grid fluid>
-				<Row center="xs" middle="xs">
-					<Col xs={3}>
-						<Avatar>{this.props.person.name.charAt(0)}</Avatar>
-					</Col>
-					<Col xs={3}>
-						{this.props.selectable
-							? <Checkbox
-								label={this.props.person.name}
-								disabled={this.props.person.dailyCalorieTarget ? false : true}
-								style={this.state.styles.checkbox}
-							/>
-							: <div><span>{this.props.person.name}</span></div>
-						}
-					</Col>
-					<Col xs={3}>
-						<IconButton tooltip={flavorText} style={this.state.styles.tooltipIcon} disableTouchRipple={true}>
-							{this.props.person.dailyCalorieTarget ? <SvgIconActionInfoOutline /> : <SvgIconActionReportProblem />}
-						</IconButton>
-					</Col>
-					<Col xs={3}>
-						<Link to={"/account/people/" + this.props.personId}>
-							<IconButton tooltip={"Edit " + this.props.person.name}>
-								<SvgIconEditorModeEdit />
-							</IconButton>
-						</Link>
-					</Col>
-				</Row>
-			</Grid>
+			<Row center="xs" middle="xs">
+				<Col xs={2}>
+					<Avatar>{this.props.person.name.charAt(0).toUpperCase()}</Avatar>
+				</Col>
+				<Col xs={5}>
+					{this.props.selectable
+						? <Checkbox
+							label={this.props.person.name}
+							disabled={this.props.person.dailyCalorieTarget ? false : true}
+							style={this.state.styles.checkbox}
+						/>
+						: <div><span>{this.props.person.name}</span></div>
+					}
+				</Col>
+				<Col xs={3}>
+					{this.props.person.dailyCalorieTarget
+						? <div style={this.state.styles.flavorText}><span>{flavorText}</span></div>
+						: <IconButton tooltip={flavorText} style={this.state.styles.tooltipIcon} disableTouchRipple={true}>
+							<SvgIconActionReportProblem />
+						</IconButton>}
+				</Col>
+				<Col xs={2}>
+					<IconMenu
+						iconButtonElement={<IconButton><SvgIconNavigationMoreVert /></IconButton>}
+						anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+						targetOrigin={{horizontal: 'left', vertical: 'top'}}
+					>
+						<MenuItem
+							primaryText="Edit Person"
+							leftIcon={<SvgIconEditorModeEdit />}
+							containerElement={
+								<Link to={{
+									pathname: "/account/people/" + this.props.personId,
+									search: "?action=edit",
+								}} />
+							}
+						/>
+						<MenuItem
+							primaryText="Delete Person"
+							leftIcon={<SvgIconActionDeleteForever />}
+							containerElement={
+								<Link to={{
+									pathname: "/account/people/" + this.props.personId,
+									search: "?action=delete",
+								}} />
+							}
+						/>
+					</IconMenu>
+				</Col>
+			</Row>
 		);
 	}
 }

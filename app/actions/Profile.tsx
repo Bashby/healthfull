@@ -80,7 +80,7 @@ const HydrateProfileWorker = bindThunkAction(HydrateProfile,
 					response.people[participant.id] = { name: participant.name, dailyCalorieTarget: participant.kcal }
 				})
 			})
-			.error((e) => console.error("Hydrate Profile Request Failed with: " + e));
+			.catch((e) => console.error("Hydrate Profile Request Failed with: " + e));
 
 		// Successful Authentication
 		if (success) {
@@ -98,12 +98,13 @@ const HydrateProfileWorker = bindThunkAction(HydrateProfile,
 const UpdatePersonWorker = bindThunkAction(UpdatePersonAsync,
 		async (params, dispatch, getState, extraArg) => {
 			let success: boolean = false;
+			let result: Participant = undefined;
 			let profileId: string = getState().profileState.id;
 			// let existing: Person = getState().profileState.people[params.id];
 			let changes: Participant = {
-				kcal: params.dailyCalorieTarget,
 				id: params.id,
 				name: params.name,
+				kcal: params.dailyCalorieTarget,
 				tdee: { // TODO: Remove these placeholders
 					sex: "MALE",
 					age: 100,
@@ -116,17 +117,16 @@ const UpdatePersonWorker = bindThunkAction(UpdatePersonAsync,
 				},
 				enabled: true
 			}
-			let result: Participant;
-
+			
 			// Make request to backend
 			await Backend.api.accountIdParticipantsPartIdPut(profileId, params.id, changes)
 				.then((payload) => {
 					success = payload.body.success;
 					result = payload.body.participant;
 				})
-				.error((e) => console.error("Account Participant PUT Request Failed with: " + e));
-	
-			// Successful Backup Participant Update
+				.catch((e) => console.error("Account Participant PUT Request Failed with: " + e));
+
+			// Update Success
 			if (success) {
 				// Update person
 				dispatch(UpdatePerson({id: result.id, name: result.name, dailyCalorieTarget: result.kcal}))

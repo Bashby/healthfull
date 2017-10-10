@@ -1,11 +1,13 @@
 // Lib Imports
 import * as React from 'react';
 import { Grid, Row, Col } from "react-flexbox-grid";
-import { Paper, Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui';
+import { Paper, Toolbar, ToolbarGroup, ToolbarTitle, RaisedButton } from 'material-ui';
+import SvgIconSocialPersonAdd from 'material-ui/svg-icons/social/person-add';
 
 // Local Imports
 import { PersonCard } from '../PersonCard';
 import { Person } from '../../reducers/Profile';
+import { Link } from 'react-router-dom';
 
 interface Props {
 	people: {
@@ -15,6 +17,9 @@ interface Props {
 
 interface State {
 	styles: {
+		button: {
+			margin: number,
+		},
 	}
 };
 
@@ -24,6 +29,9 @@ export class People extends React.Component<Props, State> {
 		super(props);
 		this.state = {
 			styles: {
+				button: {
+					margin: 12,
+				},
 			}
 		};
 	}
@@ -32,8 +40,8 @@ export class People extends React.Component<Props, State> {
 		let peopleCards: React.ReactNode[] = [];
 		Object.entries(this.props.people).forEach(([id, person]) => (
 			peopleCards.push(
-				<Col key={id}>
-					<Paper zDepth={1} style={{ margin: 12, padding: 5 }}>
+				<Col xs={12} sm={6} md={4} lg={3} key={id}>
+					<Paper zDepth={1} style={{ margin: 12, padding: 5 }} key={id}>
 						<PersonCard person={person} personId={id} selectable={false} />
 					</Paper>
 				</Col>
@@ -47,6 +55,18 @@ export class People extends React.Component<Props, State> {
 						<Toolbar>
 							<ToolbarGroup firstChild={false}>
 								<ToolbarTitle text="People" />
+							</ToolbarGroup>
+							<ToolbarGroup lastChild={true}>
+								<Link
+									to={"/account/people/add"}
+									style={this.state.styles.button}
+								>
+									<RaisedButton
+										label="Create a new Person"
+										secondary={true}
+										icon={<SvgIconSocialPersonAdd />}
+									/>
+								</Link>
 							</ToolbarGroup>
 						</Toolbar>
 					</Col>
