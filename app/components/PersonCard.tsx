@@ -1,15 +1,19 @@
 // Lib Imports
 import * as React from 'react';
 import { Grid, Row, Col } from "react-flexbox-grid";
-import { TextField, AppBar, Paper, Checkbox, IconButton, FlatButton, Avatar } from "material-ui";
+import { Link } from "react-router-dom";
 import { ActionCreator } from "typescript-fsa/lib";
 
+import { TextField, AppBar, Paper, Checkbox, IconButton, FlatButton, Avatar, IconMenu, MenuItem } from "material-ui";
+import { grey600 } from "material-ui/styles/colors";
 import SvgIconEditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import SvgIconActionInfoOutline from 'material-ui/svg-icons/action/info-outline';
+import SvgIconActionReportProblem from 'material-ui/svg-icons/action/report-problem';
+import SvgIconActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
+import SvgIconNavigationMoreVert from 'material-ui/svg-icons/navigation/more-vert';
 
 // Local Imports
 import { Person } from "../reducers/Profile";
-import { Link } from "react-router-dom";
-import { grey600 } from "material-ui/styles/colors";
 
 interface Props {
 	person: Person
@@ -27,12 +31,14 @@ interface State {
 			margin: number,
 		}
 		button: {
-			margin: number,
+			marginLeft: number,
+		}
+		tooltipIcon: {
+			cursor: string
 		}
 		flavorText: {
-			margin: number,
 			color: string,
-			fontStyle: "italic" // HACK: :(
+			fontStyle: "italic" // Hack
 		}
 	}
 };
@@ -51,10 +57,12 @@ export class PersonCard extends React.Component<Props, State> {
 					margin: 12,
 				},
 				button: {
-					margin: 12,
+					marginLeft: 0,
+				},
+				tooltipIcon: {
+					cursor: "help",
 				},
 				flavorText: {
-					margin: 12,
 					color: grey600,
 					fontStyle: "italic"
 				}
@@ -64,41 +72,60 @@ export class PersonCard extends React.Component<Props, State> {
 
 	render() {
 		let flavorText: string = this.props.person.dailyCalorieTarget
-			? "Calorie Target: " + this.props.person.dailyCalorieTarget
-			: "You have not finished editing " + this.props.person.name + "."
+			? this.props.person.dailyCalorieTarget + " cal."
+			: "You have not finished editing " + this.props.person.name
 		
 		return (
-			<Grid fluid>
-				<Row center="xs" middle="xs">
-					<Col xs={8}>
-						<Row center="xs" middle="xs">
-							<Col xs={4}>
-								<Avatar>{this.props.person.name.charAt(0)}</Avatar>
-							</Col>
-							<Col xs={8}>
-								{this.props.selectable
-									? <Checkbox
-										label={this.props.person.name}
-										disabled={this.props.person.dailyCalorieTarget ? false : true}
-										style={this.state.styles.checkbox}
-									/>
-									: this.props.person.name
-								}
-							</Col>
-						</Row>
-					</Col>
-					<Col xs={4}>
-						<Link to={"/account/people/" + this.props.personId}>
-							<FlatButton icon={<SvgIconEditorModeEdit />} style={this.state.styles.button} />
-						</Link>
-					</Col>
-				</Row>
-				<Row center="xs">
-					<Col xs={12}>
-						<div style={this.state.styles.flavorText}><span>{flavorText}</span></div>
-					</Col>
-				</Row>
-			</Grid>
+			<Row center="xs" middle="xs">
+				<Col xs={2}>
+					<Avatar>{this.props.person.name.charAt(0).toUpperCase()}</Avatar>
+				</Col>
+				<Col xs={5}>
+					{this.props.selectable
+						? <Checkbox
+							label={this.props.person.name}
+							disabled={this.props.person.dailyCalorieTarget ? false : true}
+							style={this.state.styles.checkbox}
+						/>
+						: <div><span>{this.props.person.name}</span></div>
+					}
+				</Col>
+				<Col xs={3}>
+					{this.props.person.dailyCalorieTarget
+						? <div style={this.state.styles.flavorText}><span>{flavorText}</span></div>
+						: <IconButton tooltip={flavorText} style={this.state.styles.tooltipIcon} disableTouchRipple={true}>
+							<SvgIconActionReportProblem />
+						</IconButton>}
+				</Col>
+				<Col xs={2}>
+					<IconMenu
+						iconButtonElement={<IconButton><SvgIconNavigationMoreVert /></IconButton>}
+						anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+						targetOrigin={{horizontal: 'left', vertical: 'top'}}
+					>
+						<MenuItem
+							primaryText="Edit Person"
+							leftIcon={<SvgIconEditorModeEdit />}
+							containerElement={
+								<Link to={{
+									pathname: "/account/people/" + this.props.personId,
+									search: "?action=edit",
+								}} />
+							}
+						/>
+						<MenuItem
+							primaryText="Delete Person"
+							leftIcon={<SvgIconActionDeleteForever />}
+							containerElement={
+								<Link to={{
+									pathname: "/account/people/" + this.props.personId,
+									search: "?action=delete",
+								}} />
+							}
+						/>
+					</IconMenu>
+				</Col>
+			</Row>
 		);
 	}
 }

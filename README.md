@@ -39,9 +39,10 @@ _<team@healthfullapp.com>_
 * strictly prohibited without the express written            *
 * permission of all of the listed owner(s)/author(s) below.  *
 *                                                            *
-* @author - Brendan Evans Ashby <brendan@brendanashby.com>   *
+* @owner - Brendan Evans Ashby <brendan@brendanashby.com>    *
 * @owner - Kristen Stevens <kristengstevens89@gmail.com>     *
 * @owner - Andrew Stevens <andrew.m.stevens12@gmail.com>     *
 * @owner - Brian Shirley <brian.shirley@gmail.com>           *
+* @owner - Max Glover <max@healthfullapp.com>                *
 **************************************************************
 ```
