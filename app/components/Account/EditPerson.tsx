@@ -1,12 +1,12 @@
 // Lib Imports
 import * as React from 'react';
 import { Grid, Row, Col } from "react-flexbox-grid";
+import { Link } from 'react-router-dom';
 import { Paper, Toolbar, ToolbarGroup, ToolbarTitle, Dialog, FlatButton, TextField } from 'material-ui';
 
 // Local Imports
 import { PersonCard } from '../PersonCard';
 import { Person } from '../../reducers/Profile';
-import { Link } from 'react-router-dom';
 
 interface Props {
 	person: Person;

@@ -71,6 +71,7 @@ export class PersonCard extends React.Component<Props, State> {
 	}
 
 	render() {
+		let UiLocked: boolean = this.props.person.isFetching;
 		let flavorText: string = this.props.person.dailyCalorieTarget
 			? this.props.person.dailyCalorieTarget + " cal."
 			: "You have not finished editing " + this.props.person.name
@@ -78,7 +79,7 @@ export class PersonCard extends React.Component<Props, State> {
 		return (
 			<Row center="xs" middle="xs">
 				<Col xs={2}>
-					<Avatar>{this.props.person.name.charAt(0).toUpperCase()}</Avatar>
+					<Avatar>{this.props.person.name.charAt(UiLocked ? 1 : 0).toUpperCase()}</Avatar>
 				</Col>
 				<Col xs={5}>
 					{this.props.selectable

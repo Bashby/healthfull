@@ -35,6 +35,10 @@ export enum BodyGender {
 	Female
 };
 
+// interface UILockable {
+// 	locked?: boolean
+// }
+
 export type Person = {
 	name: string
 	weight?: ValueAndUnit<BodyWeightUnit>
@@ -45,6 +49,8 @@ export type Person = {
 	activityFrequency?: number
 	activityLength?: number
 	dailyCalorieTarget?: number
+
+	isFetching?: boolean // TODO: HOW CAN I NOT HAVE UI STATE HERE?
 };
 
 export const PROFILE_INITIAL_STATE: IProfileState = {
@@ -107,5 +113,16 @@ export const reducerProfile = reducerWithInitialState(PROFILE_INITIAL_STATE)
 	.case(ProfileActionCreators.updateEmailAddress, (state, payload) => ({
 		...state,
 		emailAddress: payload
+	}))
+	// UI Lock Person
+	.case(ProfileActionCreators.uiLockPerson, (state, payload) => ({
+		...state,
+		people: {
+			...state.people,
+			[payload.id]: {
+				...state.people[payload.id],
+				isFetching: payload.lock
+			}
+		}
 	}))
 	.build();

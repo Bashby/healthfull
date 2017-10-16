@@ -19,7 +19,7 @@ export type AddPersonPayload = {
 }
 
 export type UpdatePersonPayload = {
-	id: string,
+	id: string
 	name?: string
 	weight?: ValueAndUnit<BodyWeightUnit>
 	goalWeight?: ValueAndUnit<BodyWeightUnit>
@@ -29,6 +29,8 @@ export type UpdatePersonPayload = {
 	activityFrequency?: number
 	activityLength?: number
 	dailyCalorieTarget?: number
+
+	isFetching?: boolean // TODO: HOW CAN I NOT HAVE UI STATE HERE?
 };
 
 // export interface UpdatePersonPayload extends UpdatePersonPayloadBase {
@@ -45,6 +47,11 @@ export type HydrateProfileResult = {
 	people: {
 		[id: string]: Person,
 	}
+}
+
+export type UILockPersonPayload = {
+	id: string,
+	lock: boolean
 }
 
 // Create Actions
@@ -77,6 +84,7 @@ const RemovePersonAsync = actionCreatorProfile.async<
 	boolean,
 	Error
 	>('REMOVE_PERSON_ASYNC');
+const UILockPerson = actionCreatorProfile<UILockPersonPayload>('UI_LOCK_PERSON');
 
 // Thunks
 const HydrateProfileWorker = bindThunkAction(HydrateProfile,
@@ -166,6 +174,9 @@ const AddPersonWorker = bindThunkAction(AddPersonAsync,
 
 const UpdatePersonWorker = bindThunkAction(UpdatePersonAsync,
 	async (params, dispatch, getState, extraArg) => {
+		// Lock person while editing
+		dispatch(UILockPerson({id: params.id, lock: true}))
+
 		let success: boolean = false;
 		let result: Participant = undefined;
 		let profileId: string = getState().profileState.id;
@@ -198,7 +209,7 @@ const UpdatePersonWorker = bindThunkAction(UpdatePersonAsync,
 		// Update Success
 		if (success) {
 			// Update person
-			dispatch(UpdatePerson({id: result.id, name: result.name, dailyCalorieTarget: result.kcal}))
+			dispatch(UpdatePerson({id: result.id, name: result.name, dailyCalorieTarget: result.kcal, isFetching: false}))
 		}
 
 		return success;
@@ -237,5 +248,6 @@ export const ProfileActionCreators = {
 	updatePerson: UpdatePerson,
 	removePersonAsync: RemovePersonWorker,
 	removePerson: RemovePerson,
-	hydrateProfile: HydrateProfileWorker
+	hydrateProfile: HydrateProfileWorker,
+	uiLockPerson: UILockPerson
 };
