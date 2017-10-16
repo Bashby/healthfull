@@ -13,7 +13,7 @@ import SvgIconSocialPersonAdd from 'material-ui/svg-icons/social/person-add';
 import { IState } from '../../reducers/Root';
 import { RootActionCreators } from "../../actions/Root";
 import { AddPersonForm } from "../../components/Account/AddPersonForm";
-import { Paper, AppBar, Tabs, Tab, TextField, RaisedButton } from "material-ui";
+import { Paper, AppBar, Tabs, Tab, TextField, RaisedButton, Toolbar, ToolbarGroup, ToolbarTitle } from "material-ui";
 import { ActionCreator } from "typescript-fsa/lib";
 import { Person } from "../../reducers/Profile";
 import { ProfileActionCreators } from "../../actions/Profile";
@@ -44,7 +44,7 @@ interface MyStateProps {
 
 interface MyDispatchProps {
 	setBottomNavigation: (index: number) => void;
-	addPerson: ActionCreator<Person>;
+	addPersonAsync: (person: Person) => void;
 }
 
 interface MyOwnProps {
@@ -87,79 +87,83 @@ class AddPersonComponent extends React.Component<AllProps, State> {
 		}
 
 		// Dispatch
-		this.props.addPerson(person)
+		this.props.addPersonAsync(person)
 	}
 	
 	render() {
 		return (
-			<Grid fluid>
-				<Paper zDepth={1} >
-					<Row center="xs">
-						<Col xs>
-							<AppBar
-								title="Add a new Person"
-								showMenuIconButton={false}
-							/>
-						</Col>
-					</Row>
-					<Row center="xs">
-						<Col xs={12}>
-							<div style={this.state.styles.flavorText}>
-								<span>Answer the following questions to create a new Person.</span>
-							</div>
-						</Col>
-						<Col xs={12}>
-							<div style={this.state.styles.flavorText}>
-								<span>If you prefer, you may manually enter a value for daily caloric intake.</span>
-							</div>
-						</Col>
-					</Row>
-					<Row center="xs">
-						<Col xs>
-							<TextField
-								hintText="e.g. John Dough"
-								floatingLabelText="Name"
-								onChange={(_, value) => this.setState({name: value})}
-							/>
-						</Col>
-					</Row>
-					<Row center="xs">
-						<Col xs>
-							<Tabs>
-								<Tab label="Caloric Intake Form">
-									<AddPersonForm />
-								</Tab>
-								<Tab label="Manual">
-									<Row center="xs">
-										<Col xs>
-											<TextField
-												hintText="e.g. 2000"
-												floatingLabelText="Daily Caloric Intake"
-												onChange={(_, value) => this.setState({dailyCaloricIntake: parseInt(value)})}
-											/>
-										</Col>
-									</Row>
-								</Tab>
-							</Tabs>
-						</Col>
-					</Row>
-				</Paper>
-				<Paper zDepth={1} style={this.state.styles.paper}>
-					<Row center="xs">
-						<Col xs>
-							<Link to={"/account/people"}>
-								<RaisedButton
-									label="Create Person"
-									style={this.state.styles.button}
-									secondary={true}
-									icon={<SvgIconSocialPersonAdd />}
-									onClick={this.handleCreatePerson}
+			// TODO: Too much presentational layer in this container-layer component.
+			<div>
+				<Grid fluid>
+					{/* <Paper zDepth={1}> */}
+						<Row center="xs">
+							<Col xs>
+								<Toolbar>
+									<ToolbarGroup firstChild={false}>
+										<ToolbarTitle text="Create Person" />
+									</ToolbarGroup>
+								</Toolbar>
+							</Col>
+						</Row>
+						<Row center="xs">
+							<Col xs={12}>
+								<div style={this.state.styles.flavorText}>
+									<span>Answer the following questions to create a new Person.</span>
+								</div>
+							</Col>
+							<Col xs={12}>
+								<div style={this.state.styles.flavorText}>
+									<span>If you prefer, you may manually enter a value for daily caloric intake.</span>
+								</div>
+							</Col>
+						</Row>
+						<Row center="xs">
+							<Col xs>
+								<TextField
+									hintText="e.g. John Dough"
+									floatingLabelText="Name"
+									onChange={(_, value) => this.setState({name: value})}
 								/>
-							</Link>
-						</Col>
-					</Row>
-				</Paper>
-			</Grid>
+							</Col>
+						</Row>
+						<Row center="xs">
+							<Col xs>
+								<Tabs>
+									<Tab label="Caloric Intake Form">
+										<AddPersonForm />
+									</Tab>
+									<Tab label="Manual">
+										<Row center="xs">
+											<Col xs>
+												<TextField
+													hintText="e.g. 2000"
+													floatingLabelText="Daily Caloric Intake"
+													onChange={(_, value) => this.setState({dailyCaloricIntake: parseInt(value)})}
+												/>
+											</Col>
+										</Row>
+									</Tab>
+								</Tabs>
+							</Col>
+						</Row>
+					{/* </Paper> */}
+					<Paper zDepth={1} style={this.state.styles.paper}>
+						<Row center="xs">
+							<Col xs>
+								<Link to={"/account/people"}>
+									<RaisedButton
+										label="Create Person"
+										style={this.state.styles.button}
+										secondary={true}
+										icon={<SvgIconSocialPersonAdd />}
+										onClick={this.handleCreatePerson}
+									/>
+								</Link>
+							</Col>
+						</Row>
+					</Paper>
+				</Grid>
+			</div>
 		);
 	}
 }
@@ -173,7 +177,7 @@ function mapStateToProps(state: IState): MyStateProps {
 function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
 	return {
 		setBottomNavigation: bindActionCreators(RootActionCreators.updateBottomNavigationIndex, dispatch),
-		addPerson: bindActionCreators(ProfileActionCreators.addPerson, dispatch),
+		addPersonAsync: bindActionCreators(ProfileActionCreators.addPersonAsync, dispatch),
 	}
 }
 

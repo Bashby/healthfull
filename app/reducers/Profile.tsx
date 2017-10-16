@@ -52,28 +52,25 @@ export const PROFILE_INITIAL_STATE: IProfileState = {
 	username: undefined,
 	emailAddress: undefined,
 	people: {
-		"12345": {
-			name: "John Doe",
-		},
-		"123456": {
-			name: "Ben Cardie",
-			dailyCalorieTarget: 2500
-		}
+		// "12345": {
+		// 	name: "John Doe",
+		// },
+		// "123456": {
+		// 	name: "Ben Cardie",
+		// 	dailyCalorieTarget: 2500
+		// }
 	}
 }
 
 export const reducerProfile = reducerWithInitialState(PROFILE_INITIAL_STATE)
 	// Add Person
 	.case(ProfileActionCreators.addPerson, (state, payload) => {
-		// Generate UUID
-		let newId = uuidv4();
-		
 		// Add
 		return {
 			...state,
 			people: {
 				...state.people,
-				[newId]: payload
+				[payload.id]: payload.person
 			}
 		};
 	})
@@ -93,9 +90,9 @@ export const reducerProfile = reducerWithInitialState(PROFILE_INITIAL_STATE)
 	})
 	// Delete Person
 	.case(ProfileActionCreators.removePerson, (state, payload) => {
+		debugger;
 		let newPeople = state.people; // TODO: Is this a proper clone?
 		delete newPeople[payload];
-		
 		return {
 			...state,
 			people: newPeople,

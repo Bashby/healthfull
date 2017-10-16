@@ -1,6 +1,7 @@
 // Lib Imports
 import actionCreatorFactory from 'typescript-fsa';
 import { bindThunkAction } from 'typescript-fsa-redux-thunk';
+import { v4 as uuidv4 } from 'uuid';
 
 // Local Imports
 import { Person, ValueAndUnit, BodyWeightUnit, BodyGender, BodyHeightUnit } from "../reducers/Profile";
@@ -12,6 +13,11 @@ import { Participant } from '../api/api';
 const actionCreatorProfile = actionCreatorFactory("Profile");
 
 // Action Payload Generic Types
+export type AddPersonPayload = {
+	id: string,
+	person: Person
+}
+
 export type UpdatePersonPayload = {
 	id: string,
 	name?: string
@@ -44,21 +50,33 @@ export type HydrateProfileResult = {
 // Create Actions
 const UpdateUsername = actionCreatorProfile<string>('UPDATE_USERNAME');
 const UpdateEmailAddress = actionCreatorProfile<string>('UPDATE_EMAIL_ADDRESS');
-const AddPerson = actionCreatorProfile<Person>('ADD_PERSON');
-const UpdatePerson = actionCreatorProfile<UpdatePersonPayload>('UPDATE_PERSON');
-const RemovePerson = actionCreatorProfile<string>('REMOVE_PERSON');
 const HydrateProfile = actionCreatorProfile.async<
 	IState,
 	HydrateProfileParameter,
 	HydrateProfileResult,
 	Error
 	>('HYDRATE_PROFILE');
+const AddPerson = actionCreatorProfile<AddPersonPayload>('ADD_PERSON');
+const AddPersonAsync = actionCreatorProfile.async<
+	IState,
+	Person,
+	boolean,
+	Error
+	>('ADD_PERSON_ASYNC');
+const UpdatePerson = actionCreatorProfile<UpdatePersonPayload>('UPDATE_PERSON');
 const UpdatePersonAsync = actionCreatorProfile.async<
 	IState,
 	UpdatePersonPayload,
 	boolean,
 	Error
 	>('UPDATE_PERSON_ASYNC');
+const RemovePerson = actionCreatorProfile<string>('REMOVE_PERSON');
+const RemovePersonAsync = actionCreatorProfile.async<
+	IState,
+	string,
+	boolean,
+	Error
+	>('REMOVE_PERSON_ASYNC');
 
 // Thunks
 const HydrateProfileWorker = bindThunkAction(HydrateProfile,
@@ -93,55 +111,131 @@ const HydrateProfileWorker = bindThunkAction(HydrateProfile,
 		}
 
 		return response;
-	});
+	}
+);
+
+const AddPersonWorker = bindThunkAction(AddPersonAsync,
+	async (params, dispatch, getState, extraArg) => {
+		let success: boolean = false;
+		let resultParticipant: Participant = undefined;
+		let profileId: string = getState().profileState.id;
+		let newPersonId: string = uuidv4().replace(new RegExp('-', 'g'), '');
+
+		// Prepare new backend "Participant" from frontend "Person"
+		// TODO: Make this cover the whole object and not just name and cal target
+		let newParticipant: Participant = {
+			id: newPersonId,
+			name: params.name,
+			kcal: params.dailyCalorieTarget,
+			tdee: { // TODO: Remove these placeholders
+				sex: "MALE",
+				age: 100,
+				height: 100,
+				weight: 100,
+				bmr: 100,
+				activity: "something",
+				targetWeight: 100,
+				targetKCal: 100
+			},
+			enabled: false
+		}
+		
+		// Make request to backend
+		await Backend.api.accountIdParticipantsPartIdPost(profileId, newPersonId, newParticipant)
+			.then((payload) => {
+				success = payload.body.success;
+				resultParticipant = payload.body.participant;
+			})
+			.catch((e) => console.error("Account Participant POST Request Failed with: " + e));
+
+		// Update Success
+		if (success) {
+			// Update person
+			dispatch(AddPerson({
+				id: newPersonId,
+				person: {
+					name: resultParticipant.name,
+					dailyCalorieTarget: resultParticipant.kcal
+				}
+			}))
+		}
+
+		return success;
+	}
+);
 
 const UpdatePersonWorker = bindThunkAction(UpdatePersonAsync,
-		async (params, dispatch, getState, extraArg) => {
-			let success: boolean = false;
-			let result: Participant = undefined;
-			let profileId: string = getState().profileState.id;
-			// let existing: Person = getState().profileState.people[params.id];
-			let changes: Participant = {
-				id: params.id,
-				name: params.name,
-				kcal: params.dailyCalorieTarget,
-				tdee: { // TODO: Remove these placeholders
-					sex: "MALE",
-					age: 100,
-					height: 100,
-					weight: 100,
-					bmr: 100,
-					activity: "something",
-					targetWeight: 100,
-					targetKCal: 100
-				},
-				enabled: true
-			}
-			
-			// Make request to backend
-			await Backend.api.accountIdParticipantsPartIdPut(profileId, params.id, changes)
-				.then((payload) => {
-					success = payload.body.success;
-					result = payload.body.participant;
-				})
-				.catch((e) => console.error("Account Participant PUT Request Failed with: " + e));
+	async (params, dispatch, getState, extraArg) => {
+		let success: boolean = false;
+		let result: Participant = undefined;
+		let profileId: string = getState().profileState.id;
+		// let existing: Person = getState().profileState.people[params.id];
+		let changes: Participant = {
+			id: params.id,
+			name: params.name,
+			kcal: params.dailyCalorieTarget,
+			tdee: { // TODO: Remove these placeholders
+				sex: "MALE",
+				age: 100,
+				height: 100,
+				weight: 100,
+				bmr: 100,
+				activity: "something",
+				targetWeight: 100,
+				targetKCal: 100
+			},
+			enabled: true
+		}
+		
+		// Make request to backend
+		await Backend.api.accountIdParticipantsPartIdPut(profileId, params.id, changes)
+			.then((payload) => {
+				success = payload.body.success;
+				result = payload.body.participant;
+			})
+			.catch((e) => console.error("Account Participant PUT Request Failed with: " + e));
 
-			// Update Success
-			if (success) {
-				// Update person
-				dispatch(UpdatePerson({id: result.id, name: result.name, dailyCalorieTarget: result.kcal}))
-			}
-	
-			return success;
-		});
+		// Update Success
+		if (success) {
+			// Update person
+			dispatch(UpdatePerson({id: result.id, name: result.name, dailyCalorieTarget: result.kcal}))
+		}
+
+		return success;
+	}
+);
+
+const RemovePersonWorker = bindThunkAction(RemovePersonAsync,
+	async (params, dispatch, getState, extraArg) => {
+		let success: boolean = false;
+		let profileId: string = getState().profileState.id;
+		
+		// Make request to backend
+		await Backend.api.accountIdParticipantsPartIdDelete(profileId, params)
+			.then((payload) => {
+				success = payload.body.success;
+			})
+			.catch((e) => console.error("Account Participant DELETE Request Failed with: " + e));
+
+		// Delete Success
+		if (success) {
+			// Remove person
+			dispatch(RemovePerson(params))
+		}
+
+		return success;
+	}
+);
 
 // Bundle and export action creators
 export const ProfileActionCreators = {
 	updateUsername: UpdateUsername,
 	updateEmailAddress: UpdateEmailAddress,
 	addPerson: AddPerson,
+	addPersonAsync: AddPersonWorker,
 	updatePersonAsync: UpdatePersonWorker,
 	updatePerson: UpdatePerson,
+	removePersonAsync: RemovePersonWorker,
 	removePerson: RemovePerson,
 	hydrateProfile: HydrateProfileWorker
 };
