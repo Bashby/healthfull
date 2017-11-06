@@ -8,26 +8,31 @@ import { Paper, Toolbar, ToolbarGroup, ToolbarTitle, Dialog, FlatButton, TextFie
 import { PersonCard } from '../PersonCard';
 import { Person } from '../../reducers/Profile';
 
+
 interface Props {
 	person: Person;
-	updatePerson: (params: {name: string, dailyCalorieTarget: number}) => void;
+	removePerson: () => void;
 };
 
 interface State {
-	newName?: string,
-	newDailyCalorieTarget?: number,
 	open: boolean,
 	styles: {
+		informationText: {
+			margin: number
+		}
 	}
 };
 
-// Account EditPerson Component
-export class EditPerson extends React.Component<Props, State> {
+// Account RemovePerson Component
+export class RemovePerson extends React.Component<Props, State> {
 	constructor(props: Props) {
 		super(props);
 		this.state = {
 			open: true,
 			styles: {
+				informationText: {
+					margin: 12,
+				}
 			}
 		};
 	}
@@ -39,10 +44,7 @@ export class EditPerson extends React.Component<Props, State> {
 	handleClose = (saveChanges: boolean) => {
 		this.setState({ open: false });
 		if (saveChanges) {
-			this.props.updatePerson({
-				name: this.state.newName,
-				dailyCalorieTarget: this.state.newDailyCalorieTarget
-			});
+			this.props.removePerson();
 		}
 	};
 
@@ -58,7 +60,7 @@ export class EditPerson extends React.Component<Props, State> {
 			</Link>,
 			<Link to="/account/people">
 				<FlatButton
-					label="Save Changes"
+					label="Remove Person"
 					primary={true}
 					keyboardFocused={true}
 					onClick={() => this.handleClose(true)}
@@ -68,7 +70,7 @@ export class EditPerson extends React.Component<Props, State> {
 
 		return (
 			<Dialog
-				title={"Edit " + this.props.person.name}
+				title={"Remove " + this.props.person.name + "?"}
 				actions={actions}
 				modal={false}
 				open={this.state.open}
@@ -77,22 +79,7 @@ export class EditPerson extends React.Component<Props, State> {
 				<Grid fluid>
 					<Row center="xs">
 						<Col xs>
-							<TextField
-								hintText="e.g. John Doe"
-								floatingLabelText="Name"
-								defaultValue={this.props.person.name}
-								onChange={(_, value) => this.setState({newName: value})}
-							/>
-						</Col>
-					</Row>
-					<Row center="xs">
-						<Col xs>
-							<TextField
-								hintText="e.g. 2000"
-								floatingLabelText="Daily Calorie Target"
-								defaultValue={this.props.person.dailyCalorieTarget}
-								onChange={(_, value) => this.setState({newDailyCalorieTarget: parseInt(value)})}
-							/>
+							<div style={this.state.styles.informationText}><span>Please confirm you want to remove {this.props.person.name} from your account.</span></div>
 						</Col>
 					</Row>
 				</Grid>

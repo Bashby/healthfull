@@ -1,5 +1,6 @@
 // Lib Imports
 import * as React from 'react';
+import * as History from 'history';
 import { Route, Redirect, match } from "react-router";
 import { Link } from "react-router-dom";
 
@@ -15,6 +16,7 @@ interface Props {
 	path: string;
 	innerProps?: any;
 	computedMatch?: match<PathParams>;
+	location?: History.Location;
 };
 
 interface State {
@@ -38,7 +40,7 @@ export class ProtectedRoute extends React.Component<Props, State> {
 				render={
 					() => (
 						this.props.authenticated ? (
-							<Component {...this.props.innerProps} id={match.params.id} />
+							<Component {...this.props.innerProps} id={match.params.id} location={this.props.location} />
 						) : (
 							<Redirect to={{
 								pathname: '/login',
