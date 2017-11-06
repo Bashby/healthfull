@@ -38,15 +38,15 @@ export class People extends React.Component<Props, State> {
 
 	render() {
 		let peopleCards: React.ReactNode[] = [];
-		Object.entries(this.props.people).forEach(([id, person]) => (
-			peopleCards.push(
-				<Col xs={12} sm={6} md={4} lg={3} key={id}>
-					<Paper zDepth={1} style={{ margin: 12, padding: 5 }} key={id}>
+		Object.entries(this.props.people).forEach(([id, person]) => {
+			return peopleCards.push(
+				<Col xs={12} sm={6} md={6} lg={6} key={id}>
+					<Paper zDepth={1} style={{ margin: 12, padding: 5 }}>
 						<PersonCard person={person} personId={id} selectable={false} />
 					</Paper>
 				</Col>
 			)
-		))
+		})
 		
 		return (
 			<Grid fluid>
@@ -58,7 +58,10 @@ export class People extends React.Component<Props, State> {
 							</ToolbarGroup>
 							<ToolbarGroup lastChild={true}>
 								<Link
-									to={"/account/people/add"}
+									to={{
+										pathname: "/account/people",
+										search: "?action=add",
+									}}
 									style={this.state.styles.button}
 								>
 									<RaisedButton

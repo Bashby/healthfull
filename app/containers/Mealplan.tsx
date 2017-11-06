@@ -5,6 +5,7 @@ import * as History from 'history';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
+import { ThunkAction } from 'redux-thunk';
 import { Grid, Col, Row } from "react-flexbox-grid";
 
 // Local Imports
@@ -16,6 +17,7 @@ import { MealplanCreate } from "../components/Mealplan/Create";
 import { ActionCreator, Action } from "typescript-fsa/lib";
 import { MealplanActionCreators, UpdateMealplanPayload, AddMealplanPayload, AddMealPlanWrapped, AddMealplanParticipantPayload, RemoveMealplanAlertPayload, AddMealplanAlertPayload, RemoveMealplanMealPayload, AddMealplanMealPayload, RemoveMealplanParticipantPayload } from "../actions/Mealplan";
 import { Person } from "../reducers/Profile";
+import { HydrateProfileParameter, HydrateProfileResult, ProfileActionCreators } from '../actions/Profile';
 
 
 // Interfaces
@@ -30,6 +32,7 @@ interface State {
 interface MyStateProps {
 	bottomNavigationIndex: number;
 	activePlan: string;
+	profileId: string;
 	mealplans: {
 		[id: string] : Mealplan
 	}
@@ -39,6 +42,7 @@ interface MyStateProps {
 }
 
 interface MyDispatchProps {
+	hydrateProfile: (params: HydrateProfileParameter) => ThunkAction<Promise<HydrateProfileResult>, IState, any>;
 	setBottomNavigation: (index: number) => void;
 	updateActiveMealplan: ActionCreator<string>;
 	addMealplan: ActionCreator<AddMealplanPayload>;
@@ -91,20 +95,29 @@ class MealplanComponent extends React.Component<AllProps, State> {
 		}
 	}
 
+	componentDidMount() {
+		// Query backend for account information
+		// TODO: Use caching(?) or a one-time-gate so this is not firing for no reason
+		this.props.hydrateProfile({id: this.props.profileId});
+	}
+
 	hasActivePlan = this.props.activePlan && this.props.mealplans[this.props.activePlan]
 	
 	render() {
 		return (
-			this.hasActivePlan
-				? <MealplanSummary
-					mealplan={this.props.mealplans[this.props.activePlan]}
-				/>
-				: <MealplanCreate
+			// this.hasActivePlan
+			// 	? <MealplanSummary
+			// 		mealplan={this.props.mealplans[this.props.activePlan]}
+			// 	/>
+			// 	:
+			<div>
+				<MealplanCreate
 					mealplanId={this.state.mealplanId}
 					updateActiveMealplan={this.props.updateActiveMealplan}
 					updateMealplan={this.props.updateMealplan}
 					people={this.props.people}
 				/>
+			</div>
 		);
 	}
 }
@@ -114,13 +127,15 @@ function mapStateToProps(state: IState): MyStateProps {
 		bottomNavigationIndex: state.rootState.bottomNavigationIndex,
 		activePlan: state.mealplanState.activePlan,
 		mealplans: state.mealplanState.mealplans,
-		people: state.profileState.people
+		people: state.profileState.people,
+		profileId: state.profileState.id
 	}
 }
 
 function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
 	return {
 		setBottomNavigation: bindActionCreators(RootActionCreators.updateBottomNavigationIndex, dispatch),
+		hydrateProfile: bindActionCreators(ProfileActionCreators.hydrateProfile, dispatch),
 		...bindActionCreators(MealplanActionCreators, dispatch),
 		addMealPlanWrapped: (payload: Mealplan) => {
 			let action = AddMealPlanWrapped(payload);

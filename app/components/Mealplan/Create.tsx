@@ -51,22 +51,22 @@ export class MealplanCreate extends React.Component<Props, State> {
 
 	render() {
 		let peopleCards: React.ReactNode[] = [];
-		Object.entries(this.props.people).forEach(([id, person]) => (
-			peopleCards.push(
-				<Col key={id}>
+		Object.entries(this.props.people).forEach(([id, person]) => {
+			return peopleCards.push(
+				<Col xs={12} sm={6} md={6} lg={6} key={id}>
 					<Paper zDepth={1} style={{ margin: 12, padding: 5 }}>
 						<PersonCard person={person} personId={id} selectable={true} />
 					</Paper>
 				</Col>
 			)
-		))
+		})
 
 		let meals: MealType[] = [MealType.Breakfast, MealType.Lunch, MealType.Dinner, MealType.Snack];
 		let mealCards: React.ReactNode[] = [];
 		meals.forEach((meal) => (
 			mealCards.push(
 				<Col key={meal.toString()}>
-					<Paper zDepth={1} style={{ margin: 12 }}>
+					<Paper zDepth={1} style={{ margin: 12, padding: 5 }}>
 						<MealCard meal={{ type: meal }} />
 					</Paper>
 				</Col>
@@ -99,6 +99,21 @@ export class MealplanCreate extends React.Component<Props, State> {
 							<ToolbarGroup firstChild={false}>
 								<ToolbarTitle text="Select Participants" />
 							</ToolbarGroup>
+							<ToolbarGroup lastChild={true}>
+								<Link
+									to={{
+										pathname: "/account/people",
+										search: "?action=add",
+									}}
+									style={this.state.styles.button}
+								>
+									<RaisedButton
+										label="Create a new Person"
+										secondary={true}
+										icon={<SvgIconSocialPersonAdd />}
+									/>
+								</Link>
+							</ToolbarGroup>
 						</Toolbar>
 					</Col>
 				</Row>
@@ -106,40 +121,28 @@ export class MealplanCreate extends React.Component<Props, State> {
 					{peopleCards}
 				</Row>
 				<Row center="xs">
-					<Link
-						to={"/account/people/add"}
-						style={this.state.styles.button}
-					>
-						<RaisedButton
-							label="Create a new Person"
-							secondary={true}
-							icon={<SvgIconSocialPersonAdd />}
-						/>
-					</Link>
-				</Row>
-				<Row center="xs">
 					<Col xs>
 						<Toolbar>
 							<ToolbarGroup firstChild={false}>
 								<ToolbarTitle text="Select Meals" />
+							</ToolbarGroup>
+							<ToolbarGroup lastChild={true}>
+								<Link
+									to={"/mealplan/recipes"}
+									style={this.state.styles.button}
+								>
+									<RaisedButton
+										label="Select Recipes for Mealplan"
+										secondary={true}
+										icon={<SvgIconCommunicationImportContacts />}
+									/>
+								</Link>
 							</ToolbarGroup>
 						</Toolbar>
 					</Col>
 				</Row>
 				<Row center="xs">
 					{mealCards}
-				</Row>
-				<Row center="xs">
-					<Link
-						to={"/mealplan/recipes"}
-						style={this.state.styles.button}
-					>
-						<RaisedButton
-							label="Select Recipes for Mealplan"
-							secondary={true}
-							icon={<SvgIconCommunicationImportContacts />}
-						/>
-					</Link>
 				</Row>
 			</Grid>
 		);
