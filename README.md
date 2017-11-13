@@ -7,15 +7,19 @@ The official source code repository for the healthfull application front-end.
 
 This project uses node / npm for dependency management. So to get started, install the dependencies.
 
-    npm install
-	
-Then, start the webpack development server
-
-	npm run dev
-	
-Then, navigate to
+You can use either of the following steps to get the code built and running. Then, navigate to:
 
     http://localhost:8080/
+
+#### Docker
+
+    docker-compose build
+    docker-compose up
+
+#### Local Environment / NPM
+
+    npm install
+	npm run dev
 
 ### Team
 _<team@healthfullapp.com>_

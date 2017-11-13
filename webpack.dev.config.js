@@ -7,8 +7,6 @@ const CommonConfig = require('./webpack.base.config.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // Define a base html template
 const HtmlWebpackTemplatePlugin = require('html-webpack-template');
-// Allows for a webpack dashboard experience while developing
-var DashboardPlugin = require('webpack-dashboard/plugin');
 
 module.exports = Merge(CommonConfig, {
 	devtool: "eval-source-map",
@@ -18,7 +16,6 @@ module.exports = Merge(CommonConfig, {
 		publicPath: '/',
 	},
 	plugins: [
-		new DashboardPlugin(),
 		// Set environment variables
 		new webpack.DefinePlugin({
 			'process.env': {

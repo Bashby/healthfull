@@ -6,16 +6,11 @@
   "types": "./globals.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --hot --content-base build/ --host 0.0.0.0 --public 192.168.1.187:8080 --config ./webpack.dev.config.js --progress --colors",
-    "dev:pretty": "webpack-dashboard -m -- webpack-dev-server --hot --content-base build/ --host 0.0.0.0 --public 192.168.1.187:8080 --config ./webpack.dev.config.js --progress --colors",
+    "dev": "webpack-dev-server --hot --watch-poll --host 0.0.0.0 --config ./webpack.dev.config.js --progress --colors",
     "build": "webpack --config ./webpack.dev.config.js --progress --profile --colors",
-    "build:pretty": "webpack-dashboard -m -- webpack --config ./webpack.dev.config.js --progress --profile --colors",
     "build_clean": "BUILD_CLEAN=true webpack --config ./webpack.dev.config.js --progress --profile --colors",
-    "build_clean:pretty": "BUILD_CLEAN=true webpack-dashboard -m -- webpack --config ./webpack.dev.config.js --progress --profile --colors",
     "build_prod": "webpack --config ./webpack.prod.config.js --progress --profile --colors",
-    "build_prod:pretty": "webpack-dashboard -m -- webpack --config ./webpack.prod.config.js --progress --profile --colors",
-    "build_prod_clean": "BUILD_CLEAN=true webpack --config ./webpack.prod.config.js --progress --profile --colors",
-    "build_prod_clean:pretty": "BUILD_CLEAN=true webpack-dashboard -m -- webpack --config ./webpack.prod.config.js --progress --profile --colors"
+    "build_prod_clean": "BUILD_CLEAN=true webpack --config ./webpack.prod.config.js --progress --profile --colors"
   },
   "repository": {
     "type": "git",
@@ -27,7 +22,8 @@
     "meal planning",
     "nutrition",
     "react",
-    "redux"
+    "redux",
+    "typescript"
   ],
   "author": "See AUTHORS file.",
   "license": "UNLICENSED",
@@ -90,7 +86,6 @@
     "uuid": "^3.1.0",
     "webpack": "^3.3.0",
     "webpack-chunk-hash": "^0.4.0",
-    "webpack-dashboard": "^0.4.0",
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   }
