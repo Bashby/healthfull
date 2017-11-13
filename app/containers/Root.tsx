@@ -80,7 +80,7 @@ class RootComponent extends React.Component<AllProps, State> {
 			<div className="full-height">
 				<TopNavigationBar changePage={this.props.changePage} authenticated={this.props.authenticated} updateAuthenticated={this.props.updateAuthenticated} />
 							<Switch>
-								<ProtectedRoute path="/account/people/add" component={AddPersonContainer} authenticated={this.props.authenticated} />
+								{/* <ProtectedRoute path="/account/people/add" component={AddPersonContainer} authenticated={this.props.authenticated} /> */}
 								<ProtectedRoute path="/account/people/:id" component={AccountContainer} authenticated={this.props.authenticated} innerProps={{showPeople: true}} />
 								<ProtectedRoute path="/account/people" component={AccountContainer} authenticated={this.props.authenticated} innerProps={{showPeople: true}} />
 								<ProtectedRoute path="/account" component={AccountContainer} authenticated={this.props.authenticated} />

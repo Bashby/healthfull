@@ -11,10 +11,12 @@ import { RootActionCreators } from "../actions/Root";
 import { Summary } from '../components/Account/Summary';
 import { People } from '../components/Account/People';
 import { Person } from '../reducers/Profile';
-import { EditPerson } from '../components/Account/EditPerson';
-import { ProfileActionCreators, HydrateProfileParameter, HydrateProfileResult, UpdatePersonPayload } from '../actions/Profile';
+import { ProfileActionCreators, HydrateProfileParameter, HydrateProfileResult, UpdatePersonPayload, AddPersonPayload } from '../actions/Profile';
 import { ThunkAction } from 'redux-thunk';
+import { AddPerson } from '../components/Account/AddPerson';
+import { EditPerson } from '../components/Account/EditPerson';
 import { RemovePerson } from '../components/Account/RemovePerson';
+import { push } from 'react-router-redux';
 
 
 // Interfaces
@@ -37,8 +39,10 @@ interface MyStateProps {
 interface MyDispatchProps {
 	setBottomNavigation: (index: number) => void;
 	hydrateProfile: (params: HydrateProfileParameter) => ThunkAction<Promise<HydrateProfileResult>, IState, any>;
+	addPersonAsync: (params: Person) => ThunkAction<Promise<boolean>, IState, any>;
 	updatePersonAsync: (params: UpdatePersonPayload) => ThunkAction<Promise<boolean>, IState, any>;
 	removePersonAsync: (id: string) => ThunkAction<Promise<boolean>, IState, any>;
+	handleModalDialogClose: () => void;
 }
 
 interface MyOwnProps {
@@ -84,7 +88,7 @@ class AccountComponent extends React.Component<AllProps, State> {
 			<div>
 				<Summary username={this.props.username} emailAddress={this.props.emailAddress}/>
 				{this.props.showPeople && <People people={this.props.people}/>}
-				{this.props.id && modalContent}
+				{modalContent}
 			</div>
 		);
 	}
@@ -96,6 +100,7 @@ class AccountComponent extends React.Component<AllProps, State> {
 				res = <RemovePerson
 					person={this.props.people[this.props.id]}
 					removePerson={() => this.props.removePersonAsync(this.props.id)}
+					handleModalDialogClose={() => {this.props.handleModalDialogClose();}}
 				/>
 				break;
 			}
@@ -103,6 +108,14 @@ class AccountComponent extends React.Component<AllProps, State> {
 				res = <EditPerson
 					person={this.props.people[this.props.id]}
 					updatePerson={(params) => this.props.updatePersonAsync({id: this.props.id, ...params,})}
+					handleModalDialogClose={() => {this.props.handleModalDialogClose();}}
+				/>
+				break;
+			}
+			case "add": {
+				res = <AddPerson
+					addPerson={(params) => this.props.addPersonAsync({...params,})}
+					handleModalDialogClose={() => {this.props.handleModalDialogClose();}}
 				/>
 				break;
 			}
@@ -125,8 +138,10 @@ function mapDispatchToProps(dispatch: Dispatch<IState>): MyDispatchProps {
 	return {
 		setBottomNavigation: bindActionCreators(RootActionCreators.updateBottomNavigationIndex, dispatch),
 		hydrateProfile: bindActionCreators(ProfileActionCreators.hydrateProfile, dispatch),
+		addPersonAsync: bindActionCreators(ProfileActionCreators.addPersonAsync, dispatch),
 		updatePersonAsync: bindActionCreators(ProfileActionCreators.updatePersonAsync, dispatch),
 		removePersonAsync: bindActionCreators(ProfileActionCreators.removePersonAsync, dispatch),
+		handleModalDialogClose: () => {dispatch(push("/account/people"))},
 	}
 }
 

@@ -149,12 +149,13 @@ const AddPersonWorker = bindThunkAction(AddPersonAsync,
 		}
 		
 		// Make request to backend
-		await Backend.api.accountIdParticipantsPartIdPost(profileId, newPersonId, newParticipant)
+		// NOTE: TODO: Stop using this endpoint for creation. Use a POST endpoint.
+		await Backend.api.accountIdParticipantsPartIdPut(profileId, newPersonId, newParticipant)
 			.then((payload) => {
 				success = payload.body.success;
 				resultParticipant = payload.body.participant;
 			})
-			.catch((e) => console.error("Account Participant POST Request Failed with: " + e));
+			.catch((e) => console.error("Account Participant \"POST\" Request Failed with: " + e));
 
 		// Update Success
 		if (success) {
@@ -218,6 +219,9 @@ const UpdatePersonWorker = bindThunkAction(UpdatePersonAsync,
 
 const RemovePersonWorker = bindThunkAction(RemovePersonAsync,
 	async (params, dispatch, getState, extraArg) => {
+		// Lock person while removing
+		dispatch(UILockPerson({id: params, lock: true}))
+
 		let success: boolean = false;
 		let profileId: string = getState().profileState.id;
 		

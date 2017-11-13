@@ -4,7 +4,7 @@ import { Grid, Row, Col } from "react-flexbox-grid";
 import { Link } from "react-router-dom";
 import { ActionCreator } from "typescript-fsa/lib";
 
-import { TextField, AppBar, Paper, Checkbox, IconButton, FlatButton, Avatar, IconMenu, MenuItem } from "material-ui";
+import { TextField, AppBar, Paper, Checkbox, IconButton, FlatButton, Avatar, IconMenu, MenuItem, RefreshIndicator } from "material-ui";
 import { grey600 } from "material-ui/styles/colors";
 import SvgIconEditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import SvgIconActionInfoOutline from 'material-ui/svg-icons/action/info-outline';
@@ -79,7 +79,12 @@ export class PersonCard extends React.Component<Props, State> {
 		return (
 			<Row center="xs" middle="xs">
 				<Col xs={2}>
-					<Avatar>{this.props.person.name.charAt(UiLocked ? 1 : 0).toUpperCase()}</Avatar>
+					{UiLocked ? <RefreshIndicator
+						left={0}
+						top={0}
+						status={"loading"}
+						style={{"position": "relative"}}
+					/> : <Avatar>{this.props.person.name ? this.props.person.name.charAt(0).toUpperCase() : '?'}</Avatar>}
 				</Col>
 				<Col xs={5}>
 					{this.props.selectable

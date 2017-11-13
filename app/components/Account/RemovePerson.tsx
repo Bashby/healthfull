@@ -12,6 +12,7 @@ import { Person } from '../../reducers/Profile';
 interface Props {
 	person: Person;
 	removePerson: () => void;
+	handleModalDialogClose: () => void;
 };
 
 interface State {
@@ -74,7 +75,7 @@ export class RemovePerson extends React.Component<Props, State> {
 				actions={actions}
 				modal={false}
 				open={this.state.open}
-				onRequestClose={this.handleClose}
+				onRequestClose={(buttonClicked: boolean) => {this.props.handleModalDialogClose(); this.handleClose(false);}}
 			>
 				<Grid fluid>
 					<Row center="xs">

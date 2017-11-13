@@ -96,8 +96,7 @@ export const reducerProfile = reducerWithInitialState(PROFILE_INITIAL_STATE)
 	})
 	// Delete Person
 	.case(ProfileActionCreators.removePerson, (state, payload) => {
-		debugger;
-		let newPeople = state.people; // TODO: Is this a proper clone?
+		let newPeople = Object.assign({}, state.people); // TODO: Is this a proper clone?
 		delete newPeople[payload];
 		return {
 			...state,

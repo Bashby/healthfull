@@ -5,13 +5,11 @@ import { Link } from 'react-router-dom';
 import { Paper, Toolbar, ToolbarGroup, ToolbarTitle, Dialog, FlatButton, TextField } from 'material-ui';
 
 // Local Imports
-import { PersonCard } from '../PersonCard';
 import { Person } from '../../reducers/Profile';
 
 interface Props {
-	person: Person;
-	updatePerson: (params: {name: string, dailyCalorieTarget: number}) => void;
 	handleModalDialogClose: () => void;
+	addPerson: (params: {name: string, dailyCalorieTarget: number}) => void;
 };
 
 interface State {
@@ -22,8 +20,8 @@ interface State {
 	}
 };
 
-// Account EditPerson Component
-export class EditPerson extends React.Component<Props, State> {
+// Account AddPerson Component
+export class AddPerson extends React.Component<Props, State> {
 	constructor(props: Props) {
 		super(props);
 		this.state = {
@@ -40,7 +38,7 @@ export class EditPerson extends React.Component<Props, State> {
 	handleClose = (saveChanges: boolean) => {
 		this.setState({ open: false });
 		if (saveChanges) {
-			this.props.updatePerson({
+			this.props.addPerson({
 				name: this.state.newName,
 				dailyCalorieTarget: this.state.newDailyCalorieTarget
 			});
@@ -59,7 +57,7 @@ export class EditPerson extends React.Component<Props, State> {
 			</Link>,
 			<Link to="/account/people">
 				<FlatButton
-					label="Save Changes"
+					label="Add"
 					primary={true}
 					keyboardFocused={true}
 					onClick={() => this.handleClose(true)}
@@ -69,7 +67,7 @@ export class EditPerson extends React.Component<Props, State> {
 
 		return (
 			<Dialog
-				title={"Edit " + this.props.person.name}
+				title={"Add New Person"}
 				actions={actions}
 				modal={false}
 				open={this.state.open}
@@ -81,7 +79,6 @@ export class EditPerson extends React.Component<Props, State> {
 							<TextField
 								hintText="e.g. John Doe"
 								floatingLabelText="Name"
-								defaultValue={this.props.person.name}
 								onChange={(_, value) => this.setState({newName: value})}
 							/>
 						</Col>
@@ -91,7 +88,6 @@ export class EditPerson extends React.Component<Props, State> {
 							<TextField
 								hintText="e.g. 2000"
 								floatingLabelText="Daily Calorie Target"
-								defaultValue={this.props.person.dailyCalorieTarget}
 								onChange={(_, value) => this.setState({newDailyCalorieTarget: parseInt(value)})}
 							/>
 						</Col>
