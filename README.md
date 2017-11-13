@@ -3,35 +3,39 @@ _[healthfullapp.com](https://healthfullapp.com)_
 
 The official source code repository for the healthfull application front-end.
 
-### Getting Started
+## Getting Started
 
-This project uses node / npm for dependency management. So to get started, install the dependencies.
+This project uses `node` / `npm` for dependency management. So to get started, install the dependencies.
 
-You can use either of the following steps to get the code built and running. Then, navigate to:
+You can use either of the following methods, `docker` or `npm` to get the code built and running.
+
+Then, navigate to:
 
     http://localhost:8080/
 
-#### Docker
+to see the running application.
+
+### Docker
 
     docker-compose build
     docker-compose up
 
-#### Local Environment / NPM
+### NPM
 
     npm install
 	npm run dev
 
-### Team
+## Team
 _<team@healthfullapp.com>_
 
-##### Members
+### Members
 * Brendan Ashby <brendan@healthfullapp.com>
 * Kristen Stevens <kristen@healthfullapp.com>
 * Andrew Stevens <andrew@healthfullapp.com>
 * Brian Shirley <brian@healthfullapp.com>
 * Max Glover <max@healthfullapp.com>
 
-### License
+## License
 ```
 **************************************************************
 * Copyright (C) 2017 - All Rights Reserved                   *
