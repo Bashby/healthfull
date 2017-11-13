@@ -11,7 +11,7 @@ class Backend {
 	private static _instance: Backend;
 	
 	private constructor() {
-		this.api = new HealthfullApi("http://192.168.1.187:9494");
+		this.api = new HealthfullApi("http://localhost:9494");
 	}
 
 	public static get Instance() {

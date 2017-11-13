@@ -77,7 +77,7 @@ export class MealCard extends React.Component<Props, State> {
 				</Row>
 				<Row center="xs">
 					<Col xs>
-						<Checkbox label={"Include"} />
+						<Checkbox label={"Choose"} />
 					</Col>
 				</Row>
 			</Grid>
