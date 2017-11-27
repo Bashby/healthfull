@@ -45,6 +45,9 @@ interface State {
 			[id: string] : string
 		}
 	}
+	recipes: {
+		[id: string] : MealType
+	}
 }
 
 interface MyStateProps {
@@ -98,6 +101,16 @@ class SelectionsComponent extends React.Component<AllProps, State> {
 					"4" : "Rice",
 					"5" : "Beans?"
 				}
+			},
+			recipes: {
+				"1": MealType.Breakfast,
+				"2": MealType.Breakfast,
+				"3": MealType.Lunch,
+				"4": MealType.Lunch,
+				"5": MealType.Lunch,
+				"6": MealType.Dinner,
+				"7": MealType.Dinner,
+				"8": MealType.Snack,
 			}
 		};
 	}
@@ -132,13 +145,29 @@ class SelectionsComponent extends React.Component<AllProps, State> {
 	determineContent(action: string): React.ReactNode {
 		let res: React.ReactNode = undefined;
 		switch(action) {
-			case "likes": {
-				res = this.renderLikes();
+			default:
+			case "landing": {
+				res = this.renderLanding();
 				break;
 			}
-			default:
 			case "dislikes": {
 				res = this.renderDislikes();
+				break;
+			}
+			case "likesFood": {
+				res = this.renderFoodLikes();
+				break;
+			}
+			case "likesRecipe": {
+				res = this.renderRecipeLikes();
+				break;
+			}
+			case "signupOffer": {
+				res = this.renderSignupOffer();
+				break;
+			}
+			case "participants": {
+				res = this.renderParticipants();
 				break;
 			}
 			case "selections": {
@@ -153,11 +182,35 @@ class SelectionsComponent extends React.Component<AllProps, State> {
 		return res;
 	}
 
-	renderConfirm(): React.ReactNode {
-		return (	
+	renderLanding(): React.ReactNode {
+		return (
+			[<Row center="xs" key="1">
+				<Col xs>
+					<Toolbar>
+						<ToolbarGroup firstChild={false}>
+							<ToolbarTitle text="Why Healthfull is Lovely" />
+						</ToolbarGroup>
+						<ToolbarGroup lastChild={true}>
+							<Link
+								to={{
+									pathname: "/",
+									search: "?stage=dislikes",
+								}}
+								style={this.state.styles.button}
+							>
+								<RaisedButton
+									label="Continue"
+									secondary={true}
+									icon={<SvgIconImageNavigateNext />}
+								/>
+							</Link>
+						</ToolbarGroup>
+					</Toolbar>
+				</Col>
+			</Row>,
 			<Row center="xs">
-				Confirmed!
-			</Row>
+				This is the landing screen!
+			</Row>]
 		)
 	}
 
@@ -178,18 +231,31 @@ class SelectionsComponent extends React.Component<AllProps, State> {
 				<Col xs>
 					<Toolbar>
 						<ToolbarGroup firstChild={false}>
-							<ToolbarTitle text="Select your Dislikes" />
+							<ToolbarTitle text="Foods you don't eat" />
 						</ToolbarGroup>
 						<ToolbarGroup lastChild={true}>
+							<Link
+								to={{
+									pathname: "/",
+									search: "?stage=landing",
+								}}
+								style={this.state.styles.button}
+							>
+								<RaisedButton
+									label="Back"
+									secondary={true}
+									icon={<SvgIconImageNavigateBefore />}
+								/>
+							</Link>
 								<Link
 									to={{
 										pathname: "/",
-										search: "?stage=likes",
+										search: "?stage=likesFood",
 									}}
 									style={this.state.styles.button}
 								>
 									<RaisedButton
-										label="Select Favorites"
+										label="Continue"
 										secondary={true}
 										icon={<SvgIconImageNavigateNext />}
 									/>
@@ -203,8 +269,8 @@ class SelectionsComponent extends React.Component<AllProps, State> {
 			</Row>]
 		)
 	}
-		
-	renderLikes(): React.ReactNode[] {
+
+	renderFoodLikes(): React.ReactNode[] {
 		let fruitSelectionCards: React.ReactNode[] = [];
 		Object.entries(this.state.selections.fruit).forEach(([id, name]) => {
 			return fruitSelectionCards.push(
@@ -254,7 +320,7 @@ class SelectionsComponent extends React.Component<AllProps, State> {
 								style={this.state.styles.button}
 							>
 								<RaisedButton
-									label="Modify Dislikes"
+									label="Back"
 									secondary={true}
 									icon={<SvgIconImageNavigateBefore />}
 								/>
@@ -262,12 +328,12 @@ class SelectionsComponent extends React.Component<AllProps, State> {
 							<Link
 								to={{
 									pathname: "/",
-									search: "?stage=selections",
+									search: "?stage=likesRecipe",
 								}}
 								style={this.state.styles.button}
 							>
 								<RaisedButton
-									label="See Suggestions"
+									label="Continue"
 									secondary={true}
 									icon={<SvgIconImageNavigateNext />}
 								/>
@@ -296,7 +362,153 @@ class SelectionsComponent extends React.Component<AllProps, State> {
 			</Row>]
 		)
 	}
-			
+
+	renderRecipeLikes(): React.ReactNode[] {
+		let recipeSelectionCards: React.ReactNode[] = [];
+		Object.entries(this.state.recipes).forEach(([id, mealType]) => {
+			return recipeSelectionCards.push(
+				<Col xs={12} sm={6} md={4} lg={3} key={id}>
+					<Paper zDepth={1} style={{ margin: 12, padding: 5 }}>
+						<MealCard meal={{ type: mealType }} />
+					</Paper>
+				</Col>
+			)
+		})
+
+		return (
+			[<Row center="xs" key="1">
+				<Col xs>
+					<Toolbar>
+						<ToolbarGroup firstChild={false}>
+							<ToolbarTitle text="Select your Favorite Recipes" />
+						</ToolbarGroup>
+						<ToolbarGroup lastChild={true}>
+							<Link
+								to={{
+									pathname: "/",
+									search: "?stage=likesFood",
+								}}
+								style={this.state.styles.button}
+							>
+								<RaisedButton
+									label="Back"
+									secondary={true}
+									icon={<SvgIconImageNavigateBefore />}
+								/>
+							</Link>
+							<Link
+								to={{
+									pathname: "/",
+									search: "?stage=signupOffer",
+								}}
+								style={this.state.styles.button}
+							>
+								<RaisedButton
+									label="Continue"
+									secondary={true}
+									icon={<SvgIconImageNavigateNext />}
+								/>
+							</Link>
+						</ToolbarGroup>
+					</Toolbar>
+				</Col>
+			</Row>,
+			<Row center="xs" key="2">
+				{recipeSelectionCards}
+			</Row>]
+		)
+	}
+
+	renderSignupOffer(): React.ReactNode {
+		return (
+			[<Row center="xs" key="1">
+				<Col xs>
+					<Toolbar>
+						<ToolbarGroup firstChild={false}>
+							<ToolbarTitle text="Create an Account to save your preferences" />
+						</ToolbarGroup>
+						<ToolbarGroup lastChild={true}>
+							<Link
+								to={{
+									pathname: "/",
+									search: "?stage=likesRecipe",
+								}}
+								style={this.state.styles.button}
+							>
+								<RaisedButton
+									label="Back"
+									secondary={true}
+									icon={<SvgIconImageNavigateBefore />}
+								/>
+							</Link>
+							<Link
+								to={{
+									pathname: "/",
+									search: "?stage=participants",
+								}}
+								style={this.state.styles.button}
+							>
+								<RaisedButton
+									label="Continue"
+									secondary={true}
+									icon={<SvgIconImageNavigateNext />}
+								/>
+							</Link>
+						</ToolbarGroup>
+					</Toolbar>
+				</Col>
+			</Row>,
+			<Row center="xs" key="2">
+				Signup Screen!
+			</Row>]
+		)
+	}
+
+	renderParticipants(): React.ReactNode {
+		return (
+			[<Row center="xs" key="1">
+				<Col xs>
+					<Toolbar>
+						<ToolbarGroup firstChild={false}>
+							<ToolbarTitle text="How many people are eating?" />
+						</ToolbarGroup>
+						<ToolbarGroup lastChild={true}>
+							<Link
+								to={{
+									pathname: "/",
+									search: "?stage=signupOffer",
+								}}
+								style={this.state.styles.button}
+							>
+								<RaisedButton
+									label="Back"
+									secondary={true}
+									icon={<SvgIconImageNavigateBefore />}
+								/>
+							</Link>
+							<Link
+								to={{
+									pathname: "/",
+									search: "?stage=selections",
+								}}
+								style={this.state.styles.button}
+							>
+								<RaisedButton
+									label="Continue"
+									secondary={true}
+									icon={<SvgIconImageNavigateNext />}
+								/>
+							</Link>
+						</ToolbarGroup>
+					</Toolbar>
+				</Col>
+			</Row>,
+			<Row center="xs">
+				Set Participants!
+			</Row>]
+		)
+	}
+
 	renderSelections(): React.ReactNode[] {
 		let breakfastMeals: MealType[] = [MealType.Breakfast, MealType.Breakfast, MealType.Breakfast, MealType.Breakfast];
 		let lunchMeals: MealType[] = [MealType.Lunch, MealType.Lunch, MealType.Lunch, MealType.Lunch];
@@ -356,25 +568,12 @@ class SelectionsComponent extends React.Component<AllProps, State> {
 							<Link
 								to={{
 									pathname: "/",
-									search: "?stage=dislikes",
+									search: "?stage=participants",
 								}}
 								style={this.state.styles.button}
 							>
 								<RaisedButton
-									label="Modify Dislikes"
-									secondary={true}
-									icon={<SvgIconImageNavigateBefore />}
-								/>
-							</Link>
-							<Link
-								to={{
-									pathname: "/",
-									search: "?stage=likes",
-								}}
-								style={this.state.styles.button}
-							>
-								<RaisedButton
-									label="Modify Favorites"
+									label="Back"
 									secondary={true}
 									icon={<SvgIconImageNavigateBefore />}
 								/>
@@ -419,6 +618,14 @@ class SelectionsComponent extends React.Component<AllProps, State> {
 			<Row center="xs" key="5b">
 				{snackCards}
 			</Row>]
+		)
+	}
+
+	renderConfirm(): React.ReactNode {
+		return (
+			<Row center="xs">
+				Confirmed Screen!
+			</Row>
 		)
 	}
 }
