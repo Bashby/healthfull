@@ -1,4 +1,11 @@
+> This start-up has since been retired. This is an archive.
+
+<p align="center">
+  <img src="app\images\logo.png" width="100" title="Healthfull Logo" style="border-radius: 5px;">
+</p>
+
 # Healthfull
+
 _[healthfullapp.com](https://healthfullapp.com)_
 
 The official source code repository for the healthfull application front-end.
@@ -23,34 +30,20 @@ to see the running application.
 ##### NPM
 
     npm install
-	npm run dev
+    npm run dev
 
 ### Team
+
 _<team@healthfullapp.com>_
 
 ##### Members
-* Brendan Ashby <brendan@healthfullapp.com>
-* Kristen Stevens <kristen@healthfullapp.com>
-* Andrew Stevens <andrew@healthfullapp.com>
-* Brian Shirley <brian@healthfullapp.com>
-* Max Glover <max@healthfullapp.com>
+
+- Brendan Ashby <brendan@healthfullapp.com>
+- Kristen Stevens <kristen@healthfullapp.com>
+- Andrew Stevens <andrew@healthfullapp.com>
+- Brian Shirley <brian@healthfullapp.com>
+- Max Glover <max@healthfullapp.com>
 
 ### License
-```
-**************************************************************
-* Copyright (C) 2017 - All Rights Reserved                   *
-*                                                            *
-* Proprietary and confidential.                              *
-*                                                            *
-* Unauthorized copying/distribution/sharing of any files     *
-* contained in this source code repository via any medium is *
-* strictly prohibited without the express written            *
-* permission of all of the listed owner(s)/author(s) below.  *
-*                                                            *
-* @owner - Brendan Evans Ashby <brendan@brendanashby.com>    *
-* @owner - Kristen Stevens <kristengstevens89@gmail.com>     *
-* @owner - Andrew Stevens <andrew.m.stevens12@gmail.com>     *
-* @owner - Brian Shirley <brian.shirley@gmail.com>           *
-* @owner - Max Glover <max@healthfullapp.com>                *
-**************************************************************
-```
+
+    Currently Unlicensed
