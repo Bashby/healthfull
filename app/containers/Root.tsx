@@ -17,6 +17,7 @@ import { TodoType } from "../reducers/Todo";
 
 import { TodoActionCreators } from "../actions/Todo";
 import { RootActionCreators } from "../actions/Root";
+import { AuthenticationActionCreators, AuthenticationBasicParameter } from '../actions/Authentication';
 
 import { RecipeContainer } from './Recipe';
 import { LandingContainer } from "./Landing";
@@ -27,12 +28,12 @@ import { MealplanContainer } from "./Mealplan";
 import { GroceryListContainer } from "./GroceryList";
 import { AlertsContainer } from "./Alerts";
 import { ParticipantsContainer } from "./Mealplan/Participants";
+import { SelectionsContainer } from './Selections';
+import { AddPersonContainer } from "./Account/AddPerson";
 
 import { TopNavigationBar } from "../components/TopNavigationBar";
 import { BottomNavigationBar } from "../components/BottomNavigationBar";
 import { ProtectedRoute } from "../components/ProtectedRoute";
-import { AddPersonContainer } from "./Account/AddPerson";
-import { AuthenticationActionCreators, AuthenticationBasicParameter } from '../actions/Authentication';
 
 
 // Interfaces
@@ -92,7 +93,7 @@ class RootComponent extends React.Component<AllProps, State> {
 								<ProtectedRoute path="/mealplan" component={MealplanContainer} authenticated={this.props.authenticated} />
 								<Route path="/login" component={LoginContainer} />
 								<Route path="/signup" component={SignupContainer} />
-								<Route component={LandingContainer} />
+								<Route component={SelectionsContainer} />
 							</Switch>
 				{this.props.authenticated && <BottomNavigationBar changePage={this.props.changePage} setBottomNavigation={this.props.setBottomNavigation} index={this.props.bottomNavigationIndex} />}
 			</div>
